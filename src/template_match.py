@@ -21,15 +21,25 @@ TEMPLATE_PATH = DATA_PATH / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
 
 
 
+def read_image_rgb(img_path: pathlib.Path) -> np.ndarray:
+    img = cv.imread(str(img_path))
+    return img
+
+    
+def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
+    img = cv.imread(str(img_path), cv.IMREAD_GRAYSCALE)
+    return img
 
 
-def process_template(marker_template: np.ndarray) -> np.ndarray:
+def process_template(marker_image: np.ndarray, treshold: int = 200) -> np.ndarray:
     """
     Tresholding.
     Return template mask.
     """
-    # TODO: implement
-    pass
+    mask = marker_image.copy()
+    mask[np.where(marker_image > treshold)] = 0
+    mask[np.where(mask != 0)] = 255
+    return mask
 
 
 
@@ -45,14 +55,18 @@ def template_match(
     image: np.ndarray,
     template: np.ndarray,
     template_mask: np.ndarray,
-    method: str
+    method_name: str
 ) -> Tuple[np.ndarray, float]:
     """ 
     Run opencv templateMatch.
     Return convolution map and maximum value on map.
     """
-    # TODO: implement
-    # <...>
+    method = eval(method_name)
+    convolution_map = cv.matchTemplate(image, template, method, mask=template_mask)
+
+    if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED, cv.TM_CCORR]:
+        convolution_map = invert_convolution_map(convolution_map)
+
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
     return convolution_map, max_val
 
@@ -85,14 +99,30 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
 
 
 
-def simplify_points(points: np.ndarray, eps: float) -> np.ndarray:
+def simplify_points(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
     """
-    Run Agglomerative Clustering
+    Run Agglomerative Clustering.
+    Return coordinates of cluster centers.
     """
-    # TODO: implement
-    pass
+    try:
+        agglomerat = AgglomerativeClustering(n_clusters=None, distance_threshold=eps)
+        labels_pred = agglomerat.fit_predict(points)
+        unique_labels = np.unique(labels_pred)
+        n = len(unique_labels)
+        cluster_centers = np.zeros((n, 2))
 
-
-
+        for i in range(len(unique_labels)):
+            label = unique_labels[i]
+            cluster_indexes = np.where(labels_pred == label)[0]
+            cluster_points = points[cluster_indexes]
+            cluster_centers[i] = np.mean(cluster_points, axis=0)
+    except MemoryError as ex:
+        logger.error(f"Number of points: {len(points)} too lot for clustering")
+        raise Exception(f"Number of points: {len(points)} too lot for clustering")
+    except ValueError:
+        logger.warning(f"some message")
+        cluster_centers = points
+    
+    return cluster_centers
 
 
