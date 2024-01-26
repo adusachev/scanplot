@@ -13,11 +13,13 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 DATA_PATH = pathlib.Path(os.getenv("DATA_PATH"))
 
-PLOT_NUMBER = 6
-MARKER_NUMBER = 1
+PLOT_NUMBER = os.getenv("PLOT_NUMBER")
+MARKER_NUMBER = os.getenv("MARKER_NUMBER")
 
 PLOT_PATH = DATA_PATH / f"plot{PLOT_NUMBER}.png"
-TEMPLATE_PATH = DATA_PATH / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
+# TEMPLATE_PATH = DATA_PATH / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
+TEMPLATE_PATH = DATA_PATH / "markers_orig" / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
+
 
 
 
@@ -31,15 +33,23 @@ def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
     return img
 
 
-def process_template(marker_image: np.ndarray, treshold: int = 200) -> np.ndarray:
+def process_template(temaplte_rgb: np.ndarray, treshold: int = 200) -> np.ndarray:
     """
     Tresholding.
     Return template mask.
     """
-    mask = marker_image.copy()
-    mask[np.where(marker_image > treshold)] = 0
+    temaplte_gray = cv.cvtColor(temaplte_rgb, cv.COLOR_BGR2GRAY)
+    mask = temaplte_gray.copy()
+    mask[np.where(temaplte_gray >= treshold)] = 0
     mask[np.where(mask != 0)] = 255
+
+    assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
     return mask
+
+
+def find_template_center(temaplte_rgb: np.ndarray) -> Tuple[int, int]:
+    # TODO: think about algorithm and implement
+    pass
 
 
 
@@ -65,6 +75,7 @@ def template_match(
     convolution_map = cv.matchTemplate(image, template, method, mask=template_mask)
 
     if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED, cv.TM_CCORR]:
+        logger.debug("Convolution map was inverted")
         convolution_map = invert_convolution_map(convolution_map)
 
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
@@ -87,15 +98,17 @@ def detect_points(
 
 
 def find_tolerance_limit(convolution_map: np.ndarray) -> float:
-    tolerance_list = np.arange(0, 0.4, 0.01)
-    for i, tolerance in enumerate(tolerance_list):
-        points = detect_points(convolution_map, tolerance)
+    tolerance_range = np.arange(0, 0.4, 0.01)
+    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
+
+    for i, tolerance in enumerate(tolerance_range):
+        points = detect_points(convolution_map, max_val, tolerance)
         points_number = len(points)
         if points_number > 1000:
-            tolerance_limit = tolerance_list[i-1]
+            tolerance_limit = tolerance_range[i-1]
             return tolerance_limit
         
-    return tolerance_list[-1]
+    return tolerance_range[-1]
 
 
 
