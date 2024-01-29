@@ -33,25 +33,6 @@ def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
     return img
 
 
-def process_template(temaplte_rgb: np.ndarray, treshold: int = 200) -> np.ndarray:
-    """
-    Tresholding.
-    Return template mask.
-    """
-    temaplte_gray = cv.cvtColor(temaplte_rgb, cv.COLOR_BGR2GRAY)
-    mask = temaplte_gray.copy()
-    mask[np.where(temaplte_gray >= treshold)] = 0
-    mask[np.where(mask != 0)] = 255
-
-    assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
-    return mask
-
-
-def find_template_center(temaplte_rgb: np.ndarray) -> Tuple[int, int]:
-    # TODO: think about algorithm and implement
-    pass
-
-
 
 def invert_convolution_map(convolution_map: np.ndarray) -> np.ndarray:
     """
