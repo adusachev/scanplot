@@ -80,7 +80,7 @@ def detect_points(
 
 
 def find_tolerance_limit(convolution_map: np.ndarray) -> float:
-    tolerance_range = np.arange(0, 0.4, 0.01)
+    tolerance_range = np.arange(0, 2, 0.01)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
 
     for i, tolerance in enumerate(tolerance_range):
@@ -115,9 +115,25 @@ def simplify_points(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
         logger.error(f"Number of points: {len(points)} too lot for clustering")
         raise Exception(f"Number of points: {len(points)} too lot for clustering")
     except ValueError:
-        logger.warning(f"some message")
+        logger.warning(f"Found only 1 point")
         cluster_centers = points
     
     return cluster_centers
 
 
+
+
+def point_to_bbox(y: int, x: int, w: int, h: int, convolution_map: np.ndarray) -> Tuple:
+    """
+    Map some point on convolution map to bbox on the source image.
+    """
+    x_min, y_min = x, y
+    x_max = x + w - 1
+    y_max = y + h - 1
+
+    # check that indexes are valid
+    convolution_map[y_min, x_min]
+    convolution_map[y_max, x_max]
+    
+    return x_min, x_max, y_min, y_max
+    # return x_min - 0.5, x_max + 0.5, y_min - 0.5, y_max + 0.5  # for drawing
