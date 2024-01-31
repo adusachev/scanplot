@@ -3,3 +3,4 @@ __pycache__/
 data/
 .env
 *_draft.py
+*_draft.ipynb
