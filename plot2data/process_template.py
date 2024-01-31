@@ -2,10 +2,11 @@ from typing import Tuple
 import numpy as np
 import skimage.measure
 import cv2 as cv
+from setup_logger import logger
 
 
 
-def template_tresholding(temaplte_rgb: np.ndarray, treshold: int = 200) -> np.ndarray:
+def template_tresholding(temaplte_rgb: np.ndarray, treshold: int = 230) -> np.ndarray:
     """
     Tresholding.
     Return template mask.
@@ -13,7 +14,7 @@ def template_tresholding(temaplte_rgb: np.ndarray, treshold: int = 200) -> np.nd
     temaplte_gray = cv.cvtColor(temaplte_rgb, cv.COLOR_BGR2GRAY)
     mask = temaplte_gray.copy()
     mask[np.where(temaplte_gray >= treshold)] = 0
-    mask[np.where(mask != 0)] = 255
+    mask[np.where(temaplte_gray < treshold)] = 255
 
     assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
     return mask
@@ -39,6 +40,7 @@ def extract_largest_component(mask: np.ndarray) -> np.ndarray:
     unnecessary_labels_indexes = np.where( label_map != largest_component_label )
     new_mask[unnecessary_labels_indexes] = 0
     new_mask[ np.where(new_mask != 0) ] = 255
+    new_mask = new_mask.astype(np.uint8)
     
     return new_mask
 
@@ -90,11 +92,18 @@ def crop_image(
     bbox: Tuple[int, int, int, int]
 ) -> np.ndarray:
     x_min, x_max, y_min, y_max = bbox
-    bbox_height = y_max - y_min
-    bbox_width = x_max - x_min
-    cropped_image = image[y_min:y_min+bbox_height+1, x_min:x_min+bbox_width+1]
+
+    if is_grayscale(image):
+        cropped_image = image[y_min:y_max+1, x_min:x_max+1]
+    else:
+        cropped_image = image[y_min:y_max+1, x_min:x_max+1, :]
+    
     return cropped_image
 
+
+
+def is_grayscale(img: np.ndarray) -> bool:
+    return len(img.shape) == 2
 
 
 def frame_image(image: np.ndarray, frame_width: int = 1) -> np.ndarray:
@@ -108,9 +117,13 @@ def frame_image(image: np.ndarray, frame_width: int = 1) -> np.ndarray:
     framed_img_width = image_width + int(frame_width * 2)
     framed_img_height = image_height + int(frame_width * 2)
 
-    framed_img = np.zeros((framed_img_height, framed_img_width))
-    framed_img[frame_width:-frame_width, frame_width:-frame_width] = image
-    
+    if is_grayscale(image):
+        framed_img = np.zeros((framed_img_height, framed_img_width), dtype=np.uint8)
+        framed_img[frame_width:-frame_width, frame_width:-frame_width] = image
+    else:
+        framed_img = np.zeros((framed_img_height, framed_img_width, 3), dtype=np.uint8)
+        framed_img[frame_width:-frame_width, frame_width:-frame_width, :] = image
+
     return framed_img
 
 
