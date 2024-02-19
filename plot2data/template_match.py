@@ -3,7 +3,7 @@ import pathlib
 from typing import List, Tuple
 import numpy as np
 import cv2 as cv
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import AgglomerativeClustering, MeanShift
 from dotenv import load_dotenv
 
 from setup_logger import logger
@@ -94,14 +94,37 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
 
 
 
-def simplify_points(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
+def agglomerative_clustering(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
     """
-    Run Agglomerative Clustering.
-    Return coordinates of cluster centers.
+    Run Agglomerative Clustering with distance treshold.
+    Return array of cluster labels.
     """
     try:
         agglomerat = AgglomerativeClustering(n_clusters=None, distance_threshold=eps)
         labels_pred = agglomerat.fit_predict(points)
+    except MemoryError as ex:
+        logger.error(f"Number of points: {len(points)} too lot for clustering")
+        raise Exception(f"Number of points: {len(points)} too lot for clustering")
+    
+    return labels_pred
+
+
+
+def meanshift_clustering(points: np.ndarray, bandwidth: float = 4) -> np.ndarray:
+    """
+    Run Mean-Shift clustering with a given bandwidth.
+    Return array of cluster labels.
+    """
+    mean_shift = MeanShift(bandwidth=bandwidth)
+    labels_pred = mean_shift.fit_predict(points)    
+    return labels_pred
+
+
+def simplify_points(points: np.ndarray, labels_pred: np.ndarray) -> np.ndarray:
+    """
+    Take clustering result (labeled data) and return array with cluster centers.
+    """
+    try:
         unique_labels = np.unique(labels_pred)
         n = len(unique_labels)
         cluster_centers = np.zeros((n, 2))
@@ -111,16 +134,11 @@ def simplify_points(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
             cluster_indexes = np.where(labels_pred == label)[0]
             cluster_points = points[cluster_indexes]
             cluster_centers[i] = np.mean(cluster_points, axis=0)
-    except MemoryError as ex:
-        logger.error(f"Number of points: {len(points)} too lot for clustering")
-        raise Exception(f"Number of points: {len(points)} too lot for clustering")
     except ValueError:
-        logger.warning(f"Found only 1 point")
+        logger.warning(f"Clustering algorithm found only 1 point")
         cluster_centers = points
     
     return cluster_centers
-
-
 
 
 def point_to_bbox(y: int, x: int, w: int, h: int, convolution_map: np.ndarray) -> Tuple:
