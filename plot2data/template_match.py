@@ -3,7 +3,7 @@ import pathlib
 from typing import List, Tuple
 import numpy as np
 import cv2 as cv
-from sklearn.cluster import AgglomerativeClustering, MeanShift
+from sklearn.cluster import AgglomerativeClustering, MeanShift, DBSCAN
 from dotenv import load_dotenv
 
 from setup_logger import logger
@@ -118,6 +118,17 @@ def meanshift_clustering(points: np.ndarray, bandwidth: float = 4) -> np.ndarray
     mean_shift = MeanShift(bandwidth=bandwidth)
     labels_pred = mean_shift.fit_predict(points)    
     return labels_pred
+
+
+def dbscan_clustering(points: np.ndarray, eps: float, min_samples: int) -> np.ndarray:
+    """
+    Run DBSCAN clustering.
+    Return array of cluster labels.
+    """
+    dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+    labels_pred = dbscan.fit_predict(points)
+    return labels_pred
+
 
 
 def simplify_points(points: np.ndarray, labels_pred: np.ndarray) -> np.ndarray:
