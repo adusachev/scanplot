@@ -99,6 +99,10 @@ def agglomerative_clustering(points: np.ndarray, eps: float = 5.5) -> np.ndarray
     Run Agglomerative Clustering with distance treshold.
     Return array of cluster labels.
     """
+    if len(points) == 1:
+        labels_pred = np.zeros(1, dtype=np.int64)
+        return labels_pred
+
     try:
         agglomerat = AgglomerativeClustering(n_clusters=None, distance_threshold=eps)
         labels_pred = agglomerat.fit_predict(points)
@@ -135,19 +139,15 @@ def simplify_points(points: np.ndarray, labels_pred: np.ndarray) -> np.ndarray:
     """
     Take clustering result (labeled data) and return array with cluster centers.
     """
-    try:
-        unique_labels = np.unique(labels_pred)
-        n = len(unique_labels)
-        cluster_centers = np.zeros((n, 2))
+    unique_labels = np.unique(labels_pred)
+    n = len(unique_labels)
+    cluster_centers = np.zeros((n, 2))
 
-        for i in range(len(unique_labels)):
-            label = unique_labels[i]
-            cluster_indexes = np.where(labels_pred == label)[0]
-            cluster_points = points[cluster_indexes]
-            cluster_centers[i] = np.mean(cluster_points, axis=0)
-    except ValueError:
-        logger.warning(f"Clustering algorithm found only 1 point")
-        cluster_centers = points
+    for i in range(len(unique_labels)):
+        label = unique_labels[i]
+        cluster_indexes = np.where(labels_pred == label)[0]
+        cluster_points = points[cluster_indexes]
+        cluster_centers[i] = np.mean(cluster_points, axis=0)
     
     return cluster_centers
 
