@@ -10,3 +10,4 @@ pipdeptree
 ipykernel
 ipywidgets
 python-dotenv
+numpy-indexed==0.3.7
