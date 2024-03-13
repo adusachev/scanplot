@@ -80,7 +80,7 @@ def detect_points(
 
 
 def find_tolerance_limit(convolution_map: np.ndarray) -> float:
-    tolerance_range = np.arange(0, 2, 0.01)
+    tolerance_range = np.arange(0, 2, 0.001)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
 
     for i, tolerance in enumerate(tolerance_range):
