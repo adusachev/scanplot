@@ -6,15 +6,20 @@ from setup_logger import logger
 
 
 
-def template_tresholding(temaplte_rgb: np.ndarray, treshold: int = 230) -> np.ndarray:
+def template_tresholding(template: np.ndarray, treshold: int = 230) -> np.ndarray:
     """
     Tresholding.
     Return template mask.
     """
-    temaplte_gray = cv.cvtColor(temaplte_rgb, cv.COLOR_BGR2GRAY)
+    try:
+        temaplte_gray = cv.cvtColor(template, cv.COLOR_BGR2GRAY)
+    except Exception as ex:
+        temaplte_gray = template
     mask = temaplte_gray.copy()
-    mask[np.where(temaplte_gray >= treshold)] = 0
-    mask[np.where(temaplte_gray < treshold)] = 255
+    indexes_under_tresh = np.where(temaplte_gray < treshold)
+    indexes_over_tresh = np.where(temaplte_gray >= treshold)
+    mask[indexes_over_tresh] = 0
+    mask[indexes_under_tresh] = 255
 
     assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
     return mask
