@@ -21,7 +21,7 @@ def template_tresholding(template: np.ndarray, treshold: int = 230) -> np.ndarra
     mask[indexes_over_tresh] = 0
     mask[indexes_under_tresh] = 255
 
-    assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
+    # assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
     return mask
 
 

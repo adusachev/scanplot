@@ -38,8 +38,8 @@ def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
 def invert_convolution_map(convolution_map: np.ndarray) -> np.ndarray:
     """
     Invert 2D array with float values
-    """
-    inverted_convolution_map = (- convolution_map) + np.max(convolution_map)
+    """   
+    inverted_convolution_map = (- convolution_map) + np.nanmax(convolution_map)
     return inverted_convolution_map
 
 
@@ -57,7 +57,7 @@ def template_match(
     convolution_map = cv.matchTemplate(image, template, method, mask=template_mask)
 
     if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED, cv.TM_CCORR]:
-        logger.debug(f"Convolution map bounds: {np.min(convolution_map), np.max(convolution_map)}")
+        logger.debug(f"Convolution map bounds: {np.nanmin(convolution_map), np.nanmax(convolution_map)}")
         logger.debug("Convolution map was inverted")
         convolution_map = invert_convolution_map(convolution_map)
 
