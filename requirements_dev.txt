@@ -12,4 +12,4 @@ ipywidgets==8.1.1
 python-dotenv==1.0.1
 numpy-indexed==0.3.7
 plotly==5.20.0
-kaledio==0.2.1
+kaleido==0.2.1
