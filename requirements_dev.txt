@@ -13,3 +13,4 @@ python-dotenv==1.0.1
 numpy-indexed==0.3.7
 plotly==5.20.0
 kaleido==0.2.1
+nbformat==5.10.4
