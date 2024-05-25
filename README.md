@@ -4,7 +4,7 @@
 ## Add pre-commit script
 
 ```sh
-cp validate_files_size.sh ./.git/hooks/pre-commit
+cp validate_file_size.sh ./.git/hooks/pre-commit
 ```
 
 ```sh
