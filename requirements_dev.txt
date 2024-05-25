@@ -14,3 +14,5 @@ numpy-indexed==0.3.7
 plotly==5.20.0
 kaleido==0.2.1
 nbformat==5.10.4
+numba==0.59.1
+numba-progress==1.1.0
