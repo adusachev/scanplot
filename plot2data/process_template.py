@@ -132,3 +132,28 @@ def frame_image(image: np.ndarray, frame_width: int = 1) -> np.ndarray:
     return framed_img
 
 
+
+def reconstruct_template_mask(mask: np.ndarray) -> np.ndarray:
+    """
+    Generation of new template mask, where only pixels from external connected component
+      are assigned as mask pixels.
+
+    :param mask: bitmap image of template mask
+    :return: new_mask - bitmap image of new template mask
+    """
+    assert np.all(np.unique(mask) == np.array([0, 255])), "Mask image is not bitmap"
+    if len(mask.shape) == 3:
+            mask = mask[:, :, 0]  # convert 3 channel input to 1 channel
+
+    BACKGROUND_COLOR = 1000  # конкретно здесь нужен любой цвет, которого точно нет на изображении
+    label_map = skimage.measure.label(mask, background=BACKGROUND_COLOR, connectivity=1)
+
+    # номер внешней связной компоненты равен номеру в левом верхнем углу
+    external_connected_component_label = label_map[0, 0]
+    assert np.all(label_map[0] == external_connected_component_label), "Upper horizontal line is not a connected component"
+    
+    new_mask = np.zeros_like(mask, dtype=np.uint8) + 255
+    external_connected_component_indexes = np.where(label_map == external_connected_component_label)
+    new_mask[external_connected_component_indexes] = 0
+    return new_mask
+
