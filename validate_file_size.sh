@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # limit file fize (in megabytes)
-FILE_SIZE_LIMIT=50
+FILE_SIZE_LIMIT=30
 
 
 function check_file_size {
