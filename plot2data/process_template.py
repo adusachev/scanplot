@@ -6,7 +6,12 @@ from setup_logger import logger
 
 
 
-def template_tresholding(template: np.ndarray, treshold: int = 230) -> np.ndarray:
+def template_tresholding(
+    template: np.ndarray, 
+    treshold: int = 230,
+    mask_value: int = 0,
+    object_value: int = 255
+) -> np.ndarray:
     """
     Tresholding.
     Return template mask.
@@ -18,8 +23,8 @@ def template_tresholding(template: np.ndarray, treshold: int = 230) -> np.ndarra
     mask = temaplte_gray.copy()
     indexes_under_tresh = np.where(temaplte_gray < treshold)
     indexes_over_tresh = np.where(temaplte_gray >= treshold)
-    mask[indexes_over_tresh] = 0
-    mask[indexes_under_tresh] = 255
+    mask[indexes_over_tresh] = mask_value
+    mask[indexes_under_tresh] = object_value
 
     # assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
     return mask
