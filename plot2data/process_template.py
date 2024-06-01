@@ -155,7 +155,8 @@ def reconstruct_template_mask(mask: np.ndarray) -> np.ndarray:
 
     # номер внешней связной компоненты равен номеру в левом верхнем углу
     external_connected_component_label = label_map[0, 0]
-    assert np.all(label_map[0] == external_connected_component_label), "Upper horizontal line is not a connected component"
+    if not np.all(label_map[0] == external_connected_component_label):
+         logger.warning("Upper horizontal line is not a connected component")
     
     new_mask = np.zeros_like(mask, dtype=np.uint8) + 255
     external_connected_component_indexes = np.where(label_map == external_connected_component_label)
