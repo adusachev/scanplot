@@ -56,7 +56,7 @@ def template_match(
     method = eval(method_name)
     convolution_map = cv.matchTemplate(image, template, method, mask=template_mask)
 
-    if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED, cv.TM_CCORR]:
+    if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED]:
         logger.debug(f"Convolution map bounds: {np.nanmin(convolution_map), np.nanmax(convolution_map)}")
         logger.debug("Convolution map was inverted")
         convolution_map = invert_convolution_map(convolution_map)
