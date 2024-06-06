@@ -209,7 +209,8 @@ def point_to_bbox(y: int, x: int, w: int, h: int, convolution_map: np.ndarray) -
     convolution_map[y_min, x_min]
     convolution_map[y_max, x_max]
     
-    return x_min, x_max, y_min, y_max
+    # return x_min, x_max, y_min, y_max
+    return x_min, y_min, x_max, y_max
     # return x_min - 0.5, x_max + 0.5, y_min - 0.5, y_max + 0.5  # for drawing
 
 
