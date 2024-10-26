@@ -1,5 +1,5 @@
-numpy==1.26.3
-scipy==1.12.0
+# numpy==1.26.3
+# scipy==1.12.0
 matplotlib==3.8.2
 seaborn==0.13.1
 tqdm==4.66.1
@@ -14,5 +14,5 @@ numpy-indexed==0.3.7
 plotly==5.20.0
 kaleido==0.2.1
 nbformat==5.10.4
-numba==0.59.1
-numba-progress==1.1.0
+# numba==0.59.1
+# numba-progress==1.1.0

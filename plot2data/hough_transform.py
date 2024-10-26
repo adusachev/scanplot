@@ -5,7 +5,7 @@ import cv2 as cv
 from scipy.ndimage import sobel
 
 
-def calc_gradients(image: np.ndarray) -> np.ndarray:
+def calc_gradients_v0(image: np.ndarray) -> np.ndarray:
     """
     Calculate the gradient orientation for edge point in the image
 
@@ -14,7 +14,21 @@ def calc_gradients(image: np.ndarray) -> np.ndarray:
     """
     dx = sobel(image, axis=0, mode='constant')
     dy = sobel(image, axis=1, mode='constant')
-    gradient = np.arctan2(dy,dx) * 180 / np.pi
+    gradient = np.arctan2(dy, dx) * 180 / np.pi
+    
+    return gradient
+
+
+def calc_gradients(image: np.ndarray) -> np.ndarray:
+    """
+    Calculate the gradient orientation for edge point in the image
+
+    :param image: binary image of edges (in this work, generally may be any image) 
+    :return: calculated gradients (image with same shape as input) 
+    """
+    grad_x = cv.Sobel(image, ddepth=cv.CV_64F, dx=1, dy=0, ksize=3, borderType=cv.BORDER_DEFAULT)
+    grad_y = cv.Sobel(image, ddepth=cv.CV_64F, dx=0, dy=1, ksize=3, borderType=cv.BORDER_DEFAULT)
+    gradient = np.arctan2(grad_y, grad_x) * 180 / np.pi
     
     return gradient
 
