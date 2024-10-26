@@ -5,6 +5,7 @@ import cv2 as cv
 from scipy.ndimage import sobel
 
 
+
 def calc_gradients_v0(image: np.ndarray) -> np.ndarray:
     """
     Calculate the gradient orientation for edge point in the image
