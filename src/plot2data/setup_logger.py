@@ -1,6 +1,6 @@
 import logging
 
-logger = logging.getLogger("logger")
+logger = logging.getLogger("base_logger")
 loglevel = "DEBUG"
 logger.setLevel(loglevel)
 handler = logging.StreamHandler()

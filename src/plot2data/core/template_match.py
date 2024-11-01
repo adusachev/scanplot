@@ -8,19 +8,24 @@ from dotenv import load_dotenv
 import numpy_indexed as npi
 from lsnms import nms
 
-from setup_logger import logger
+import logging
+logger = logging.getLogger("base_logger")
 
+# import sys
+# import pathlib
+# SRC_DIR = str(pathlib.Path(__name__).resolve().parent.parent.parent)
+# sys.path.append(SRC_DIR)
 
-BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / '.env')
-DATA_PATH = pathlib.Path(os.getenv("DATA_PATH"))
+# BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
+# load_dotenv(BASE_DIR / '.env')
+# DATA_PATH = pathlib.Path(os.getenv("DATA_PATH"))
 
-PLOT_NUMBER = os.getenv("PLOT_NUMBER")
-MARKER_NUMBER = os.getenv("MARKER_NUMBER")
+# PLOT_NUMBER = os.getenv("PLOT_NUMBER")
+# MARKER_NUMBER = os.getenv("MARKER_NUMBER")
 
-PLOT_PATH = DATA_PATH / f"plot{PLOT_NUMBER}.png"
-# TEMPLATE_PATH = DATA_PATH / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
-TEMPLATE_PATH = DATA_PATH / "markers_orig" / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
+# PLOT_PATH = DATA_PATH / f"plot{PLOT_NUMBER}.png"
+# # TEMPLATE_PATH = DATA_PATH / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
+# TEMPLATE_PATH = DATA_PATH / "markers_orig" / f"plot{PLOT_NUMBER}_marker{MARKER_NUMBER}.png"
 
 
 
