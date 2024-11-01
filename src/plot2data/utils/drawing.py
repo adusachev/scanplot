@@ -3,6 +3,10 @@ from matplotlib.patches import Rectangle
 import cv2 as cv
 import numpy as np
 
+import logging
+logger = logging.getLogger("base_logger")
+
+
 def draw_image(image: np.ndarray) -> None:
     plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
 

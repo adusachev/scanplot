@@ -4,6 +4,8 @@ from collections import defaultdict
 import cv2 as cv
 from scipy.ndimage import sobel
 
+import logging
+logger = logging.getLogger("base_logger")
 
 
 def calc_gradients_v0(image: np.ndarray) -> np.ndarray:

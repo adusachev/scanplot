@@ -2,7 +2,9 @@ from typing import Tuple
 import numpy as np
 import skimage.measure
 import cv2 as cv
-from setup_logger import logger
+
+import logging
+logger = logging.getLogger("base_logger")
 
 
 

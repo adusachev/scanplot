@@ -2,6 +2,9 @@ import numpy as np
 import cv2 as cv
 from typing import Tuple
 
+import logging
+logger = logging.getLogger("base_logger")
+
 
 # horizontal -- G_x
 SOBEL_H = np.array([[-1, 0, 1],

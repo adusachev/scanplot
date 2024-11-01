@@ -1,5 +1,7 @@
 import numpy as np
-from setup_logger import logger
+
+import logging
+logger = logging.getLogger("base_logger")
 
 
 def remove_nan_inf(map: np.ndarray) -> np.ndarray:
