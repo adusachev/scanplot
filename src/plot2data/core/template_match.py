@@ -11,7 +11,7 @@ from lsnms import nms
 import logging
 logger = logging.getLogger("base_logger")
 
-from conv_map_operations import invert_convolution_map
+from .conv_map_operations import invert_convolution_map
 
 # import sys
 # import pathlib
