@@ -96,6 +96,7 @@ Proposed algorithm was compared with existing tools for plot digitization:
 
 
 - [ ] Mapping the coordinates obtained by the algorithm to tick values on plot image
+- [ ] Adding opportunity to select region of interest
 - [ ] Implementation of the graphical interface for the algorithm
 - [ ] Improving the accuracy of the algorithm
 
