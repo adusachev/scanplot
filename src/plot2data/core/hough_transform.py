@@ -117,20 +117,20 @@ def fill_accumulator(
 
 
 
-def normalize_map(map: np.ndarray) -> np.ndarray:
-    return map / np.nanmax(map)
+# def normalize_map(map: np.ndarray) -> np.ndarray:
+#     return map / np.nanmax(map)
 
 
 
-def get_first_N_maximums(corr_map: np.ndarray, N: int) -> List[Tuple[float, Tuple[int, int]]]:
-    """
-    Return first N max elements values and indices in 2d map
+# def get_first_N_maximums(corr_map: np.ndarray, N: int) -> List[Tuple[float, Tuple[int, int]]]:
+#     """
+#     Return first N max elements values and indices in 2d map
 
-    :param corr_map: 2d array (correlation map or accumulator array)
-    :param N: number of maximums
-    :return: list of elements (max_value, (max_index_y, max_index_x))
-    """
-    indices = corr_map.ravel().argsort()[-N:]
-    indices = (np.unravel_index(i, corr_map.shape) for i in indices)
+#     :param corr_map: 2d array (correlation map or accumulator array)
+#     :param N: number of maximums
+#     :return: list of elements (max_value, (max_index_y, max_index_x))
+#     """
+#     indices = corr_map.ravel().argsort()[-N:]
+#     indices = (np.unravel_index(i, corr_map.shape) for i in indices)
 
-    return [(corr_map[i], i) for i in indices]
+#     return [(corr_map[i], i) for i in indices]

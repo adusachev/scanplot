@@ -3,13 +3,15 @@ import pathlib
 from typing import List, Tuple
 import numpy as np
 import cv2 as cv
-from sklearn.cluster import AgglomerativeClustering, MeanShift, DBSCAN
+# from sklearn.cluster import AgglomerativeClustering, MeanShift, DBSCAN
 from dotenv import load_dotenv
 import numpy_indexed as npi
 from lsnms import nms
 
 import logging
 logger = logging.getLogger("base_logger")
+
+from conv_map_operations import invert_convolution_map
 
 # import sys
 # import pathlib
@@ -30,23 +32,23 @@ logger = logging.getLogger("base_logger")
 
 
 
-def read_image_rgb(img_path: pathlib.Path) -> np.ndarray:
-    img = cv.imread(str(img_path))
-    return img
+# def read_image_rgb(img_path: pathlib.Path) -> np.ndarray:
+#     img = cv.imread(str(img_path))
+#     return img
 
     
-def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
-    img = cv.imread(str(img_path), cv.IMREAD_GRAYSCALE)
-    return img
+# def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
+#     img = cv.imread(str(img_path), cv.IMREAD_GRAYSCALE)
+#     return img
 
 
 
-def invert_convolution_map(convolution_map: np.ndarray) -> np.ndarray:
-    """
-    Invert 2D array with float values
-    """   
-    inverted_convolution_map = (- convolution_map) + np.nanmax(convolution_map)
-    return inverted_convolution_map
+# def invert_convolution_map(convolution_map: np.ndarray) -> np.ndarray:
+#     """
+#     Invert 2D array with float values
+#     """   
+#     inverted_convolution_map = (- convolution_map) + np.nanmax(convolution_map)
+#     return inverted_convolution_map
 
 
 def template_match(
@@ -145,62 +147,62 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
 
 
 
-def agglomerative_clustering(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
-    """
-    Run Agglomerative Clustering with distance treshold.
-    Return array of cluster labels.
-    """
-    if len(points) == 1:
-        labels_pred = np.zeros(1, dtype=np.int64)
-        return labels_pred
+# def agglomerative_clustering(points: np.ndarray, eps: float = 5.5) -> np.ndarray:
+#     """
+#     Run Agglomerative Clustering with distance treshold.
+#     Return array of cluster labels.
+#     """
+#     if len(points) == 1:
+#         labels_pred = np.zeros(1, dtype=np.int64)
+#         return labels_pred
 
-    try:
-        agglomerat = AgglomerativeClustering(n_clusters=None, distance_threshold=eps)
-        labels_pred = agglomerat.fit_predict(points)
-    except MemoryError as ex:
-        logger.error(f"Number of points: {len(points)} too lot for clustering")
-        raise Exception(f"Number of points: {len(points)} too lot for clustering")
+#     try:
+#         agglomerat = AgglomerativeClustering(n_clusters=None, distance_threshold=eps)
+#         labels_pred = agglomerat.fit_predict(points)
+#     except MemoryError as ex:
+#         logger.error(f"Number of points: {len(points)} too lot for clustering")
+#         raise Exception(f"Number of points: {len(points)} too lot for clustering")
     
-    return labels_pred
+#     return labels_pred
 
 
 
-def meanshift_clustering(points: np.ndarray, bandwidth: float = 4) -> np.ndarray:
-    """
-    Run Mean-Shift clustering with a given bandwidth.
-    Return array of cluster labels.
-    """
-    mean_shift = MeanShift(bandwidth=bandwidth)
-    labels_pred = mean_shift.fit_predict(points)    
-    return labels_pred
+# def meanshift_clustering(points: np.ndarray, bandwidth: float = 4) -> np.ndarray:
+#     """
+#     Run Mean-Shift clustering with a given bandwidth.
+#     Return array of cluster labels.
+#     """
+#     mean_shift = MeanShift(bandwidth=bandwidth)
+#     labels_pred = mean_shift.fit_predict(points)    
+#     return labels_pred
 
 
-def dbscan_clustering(points: np.ndarray, eps: float, min_samples: int) -> np.ndarray:
-    """
-    Run DBSCAN clustering.
-    Return array of cluster labels.
-    """
-    dbscan = DBSCAN(eps=eps, min_samples=min_samples)
-    labels_pred = dbscan.fit_predict(points)
-    return labels_pred
+# def dbscan_clustering(points: np.ndarray, eps: float, min_samples: int) -> np.ndarray:
+#     """
+#     Run DBSCAN clustering.
+#     Return array of cluster labels.
+#     """
+#     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+#     labels_pred = dbscan.fit_predict(points)
+#     return labels_pred
 
 
 
-def simplify_points(points: np.ndarray, labels_pred: np.ndarray) -> np.ndarray:
-    """
-    Take clustering result (labeled data) and return array with cluster centers.
-    """
-    unique_labels = np.unique(labels_pred)
-    n = len(unique_labels)
-    cluster_centers = np.zeros((n, 2))
+# def simplify_points(points: np.ndarray, labels_pred: np.ndarray) -> np.ndarray:
+#     """
+#     Take clustering result (labeled data) and return array with cluster centers.
+#     """
+#     unique_labels = np.unique(labels_pred)
+#     n = len(unique_labels)
+#     cluster_centers = np.zeros((n, 2))
 
-    for i in range(len(unique_labels)):
-        label = unique_labels[i]
-        cluster_indexes = np.where(labels_pred == label)[0]
-        cluster_points = points[cluster_indexes]
-        cluster_centers[i] = np.mean(cluster_points, axis=0)
+#     for i in range(len(unique_labels)):
+#         label = unique_labels[i]
+#         cluster_indexes = np.where(labels_pred == label)[0]
+#         cluster_points = points[cluster_indexes]
+#         cluster_centers[i] = np.mean(cluster_points, axis=0)
     
-    return cluster_centers
+#     return cluster_centers
 
 
 def point_to_bbox(y: int, x: int, w: int, h: int, convolution_map: np.ndarray) -> Tuple:
@@ -222,24 +224,24 @@ def point_to_bbox(y: int, x: int, w: int, h: int, convolution_map: np.ndarray) -
 
 
 
-def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:
-    """
-    Replace all [0, 0, 0] pixels on RGB image with [value, value, value] pixels
-    """
-    image = np.copy(image_rgb)
+# def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:
+#     """
+#     Replace all [0, 0, 0] pixels on RGB image with [value, value, value] pixels
+#     """
+#     image = np.copy(image_rgb)
     
-    if len(image.shape) == 3:
-        zero_indexes = np.where((image[:, :, 0] == 0) & (image[:, :, 1] == 0) & (image[:, :, 2] == 0))
-        y, x = zero_indexes
-        image[y, x, :] = value
-    elif len(image.shape) == 2:
-        logger.warning("Image is 1-channel")
-        zero_indexes = np.where(image == 0)
-        y, x = zero_indexes
-        image[y, x] = value
+#     if len(image.shape) == 3:
+#         zero_indexes = np.where((image[:, :, 0] == 0) & (image[:, :, 1] == 0) & (image[:, :, 2] == 0))
+#         y, x = zero_indexes
+#         image[y, x, :] = value
+#     elif len(image.shape) == 2:
+#         logger.warning("Image is 1-channel")
+#         zero_indexes = np.where(image == 0)
+#         y, x = zero_indexes
+#         image[y, x] = value
 
-    logger.debug(f"Number of black pixels on image: {len(zero_indexes[0])}")
-    return image
+#     logger.debug(f"Number of black pixels on image: {len(zero_indexes[0])}")
+#     return image
     
 
 def get_bbox_from_point(
