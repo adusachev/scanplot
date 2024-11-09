@@ -1,8 +1,8 @@
-# Plot-Digitize
+# ScanPlot
 
 ## About
 
-This repository presents a methodology for determining the positions of points on raster images of scatterplots.
+This repository presents a methodology for determining the positions of points on raster images of scatter plots.
 
 
 The proposed methodology is semi-automatic and needs user interation on different algorithm stages.
@@ -16,7 +16,7 @@ As a result, user receives the coordinates of the points for the selected marker
 
 
 
-The proposed algorithm considers the digitization of the scatterplot as the task of detecting a pattern in the image.
+The proposed algorithm considers the digitization of the scatter plot as the task of detecting a pattern in the image.
 The technique of marker detection on image is based on Template Matching algorithm, Generalized Hough Transform and Mean-Shift clustering.
 
 
@@ -30,7 +30,7 @@ The technique of marker detection on image is based on Template Matching algorit
 
 Currently the algorithm supports only X-Y plots and `.png` input format.
 
-The target image is a scatter chart, which can have several markers of any shape and color.
+The target image is a scatter plot, which can have several markers of any shape and color.
 
 It is assumed that markers of the same type have approximately the same size in pixels. It is also assumed that plot axes on image are horizontally aligned.
 
