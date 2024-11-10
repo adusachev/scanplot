@@ -3,9 +3,55 @@ import numpy as np
 from collections import defaultdict
 import cv2 as cv
 from scipy.ndimage import sobel
+from .conv_map_operations import normalize_map
+from .process_template import crop_image
 
 import logging
 logger = logging.getLogger("base_logger")
+
+
+
+
+def generalized_hough_transform(
+        image: np.ndarray, 
+        template: np.ndarray,
+        norm_result: bool = True,
+        crop_result: bool = True
+) -> np.ndarray:
+    hough_model = build_hough_model(template)
+    accumulator = fill_accumulator(hough_model, image)
+    
+    if norm_result:
+        accumulator = normalize_map(accumulator)
+
+    if crop_result:
+        template_heihgt, template_width = template.shape[0], template.shape[1]
+        accumulator = crop_accumulator(accumulator, template_width, template_heihgt)
+
+    return accumulator
+
+
+
+def crop_accumulator(
+        accumulator: np.ndarray,
+        template_width: int,
+        template_heihgt: int
+) -> np.ndarray:
+    x_min = template_width // 2
+    y_min = template_heihgt // 2
+    if template_width % 2 == 0:
+        x_max = accumulator.shape[1] - template_width // 2
+    else:
+        x_max = accumulator.shape[1] - template_width // 2 - 1
+
+    if template_heihgt % 2 == 0:
+        y_max = accumulator.shape[0] - template_heihgt // 2
+    else:
+        y_max = accumulator.shape[0] - template_heihgt // 2 - 1
+
+    accumulator_cropped = crop_image(accumulator, bbox=(x_min, x_max, y_min, y_max))
+    return accumulator_cropped
+
 
 
 def calc_gradients_v0(image: np.ndarray) -> np.ndarray:
