@@ -58,7 +58,7 @@ pip install -r requirements.txt
 
 ---
 
-## Algotithm results examples
+## Algorithm results examples
 
 
 ![](./readme_images/algorithm_results_examples_1.png)
