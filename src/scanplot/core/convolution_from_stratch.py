@@ -73,20 +73,23 @@ def sqdiff_normed_modification(
     return sqdiff_normed
 
 
-def sqdiff_normed(image_part: np.ndarray, template: np.ndarray, template_mask: np.ndarray) -> float:
+def sqdiff_normed(image_part: np.ndarray, template: np.ndarray, template_mask: np.ndarray | None = None) -> float:
     """
     OpenCV SQDIFF_NORMED implementation
     """
     # image_part = image_part.astype(np.float64)
     # template = template.astype(np.float64)
     # mask = mask.astype(np.float64)
-
-    sqdiff = np.sum( ((template - image_part) * template_mask)**2 )
-    norm1 = np.sum( (template * template_mask)**2 )
-    norm2 = np.sum( (image_part * template_mask)**2 )
+    if template_mask is not None:
+        sqdiff = np.sum( ((template - image_part) * template_mask)**2 )
+        norm1 = np.sum( (template * template_mask)**2 )
+        norm2 = np.sum( (image_part * template_mask)**2 )
+    else:
+        sqdiff = np.sum( ((template - image_part))**2 )
+        norm1 = np.sum( (template)**2 )
+        norm2 = np.sum( (image_part)**2 )
 
     sqdiff_normed = sqdiff / np.sqrt(norm1 * norm2)
-
     return sqdiff_normed
 
 
