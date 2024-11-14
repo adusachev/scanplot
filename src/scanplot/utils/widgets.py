@@ -1,9 +1,9 @@
 import ipywidgets
 
 
-def init_points_num_slider():
+def init_points_num_slider(start_value: int = 20):
     return ipywidgets.FloatSlider(
-        value=20,
+        value=start_value,
         min=0,
         max=100,
         step=0.1,
@@ -18,9 +18,9 @@ def init_points_num_slider():
     )
 
 
-def init_points_density_slider():
+def init_points_density_slider(start_value: int = 20):
     return ipywidgets.FloatSlider(
-        value=20,
+        value=start_value,
         min=0,
         max=100,
         step=1,
