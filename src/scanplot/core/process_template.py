@@ -165,3 +165,19 @@ def reconstruct_template_mask(mask: np.ndarray) -> np.ndarray:
     new_mask[external_connected_component_indexes] = 0
     return new_mask
 
+
+
+def get_binary_mask(mask: np.ndarray) -> np.ndarray:
+    """
+    Return binary template mask 
+    0 - background pixels, 1 - object pixels
+    """
+    mask_unique_values = np.unique(mask)
+
+    if np.all(mask_unique_values == [0, 255]):
+        mask_binary = mask / 255
+    elif np.all(mask_unique_values == [0, 1]):
+        mask_binary = mask
+    else:
+        raise Exception("Invalid mask values")
+    return mask_binary
