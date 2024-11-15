@@ -12,28 +12,28 @@ Firstly, user select target marker. Then, in interactive mode, user varies the p
 As a result, user receives the coordinates of the points for the selected marker.
 
 
-![](./readme_images/about.gif)
+![](./readme_images/interaction.gif)
 
 
 
 The proposed algorithm considers the digitization of the scatter plot as the task of detecting a pattern in the image.
-The technique of marker detection on image is based on Template Matching algorithm, Generalized Hough Transform and Mean-Shift clustering.
+The technique of marker detection on image is based on Template Matching algorithm, Generalized Hough Transform and Non Maximum Suppression.
 
 
 
 
 ---
 
-## Data requirements
+## Input data requirements
+
+The algorithm supports only 3-channel RGB images.
+Target scatter plot may have several markers of any shape and color.
+
+It is assumed that markers of the same type have approximately the same size in pixels.
+Markers with gradient color are not supported.
 
 
-
-Currently the algorithm supports only X-Y plots and `.png` input format.
-
-The target image is a scatter plot, which can have several markers of any shape and color.
-
-It is assumed that markers of the same type have approximately the same size in pixels. It is also assumed that plot axes on image are horizontally aligned.
-
+![](./readme_images/data_requirements.png)
 
 ---
 
@@ -41,9 +41,12 @@ It is assumed that markers of the same type have approximately the same size in 
 
 At the moment, the application does not have a graphical interface, it can be tested in Jupyter Notebook.
 
-0) create your image test case ..........
+0) Clone repo:
+```sh
+git clone https://github.com/adusachev/scanplot.git
+```
 
-1) Create venv and install dependincies:
+1) Create venv and install dependencies:
 ```sh
 python3 -m venv venv
 source venv/bin/activate
@@ -52,7 +55,7 @@ pip install -r requirements.txt
 
 2) Run Jupyter Notebook in created virtual environment
 
-3) Open file `main.ipynb` and ......
+3) Open file `main.ipynb` and follow instructions
 
 
 
