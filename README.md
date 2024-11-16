@@ -5,7 +5,7 @@
 This repository presents a methodology for determining the positions of points on raster images of scatter plots.
 
 
-The proposed methodology is semi-automatic and needs user interation on different algorithm stages.
+The proposed methodology is **semi-automatic** and needs user interation on different algorithm stages.
 
 
 Firstly, user select target marker. Then, in interactive mode, user varies the parameters of the algorithm and choose the best result.
@@ -97,10 +97,9 @@ Proposed algorithm was compared with existing tools for plot digitization:
 
 ## Future work
 
-
+- [ ] **Implementation of the graphical user interface for the algorithm**
 - [ ] Mapping the coordinates obtained by the algorithm to tick values on plot image
 - [ ] Adding opportunity to select region of interest
-- [ ] Implementation of the graphical interface for the algorithm
 - [ ] Improving the accuracy of the algorithm
 
 
