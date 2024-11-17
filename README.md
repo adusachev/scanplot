@@ -26,11 +26,15 @@ The technique of marker detection on image is based on Template Matching algorit
 
 ## Input data requirements
 
-The algorithm supports only 3-channel RGB images.
-Target scatter plot may have several markers of any shape and color.
 
-It is assumed that markers of the same type have approximately the same size in pixels.
-Markers with gradient color are not supported.
+The algorithm supports only 3 channel RGB images.
+Scatter plot may have several markers of any shape and color.
+
+
+Input data that is **not supported**:
+- markers with gradient color
+- markers with alpha channel
+- markers of the same type but with different sizes
 
 
 ![](./readme_images/data_requirements.png)
@@ -39,7 +43,7 @@ Markers with gradient color are not supported.
 
 ## Usage
 
-At the moment, the application does not have a graphical interface, it can be tested in Jupyter Notebook.
+At the moment, the algorithm does not have a graphical interface, it can be tested in Jupyter Notebook.
 
 0) Clone repo:
 ```sh
@@ -53,9 +57,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2) Run Jupyter Notebook in created virtual environment
+2) Open Jupyter Notebook in created virtual environment
 
-3) Open file `<PATH_TO_REPO>/src/scanplot/main.ipynb` and follow instructions
+3) Run notebook `<PATH_TO_REPO>/src/scanplot/main.ipynb`
 
 
 
