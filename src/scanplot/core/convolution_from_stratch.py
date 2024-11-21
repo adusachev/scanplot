@@ -33,9 +33,9 @@ def compute_mask_pixel_ratio(image_part: np.ndarray, template_mask: np.ndarray, 
 
 
 def compute_mask_pixel_ratio_v2(
-    image_mask_part_binary: np.ndarray,
-    template_mask_binary: np.ndarray,
-    template_non_mask_pixels_count: int
+        image_mask_part_binary: np.ndarray,
+        template_mask_binary: np.ndarray,
+        template_non_mask_pixels_count: int
 ) -> float:
     """
     Return count of non mask pixels of 
@@ -45,13 +45,13 @@ def compute_mask_pixel_ratio_v2(
 
 
 def sqdiff_normed_modification(
-    image_part: np.ndarray,
-    template: np.ndarray, 
-    template_mask_rgb: np.ndarray,
-    image_mask_part_binary: np.ndarray,
-    template_mask_binary: np.ndarray,
-    template_non_mask_pixels_count: int,
-    ratio_treshold: float = 0.5
+        image_part: np.ndarray,
+        template: np.ndarray, 
+        template_mask_rgb: np.ndarray,
+        image_mask_part_binary: np.ndarray,
+        template_mask_binary: np.ndarray,
+        template_non_mask_pixels_count: int,
+        ratio_treshold: float = 0.5
 ) -> float:
     """
     SQDIFF_NORMED modification
@@ -73,7 +73,11 @@ def sqdiff_normed_modification(
     return sqdiff_normed
 
 
-def sqdiff_normed(image_part: np.ndarray, template: np.ndarray, template_mask: np.ndarray | None = None) -> float:
+def sqdiff_normed(
+        image_part: np.ndarray,
+        template: np.ndarray,
+        template_mask: np.ndarray | None = None
+) -> float:
     """
     OpenCV SQDIFF_NORMED implementation
     """
@@ -93,7 +97,7 @@ def sqdiff_normed(image_part: np.ndarray, template: np.ndarray, template_mask: n
     return sqdiff_normed
 
 
-def cv_sqdiff_normed(image_part: np.ndarray, template: np.ndarray, mask: np.ndarray):
+def cv_sqdiff_normed(image_part: np.ndarray, template: np.ndarray, mask: np.ndarray) -> float:
 
     sqdiff = cv.matchTemplate(image_part, template, cv.TM_SQDIFF_NORMED, mask=mask)
     return sqdiff
