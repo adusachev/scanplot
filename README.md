@@ -12,7 +12,7 @@ Firstly, user select target marker. Then, in interactive mode, user varies the p
 As a result, user receives the coordinates of the points for the selected marker.
 
 
-![](./readme_images/interaction.gif)
+![](./docs/images/interaction.gif)
 
 
 
@@ -37,7 +37,7 @@ Input data that is **not supported**:
 - markers of the same type but with different sizes
 
 
-![](./readme_images/data_requirements.png)
+![](./docs/images/data_requirements.png)
 
 ---
 
@@ -68,11 +68,11 @@ pip install -r requirements.txt
 ## Algorithm results examples
 
 
-![](./readme_images/algorithm_results_examples_1.png)
+![](./docs/images/algorithm_results_examples_1.png)
 
 <br/><br/>
 
-![](./readme_images/algorithm_results_examples_2.png)
+![](./docs/images/algorithm_results_examples_2.png)
 
 
 
@@ -88,11 +88,11 @@ Proposed algorithm was compared with existing tools for plot digitization:
 - PlotDigitizer: https://plotdigitizer.com/
 
 
-![](./readme_images/comparsion_1.png)
+![](./docs/images/comparsion_1.png)
 
 <br/><br/>
 
-![](./readme_images/comparsion_2.png)
+![](./docs/images/comparsion_2.png)
 
 
 
