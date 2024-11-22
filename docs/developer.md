@@ -1,10 +1,37 @@
 # Docs for developers
 
 
+## Install dev dependicies with poetry
+
+```sh
+git clone https://github.com/adusachev/scanplot.git <REPO> && cd <REPO>
+```
+
+```sh
+poetry env use python3.11
+```
+
+```sh
+poetry shell
+```
+
+```sh
+poetry install --with dev
+```
+
+
+---
+
+
+
 ## Pre-commit hook
+
+
 
 ```sh
 source venv/bin/activate
+# or
+poetry shell
 ```
 
 ```sh
@@ -49,3 +76,12 @@ git add file.ipynb
 git commit -m "some message"
 ```
 
+**Skip pre-commit hooks**
+
+
+```sh
+git commit -m "some message" --no-verify
+```
+
+
+---
