@@ -4,20 +4,21 @@ from lsnms import nms
 
 
 def apply_nms(
-        points: np.ndarray,
-        correlation_map: np.ndarray,
-        iou_treshold: float,
-        bbox_width: int,
-        bbox_height: int        
+    points: np.ndarray,
+    correlation_map: np.ndarray,
+    iou_treshold: float,
+    bbox_width: int,
+    bbox_height: int,
 ) -> np.ndarray:
-    
-    bboxes, scores = get_bbox_from_point(points, bbox_width, bbox_height, correlation_map)
+
+    bboxes, scores = get_bbox_from_point(
+        points, bbox_width, bbox_height, correlation_map
+    )
     keep = nms(bboxes, scores, iou_threshold=iou_treshold)
     bboxes_nms = bboxes[keep]
     x_nms, y_nms = get_bbox_center(bboxes_nms)
     actual_points = np.stack((x_nms, y_nms)).T
     return actual_points
-
 
 
 def point_to_bbox(y: int, x: int, w: int, h: int, correlation_map: np.ndarray) -> Tuple:
@@ -31,17 +32,13 @@ def point_to_bbox(y: int, x: int, w: int, h: int, correlation_map: np.ndarray) -
     # # check that indexes are valid
     # correlation_map[y_min, x_min]
     # correlation_map[y_max, x_max]
-    
+
     return x_min, y_min, x_max, y_max
     # return x_min - 0.5, y_min - 0.5, x_max + 0.5, y_max + 0.5  # for drawing
 
 
-
 def get_bbox_from_point(
-    points: np.ndarray,
-    box_width: int,
-    box_height: int,
-    correlation_map: np.ndarray
+    points: np.ndarray, box_width: int, box_height: int, correlation_map: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     :param box_width, box_height: size of bounding box, same as template image size
@@ -54,12 +51,13 @@ def get_bbox_from_point(
 
     for i, point in enumerate(points):
         y, x = point[1], point[0]
-        x_min, y_min, x_max, y_max = point_to_bbox(y, x, box_width, box_height, correlation_map)
+        x_min, y_min, x_max, y_max = point_to_bbox(
+            y, x, box_width, box_height, correlation_map
+        )
         bboxes[i] = np.array([x_min, y_min, x_max, y_max])
         scores[i] = correlation_map[y, x]
-    
-    return bboxes, scores
 
+    return bboxes, scores
 
 
 def get_bbox_center(bboxes):
@@ -75,4 +73,3 @@ def get_bbox_center(bboxes):
     y_center = y_min + ((y_max - y_min) / 2)
 
     return x_center, y_center
-

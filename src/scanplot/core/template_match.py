@@ -4,19 +4,16 @@ import cv2 as cv
 import numpy_indexed as npi
 
 import logging
+
 logger = logging.getLogger("base_logger")
 
 from .conv_map_operations import invert_convolution_map
 
 
-
 def template_match(
-    image: np.ndarray,
-    template: np.ndarray,
-    template_mask: np.ndarray,
-    method_name: str
+    image: np.ndarray, template: np.ndarray, template_mask: np.ndarray, method_name: str
 ) -> Tuple[np.ndarray, float]:
-    """ 
+    """
     Run opencv templateMatch.
     Return convolution map and maximum value on map.
     """
@@ -24,7 +21,9 @@ def template_match(
     convolution_map = cv.matchTemplate(image, template, method, mask=template_mask)
 
     if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED]:
-        logger.debug(f"Convolution map bounds: {np.nanmin(convolution_map), np.nanmax(convolution_map)}")
+        logger.debug(
+            f"Convolution map bounds: {np.nanmin(convolution_map), np.nanmax(convolution_map)}"
+        )
         logger.debug("Convolution map was inverted")
         convolution_map = invert_convolution_map(convolution_map)
 
@@ -33,17 +32,14 @@ def template_match(
 
 
 def detect_points(
-    convolution_map: np.ndarray,
-    max_value: float,
-    tolerance: float
+    convolution_map: np.ndarray, max_value: float, tolerance: float
 ) -> np.ndarray:
-    
-    max_positions = np.where( np.isclose(convolution_map, max_value, atol=tolerance) )
+
+    max_positions = np.where(np.isclose(convolution_map, max_value, atol=tolerance))
     y, x = max_positions
     points = np.array([x, y]).T
-    
-    return points
 
+    return points
 
 
 def find_tolerance_limit(convolution_map: np.ndarray) -> float:
@@ -54,9 +50,9 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
         points = detect_points(convolution_map, max_val, tolerance)
         points_number = len(points)
         if points_number > 1000:
-            tolerance_limit = tolerance_range[i-1]
+            tolerance_limit = tolerance_range[i - 1]
             return tolerance_limit
-        
+
     return tolerance_range[-1]
 
 
@@ -67,13 +63,13 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
 #     convolution_map_ccoef: np.ndarray
 # ) -> np.ndarray:
 #     """
-#     Берет convolution_map_ccoef полученную из cv.TM_CCOEFF_NORMED, 
+#     Берет convolution_map_ccoef полученную из cv.TM_CCOEFF_NORMED,
 #      и делает по ней дополнительную фильтрацию - смотрит, где convolution_map_ccoef не NaN
 #     """
 #     max_positions = np.where( np.isclose(convolution_map, max_value, atol=tolerance) )
 #     y, x = max_positions
 #     max_points = np.array([x, y]).T
-    
+
 #     area_of_interest = np.where( np.isnan(convolution_map_ccoef) == False )
 #     y, x = area_of_interest
 #     area_of_interest_points = np.array([x, y]).T
@@ -84,7 +80,7 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
 
 
 # def find_tolerance_limit_v1(
-#     convolution_map: np.ndarray, 
+#     convolution_map: np.ndarray,
 #     convolution_map_ccoef: np.ndarray
 # ) -> float:
 #     """
@@ -100,5 +96,5 @@ def find_tolerance_limit(convolution_map: np.ndarray) -> float:
 #         if points_number > 1000:
 #             tolerance_limit = tolerance_range[i-1]
 #             return tolerance_limit
-        
+
 #     return tolerance_range[-1]

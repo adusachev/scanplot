@@ -4,6 +4,7 @@ import cv2 as cv
 import numpy as np
 
 import logging
+
 logger = logging.getLogger("base_logger")
 
 
@@ -14,7 +15,7 @@ def draw_image(image: np.ndarray) -> None:
 def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
     x = points[:, 0]
     y = points[:, 1]
-    
+
     clear_canvas = image.copy()
     clear_canvas[:, :] = 255
     plt.scatter(x, y, alpha=0.5, s=20)
@@ -22,8 +23,13 @@ def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
 
 
 def draw_points_on_image(
-        points: np.ndarray, image: np.ndarray, w: int, h: int,
-        markersize=20, alpha=0.5, color="C0"
+    points: np.ndarray,
+    image: np.ndarray,
+    w: int,
+    h: int,
+    markersize=20,
+    alpha=0.5,
+    color="C0",
 ) -> None:
     x = np.copy(points[:, 0])
     y = np.copy(points[:, 1])
@@ -36,7 +42,7 @@ def draw_points_on_image(
 def draw_bbox(x_min, x_max, y_min, y_max, bbox_center=None) -> None:
     height = y_max - y_min
     width = x_max - x_min
-    rect = Rectangle((x_min, y_min), width, height, edgecolor='r', facecolor='none')
+    rect = Rectangle((x_min, y_min), width, height, edgecolor="r", facecolor="none")
     ax = plt.gca()
     ax.add_patch(rect)
 
