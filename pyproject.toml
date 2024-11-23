@@ -37,8 +37,23 @@ pyswarms = "1.3.0"
 pipdeptree = "2.13.2"
 nbstripout = "0.8.0"
 pre-commit = "4.0.1"
+mypy = "^1.13.0"
+isort = "^5.13.2"
+black = {extras = ["jupyter"], version = "^24.10.0"}
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+(
+  ^/src/scanplot/development_notebooks/.*\.ipynb
+)
+'''
