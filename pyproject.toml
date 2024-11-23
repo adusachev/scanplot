@@ -57,3 +57,11 @@ extend-exclude = '''
   ^/src/scanplot/development_notebooks/.*\.ipynb
 )
 '''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip_glob=["src/scanplot/development_notebooks/*"]
+py_version=311
+
+
