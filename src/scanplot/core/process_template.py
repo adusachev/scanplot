@@ -1,9 +1,9 @@
+import logging
 from typing import Tuple
+
+import cv2 as cv
 import numpy as np
 import skimage.measure
-import cv2 as cv
-
-import logging
 
 logger = logging.getLogger("base_logger")
 

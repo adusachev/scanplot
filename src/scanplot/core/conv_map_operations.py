@@ -1,7 +1,7 @@
-import numpy as np
+import logging
 from typing import List, Tuple
 
-import logging
+import numpy as np
 
 logger = logging.getLogger("base_logger")
 

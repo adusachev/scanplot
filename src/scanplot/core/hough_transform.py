@@ -1,12 +1,13 @@
-from typing import Tuple, List
-import numpy as np
+import logging
 from collections import defaultdict
+from typing import List, Tuple
+
 import cv2 as cv
+import numpy as np
 from scipy.ndimage import sobel
+
 from .conv_map_operations import normalize_map
 from .process_template import crop_image
-
-import logging
 
 logger = logging.getLogger("base_logger")
 

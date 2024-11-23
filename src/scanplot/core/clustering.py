@@ -1,11 +1,11 @@
-from typing import Tuple, List
-import numpy as np
-from collections import defaultdict
-import cv2 as cv
-from scipy.ndimage import sobel
-from sklearn.cluster import AgglomerativeClustering, MeanShift, DBSCAN
-
 import logging
+from collections import defaultdict
+from typing import List, Tuple
+
+import cv2 as cv
+import numpy as np
+from scipy.ndimage import sobel
+from sklearn.cluster import DBSCAN, AgglomerativeClustering, MeanShift
 
 logger = logging.getLogger("base_logger")
 

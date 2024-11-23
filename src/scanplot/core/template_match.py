@@ -1,9 +1,9 @@
-from typing import List, Tuple
-import numpy as np
-import cv2 as cv
-import numpy_indexed as npi
-
 import logging
+from typing import List, Tuple
+
+import cv2 as cv
+import numpy as np
+import numpy_indexed as npi
 
 logger = logging.getLogger("base_logger")
 

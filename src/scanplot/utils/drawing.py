@@ -1,9 +1,9 @@
-import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
-import cv2 as cv
-import numpy as np
-
 import logging
+
+import cv2 as cv
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Rectangle
 
 logger = logging.getLogger("base_logger")
 

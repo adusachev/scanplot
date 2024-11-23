@@ -1,5 +1,6 @@
+from typing import List, Tuple
+
 import numpy as np
-from typing import Tuple, List
 
 
 def get_bbox_by_center_point(center_point, width, height):

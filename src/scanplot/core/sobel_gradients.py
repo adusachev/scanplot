@@ -1,8 +1,8 @@
-import numpy as np
-import cv2 as cv
+import logging
 from typing import Tuple
 
-import logging
+import cv2 as cv
+import numpy as np
 
 logger = logging.getLogger("base_logger")
 
