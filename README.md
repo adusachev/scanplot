@@ -41,25 +41,40 @@ Input data that is **not supported**:
 
 ---
 
+## Dependencies
+
+scanplot requires:
+- Python (> 3.11, < 3.12)
+
+---
+
 ## Usage
 
 At the moment, the algorithm does not have a graphical interface, it can be tested in Jupyter Notebook.
 
-0) Clone repo:
+**Step 1:** Clone repo
 ```sh
-git clone https://github.com/adusachev/scanplot.git
+git clone https://github.com/adusachev/scanplot.git <REPO> && cd <REPO>
 ```
 
-1) Create venv and install dependencies:
+**Step 2:** Create virtual environment and install dependencies
+
+with `pip`:
 ```sh
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+with `poetry`:
+```sh
+poetry env use python3
+poetry shell
+poetry install
+```
 
-2) Open Jupyter Notebook in created virtual environment
+**Step 3:** Open Jupyter Notebook in created virtual environment
 
-3) Run notebook `<REPO>/examples/main.ipynb`
+**Step 4:** Run notebook `<REPO>/examples/main.ipynb`
 
 
 
