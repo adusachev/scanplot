@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple
 
 import cv2 as cv
 import matplotlib.pyplot as plt
@@ -49,3 +50,50 @@ def draw_bbox(x_min, x_max, y_min, y_max, bbox_center=None) -> None:
     if bbox_center:
         bbox_center_x, bbox_center_y = bbox_center
         plt.scatter([bbox_center_x], [bbox_center_y], marker="*")
+
+
+def draw_axes_mapping_lines(
+    y_pos: Tuple[int, int],
+    x_pos: Tuple[int, int],
+    source_image: np.ndarray,
+    fig_size: int = 10,
+    line_color: str = "red",
+    key_points_marker_color: str = "green",
+    key_points_marker: str = "x",
+) -> None:
+    """
+    Draw single (static) position of calibration lines on source image
+
+    :param y_pos: tuple with y-positions of horizontal lines
+    :param x_pos: tuple with x-positions of vertical lines
+    :param fig_size: matplotlib figure size
+    :param line_color: color of horizontal and vertical lines
+    :param key_points_marker_color: color of the marker at lines intersection point
+    :param key_points_marker: type of the marker at lines intersection point
+    """
+    plt.figure(figsize=(fig_size, fig_size))
+
+    # draw source image
+    draw_image(source_image)
+
+    # draw calibration lines
+    h_image, w_image = source_image.shape[0], source_image.shape[1]
+    y_pos = h_image - np.array(y_pos)
+    plt.hlines(
+        y=y_pos, xmin=0, xmax=w_image, linestyles="--", color=line_color, alpha=0.3
+    )
+    plt.vlines(
+        x=x_pos, ymin=0, ymax=h_image, linestyles="--", color=line_color, alpha=0.3
+    )
+
+    # draw calibration points
+    x_min, x_max = x_pos
+    y_min, y_max = y_pos
+    plt.scatter(
+        [x_min, x_min, x_max],
+        [y_min, y_max, y_min],
+        marker=key_points_marker,
+        color=key_points_marker_color,
+    )
+    plt.xticks([])
+    plt.yticks([])
