@@ -54,14 +54,14 @@ extend-exclude = '''
 # A regex preceded with ^/ will apply only to files and directories
 # in the root of the project.
 (
-  ^/src/scanplot/development_notebooks/.*\.ipynb
+  ^/dev_notebooks/.*\.ipynb
 )
 '''
 
 [tool.isort]
 profile = "black"
 line_length = 88
-skip_glob=["src/scanplot/development_notebooks/*"]
+skip_glob=["dev_notebooks/*"]
 py_version=311
 
 
