@@ -59,7 +59,7 @@ pip install -r requirements.txt
 
 2) Open Jupyter Notebook in created virtual environment
 
-3) Run notebook `<PATH_TO_REPO>/src/scanplot/main.ipynb`
+3) Run notebook `<REPO>/examples/main.ipynb`
 
 
 
