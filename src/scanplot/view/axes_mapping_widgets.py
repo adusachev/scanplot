@@ -35,7 +35,7 @@ def init_x_range_slider(image_width: int = 0):
     )
 
 
-def x_min_widget():
+def init_x_min_widget():
     return ipywidgets.FloatText(
         value=0,
         description="X_min:",
@@ -45,7 +45,7 @@ def x_min_widget():
     )
 
 
-def y_min_widget():
+def init_y_min_widget():
     return ipywidgets.FloatText(
         value=0,
         description="Y_min:",
@@ -55,7 +55,7 @@ def y_min_widget():
     )
 
 
-def x_max_widget():
+def init_x_max_widget():
     return ipywidgets.FloatText(
         value=0,
         description="X_max:",
@@ -65,7 +65,7 @@ def x_max_widget():
     )
 
 
-def y_max_widget():
+def init_y_max_widget():
     return ipywidgets.FloatText(
         value=0,
         description="Y_max:",
@@ -75,13 +75,13 @@ def y_max_widget():
     )
 
 
-def log_scale_checkbox_x_axis():
+def init_log_scale_checkbox_x_axis():
     return ipywidgets.Checkbox(
         value=False, description="X axis is log-scale", disabled=False, indent=True
     )
 
 
-def log_scale_checkbox_y_axis():
+def init_log_scale_checkbox_y_axis():
     return ipywidgets.Checkbox(
         value=False, description="Y axis is log-scale", disabled=False, indent=True
     )
