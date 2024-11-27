@@ -20,7 +20,7 @@ class CoordinatesMapper:
         self.x_log_scale_checkbox = self._get_log_scale_checkbox_x_axis()
         self.y_log_scale_checkbox = self._get_log_scale_checkbox_y_axis()
 
-    def interative_widget(
+    def interactive_widget(
         self,
         fig_size: int = 10,
         line_color: str = "red",
@@ -35,7 +35,6 @@ class CoordinatesMapper:
         :param key_points_marker_color: color of the marker at lines intersection point
         :param key_points_marker: type of the marker at lines intersection point
         """
-
         widget = ipywidgets.interactive(
             draw_axes_mapping_lines,
             y_pos=self.y_slider,
