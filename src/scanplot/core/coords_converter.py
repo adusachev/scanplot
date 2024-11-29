@@ -113,31 +113,31 @@ class CoordinatesConverter:
         return y_factual
 
     def _convert_x_axis_logscale(self, x_pixel: int) -> float:
-        log_x_min_facual = np.log10(self.x_min_factual)
-        log_x_max_facual = np.log10(self.x_max_factual)
+        log_x_min_factual = np.log10(self.x_min_factual)
+        log_x_max_factual = np.log10(self.x_max_factual)
 
-        alpha_x = (log_x_max_facual - log_x_min_facual) / (self.x_max_px - self.x_min_px)  # fmt: skip
+        alpha_x = (log_x_max_factual - log_x_min_factual) / (self.x_max_px - self.x_min_px)  # fmt: skip
 
         if x_pixel >= self.x_min_px:
-            log_x_factual = alpha_x * (x_pixel - self.x_min_px) + log_x_min_facual
+            log_x_factual = alpha_x * (x_pixel - self.x_min_px) + log_x_min_factual
         else:
-            log_x_factual = log_x_min_facual - alpha_x * (self.x_min_px - x_pixel)
+            log_x_factual = log_x_min_factual - alpha_x * (self.x_min_px - x_pixel)
 
         x_factual = 10**log_x_factual
         return x_factual
 
     def _convert_y_axis_logscale(self, y_pixel: int) -> float:
-        log_y_min_facual = np.log10(self.y_min_factual)
-        log_y_max_facual = np.log10(self.y_max_factual)
+        log_y_min_factual = np.log10(self.y_min_factual)
+        log_y_max_factual = np.log10(self.y_max_factual)
 
         assert self.y_min_px > self.y_max_px, "Y pixels coords grow from top to bottom"
 
-        alpha_y = (log_y_max_facual - log_y_min_facual) / (self.y_min_px - self.y_max_px)  # fmt: skip
+        alpha_y = (log_y_max_factual - log_y_min_factual) / (self.y_min_px - self.y_max_px)  # fmt: skip
 
         if y_pixel >= self.y_min_px:
-            log_y_factual = log_y_min_facual + alpha_y * (self.y_min_px - y_pixel)
+            log_y_factual = log_y_min_factual + alpha_y * (self.y_min_px - y_pixel)
         else:
-            log_y_factual = log_y_min_facual - alpha_y * (y_pixel - self.y_min_px)
+            log_y_factual = log_y_min_factual - alpha_y * (y_pixel - self.y_min_px)
 
         y_factual = 10**log_y_factual
         return y_factual
