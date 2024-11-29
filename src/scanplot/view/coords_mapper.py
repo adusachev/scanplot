@@ -17,8 +17,8 @@ class CoordinatesMapper:
         self.x_max_widget = self._get_x_max_widget()
         self.y_min_widget = self._get_y_min_widget()
         self.y_max_widget = self._get_y_max_widget()
-        self.x_log_scale_checkbox = self._get_log_scale_checkbox_x_axis()
-        self.y_log_scale_checkbox = self._get_log_scale_checkbox_y_axis()
+        self.x_axis_type_dropdown = self._get_x_axis_type_dropdown()
+        self.y_axis_type_dropdown = self._get_y_axis_type_dropdown()
 
     def interactive_widget(
         self,
@@ -60,8 +60,8 @@ class CoordinatesMapper:
                 self.x_max_widget,
                 self.y_min_widget,
                 self.y_max_widget,
-                self.x_log_scale_checkbox,
-                self.y_log_scale_checkbox,
+                self.x_axis_type_dropdown,
+                self.y_axis_type_dropdown,
             ]
         )
         box_final = HBox([box2, box3])
@@ -141,13 +141,21 @@ class CoordinatesMapper:
         )
 
     @staticmethod
-    def _get_log_scale_checkbox_x_axis():
-        return ipywidgets.Checkbox(
-            value=False, description="X axis is log-scale", disabled=False, indent=True
+    def _get_x_axis_type_dropdown():
+        return ipywidgets.Dropdown(
+            options=["linear", "logscale"],
+            value="linear",
+            description="X axis type:",
+            disabled=False,
+            layout={"width": "180px"},
         )
 
     @staticmethod
-    def _get_log_scale_checkbox_y_axis():
-        return ipywidgets.Checkbox(
-            value=False, description="Y axis is log-scale", disabled=False, indent=True
+    def _get_y_axis_type_dropdown():
+        return ipywidgets.Dropdown(
+            options=["linear", "logscale"],
+            value="linear",
+            description="Y axis type:",
+            disabled=False,
+            layout={"width": "180px"},
         )
