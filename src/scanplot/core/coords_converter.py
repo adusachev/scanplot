@@ -1,28 +1,43 @@
+from enum import Enum
+
 import numpy as np
 
 from scanplot.view.coords_mapper import CoordinatesMapper
 
 
-class CoorinatesConverter:
+class AxisType(Enum):
+    LINEAR = "linear"
+    LOGSCALE = "logscale"
+
+
+class CoordinatesConverter:
     def __init__(self):
-        self.x_min_px = None
-        self.x_max_px = None
-        self.y_min_px = None
-        self.y_max_px = None
+        self.x_min_px: int = None
+        self.x_max_px: int = None
+        self.y_min_px: int = None
+        self.y_max_px: int = None
 
-        self.x_min_real = None
-        self.x_max_real = None
-        self.y_min_real = None
-        self.y_max_real = None
+        self.x_min_real: float = None
+        self.x_max_real: float = None
+        self.y_min_real: float = None
+        self.y_max_real: float = None
 
-        self.x_logscale = None
-        self.y_logscale = None
+        self.x_axis_type: AxisType = None
+        self.y_axis_type: AxisType = None
 
     def from_pixel(
         self, x_pixel: int | np.ndarray, y_pixel: int | np.ndarray
     ) -> tuple[float, float] | tuple[np.ndarray, np.ndarray]:
-        x_real = self._convert_x_axis_linear(x_pixel)
-        y_real = self._convert_y_axis_linear(y_pixel)
+
+        if self.x_axis_type == AxisType.LINEAR:
+            x_real = self._convert_x_axis_linear(x_pixel)
+        elif self.x_axis_type == AxisType.LOGSCALE:
+            x_real = self._convert_x_axis_logscale(x_pixel)
+
+        if self.y_axis_type == AxisType.LINEAR:
+            y_real = self._convert_y_axis_linear(y_pixel)
+        elif self.y_axis_type == AxisType.LOGSCALE:
+            y_real = self._convert_y_axis_logscale(y_pixel)
 
         return x_real, y_real
 
@@ -36,8 +51,8 @@ class CoorinatesConverter:
         x_max_real: float,
         y_min_real: float,
         y_max_real: float,
-        x_logscale: bool,
-        y_logscale: bool,
+        x_axis_type: str,
+        y_axis_type: str,
     ) -> None:
         self.x_min_px = x_min_px
         self.x_max_px = x_max_px
@@ -49,8 +64,8 @@ class CoorinatesConverter:
         self.y_min_real = y_min_real
         self.y_max_real = y_max_real
 
-        self.x_logscale = x_logscale
-        self.y_logscale = y_logscale
+        self.x_axis_type = AxisType(x_axis_type)
+        self.y_axis_type = AxisType(y_axis_type)
 
     def import_parameters_from_mapper(self, mapper: CoordinatesMapper) -> None:
         self.x_min_px = mapper.x_slider.value[0]
@@ -63,8 +78,8 @@ class CoorinatesConverter:
         self.y_min_real = mapper.y_min_widget.value
         self.y_max_real = mapper.y_max_widget.value
 
-        self.x_logscale = mapper.x_log_scale_checkbox.value
-        self.y_logscale = mapper.y_log_scale_checkbox.value
+        self.x_axis_type = AxisType(mapper.x_axis_type_dropdown.value)
+        self.y_axis_type = AxisType(mapper.y_axis_type_dropdown.value)
 
     def _convert_x_axis_linear(self, x_pixel: int) -> float:
         """
@@ -95,8 +110,8 @@ class CoorinatesConverter:
 
         return y_real
 
-    def _convert_x_axis_logscale(self):
+    def _convert_x_axis_logscale(sel, x_pixel: int) -> float:
         raise NotImplementedError
 
-    def _convert_y_axis_logscale(self):
+    def _convert_y_axis_logscale(self, y_pixel: int) -> float:
         raise NotImplementedError
