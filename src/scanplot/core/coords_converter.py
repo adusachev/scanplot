@@ -17,10 +17,10 @@ class CoordinatesConverter:
         self.y_min_px: int = None
         self.y_max_px: int = None
 
-        self.x_min_real: float = None
-        self.x_max_real: float = None
-        self.y_min_real: float = None
-        self.y_max_real: float = None
+        self.x_min_factual: float = None
+        self.x_max_factual: float = None
+        self.y_min_factual: float = None
+        self.y_max_factual: float = None
 
         self.x_axis_type: AxisType = None
         self.y_axis_type: AxisType = None
@@ -30,16 +30,16 @@ class CoordinatesConverter:
     ) -> tuple[float, float] | tuple[np.ndarray, np.ndarray]:
 
         if self.x_axis_type == AxisType.LINEAR:
-            x_real = self._convert_x_axis_linear(x_pixel)
+            x_factual = self._convert_x_axis_linear(x_pixel)
         elif self.x_axis_type == AxisType.LOGSCALE:
-            x_real = self._convert_x_axis_logscale(x_pixel)
+            x_factual = self._convert_x_axis_logscale(x_pixel)
 
         if self.y_axis_type == AxisType.LINEAR:
-            y_real = self._convert_y_axis_linear(y_pixel)
+            y_factual = self._convert_y_axis_linear(y_pixel)
         elif self.y_axis_type == AxisType.LOGSCALE:
-            y_real = self._convert_y_axis_logscale(y_pixel)
+            y_factual = self._convert_y_axis_logscale(y_pixel)
 
-        return x_real, y_real
+        return x_factual, y_factual
 
     def set_parameters(
         self,
@@ -47,10 +47,10 @@ class CoordinatesConverter:
         x_max_px: int,
         y_min_px: int,
         y_max_px: int,
-        x_min_real: float,
-        x_max_real: float,
-        y_min_real: float,
-        y_max_real: float,
+        x_min_factual: float,
+        x_max_factual: float,
+        y_min_factual: float,
+        y_max_factual: float,
         x_axis_type: str,
         y_axis_type: str,
     ) -> None:
@@ -59,10 +59,10 @@ class CoordinatesConverter:
         self.y_min_px = y_min_px
         self.y_max_px = y_max_px
 
-        self.x_min_real = x_min_real
-        self.x_max_real = x_max_real
-        self.y_min_real = y_min_real
-        self.y_max_real = y_max_real
+        self.x_min_factual = x_min_factual
+        self.x_max_factual = x_max_factual
+        self.y_min_factual = y_min_factual
+        self.y_max_factual = y_max_factual
 
         self.x_axis_type = AxisType(x_axis_type)
         self.y_axis_type = AxisType(y_axis_type)
@@ -73,10 +73,10 @@ class CoordinatesConverter:
         self.y_min_px = mapper.image_height - mapper.y_slider.value[0]
         self.y_max_px = mapper.image_height - mapper.y_slider.value[1]
 
-        self.x_min_real = mapper.x_min_widget.value
-        self.x_max_real = mapper.x_max_widget.value
-        self.y_min_real = mapper.y_min_widget.value
-        self.y_max_real = mapper.y_max_widget.value
+        self.x_min_factual = mapper.x_min_widget.value
+        self.x_max_factual = mapper.x_max_widget.value
+        self.y_min_factual = mapper.y_min_widget.value
+        self.y_max_factual = mapper.y_max_widget.value
 
         self.x_axis_type = AxisType(mapper.x_axis_type_dropdown.value)
         self.y_axis_type = AxisType(mapper.y_axis_type_dropdown.value)
@@ -85,14 +85,14 @@ class CoordinatesConverter:
         """
         Converts x-axis pixel value into real value
         """
-        alpha_x = (self.x_max_real - self.x_min_real) / (self.x_max_px - self.x_min_px)
+        alpha_x = (self.x_max_factual - self.x_min_factual) / (self.x_max_px - self.x_min_px)  # fmt: skip
 
         if x_pixel >= self.x_min_px:
-            x_real = alpha_x * (x_pixel - self.x_min_px) + self.x_min_real
+            x_factual = alpha_x * (x_pixel - self.x_min_px) + self.x_min_factual
         else:
-            x_real = self.x_min_real - alpha_x * (self.x_min_px - x_pixel)
+            x_factual = self.x_min_factual - alpha_x * (self.x_min_px - x_pixel)
 
-        return x_real
+        return x_factual
 
     def _convert_y_axis_linear(self, y_pixel: int) -> float:
         """
@@ -101,14 +101,14 @@ class CoordinatesConverter:
         """
         assert self.y_min_px > self.y_max_px, "Y pixels coords grow from top to bottom"
 
-        alpha_y = (self.y_max_real - self.y_min_real) / (self.y_min_px - self.y_max_px)
+        alpha_y = (self.y_max_factual - self.y_min_factual) / (self.y_min_px - self.y_max_px)  # fmt: skip
 
         if y_pixel >= self.y_min_px:
-            y_real = self.y_min_real + alpha_y * (self.y_min_px - y_pixel)
+            y_factual = self.y_min_factual + alpha_y * (self.y_min_px - y_pixel)
         else:
-            y_real = self.y_min_real - alpha_y * (y_pixel - self.y_min_px)
+            y_factual = self.y_min_factual - alpha_y * (y_pixel - self.y_min_px)
 
-        return y_real
+        return y_factual
 
     def _convert_x_axis_logscale(sel, x_pixel: int) -> float:
         raise NotImplementedError
