@@ -68,6 +68,8 @@ class CoordinatesConverter:
         self.y_axis_type = AxisType(y_axis_type)
 
     def import_parameters_from_mapper(self, mapper: CoordinatesMapper) -> None:
+        if not mapper._is_valid:
+            raise ValueError("Mapper is not valid, check X_min, X_max, Y_min, Y_max")
         self.x_min_px = mapper.x_slider.value[0]
         self.x_max_px = mapper.x_slider.value[1]
         self.y_min_px = mapper.image_height - mapper.y_slider.value[0]

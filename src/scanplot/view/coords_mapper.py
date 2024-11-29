@@ -100,6 +100,11 @@ class CoordinatesMapper:
             style={"description_width": "initial"},
         )
 
+    @property
+    def _is_valid(self) -> bool:
+        return (self.x_min_widget.value != self.x_max_widget.value) and \
+            (self.y_min_widget.value != self.y_max_widget.value)  # fmt: skip
+
     @staticmethod
     def _get_x_min_widget():
         return ipywidgets.FloatText(
