@@ -1,5 +1,32 @@
-class CoordinatesConverter:
-    def __init__(
+import numpy as np
+
+from scanplot.view.coords_mapper import CoordinatesMapper
+
+
+class CoorinatesConverter:
+    def __init__(self):
+        self.x_min_px = None
+        self.x_max_px = None
+        self.y_min_px = None
+        self.y_max_px = None
+
+        self.x_min_real = None
+        self.x_max_real = None
+        self.y_min_real = None
+        self.y_max_real = None
+
+        self.x_logscale = None
+        self.y_logscale = None
+
+    def from_pixel(
+        self, x_pixel: int | np.ndarray, y_pixel: int | np.ndarray
+    ) -> tuple[float, float] | tuple[np.ndarray, np.ndarray]:
+        x_real = self._convert_x_axis_linear(x_pixel)
+        y_real = self._convert_y_axis_linear(y_pixel)
+
+        return x_real, y_real
+
+    def set_parameters(
         self,
         x_min_px: int,
         x_max_px: int,
@@ -11,7 +38,7 @@ class CoordinatesConverter:
         y_max_real: float,
         x_logscale: bool,
         y_logscale: bool,
-    ):
+    ) -> None:
         self.x_min_px = x_min_px
         self.x_max_px = x_max_px
         self.y_min_px = y_min_px
@@ -25,11 +52,19 @@ class CoordinatesConverter:
         self.x_logscale = x_logscale
         self.y_logscale = y_logscale
 
-    def pixel_to_real(self, x_pixel: int, y_pixel: int) -> tuple[float, float]:
-        x_real = self._convert_x_axis_linear(x_pixel)
-        y_real = self._convert_y_axis_linear(y_pixel)
+    def import_parameters_from_mapper(self, mapper: CoordinatesMapper) -> None:
+        self.x_min_px = mapper.x_slider.value[0]
+        self.x_max_px = mapper.x_slider.value[1]
+        self.y_min_px = mapper.image_height - mapper.y_slider.value[0]
+        self.y_max_px = mapper.image_height - mapper.y_slider.value[1]
 
-        return x_real, y_real
+        self.x_min_real = mapper.x_min_widget.value
+        self.x_max_real = mapper.x_max_widget.value
+        self.y_min_real = mapper.y_min_widget.value
+        self.y_max_real = mapper.y_max_widget.value
+
+        self.x_logscale = mapper.x_log_scale_checkbox.value
+        self.y_logscale = mapper.y_log_scale_checkbox.value
 
     def _convert_x_axis_linear(self, x_pixel: int) -> float:
         """
