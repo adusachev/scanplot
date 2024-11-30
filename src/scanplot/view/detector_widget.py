@@ -6,30 +6,6 @@ from scanplot.core.detector import detect_points_on_correlation_map
 from scanplot.utils.drawing import draw_points_on_image
 
 
-def detect_and_draw(
-    points_num: float,
-    points_density: float,
-    correlation_map: np.ndarray,
-    source_image: np.ndarray,
-    template: np.ndarray,
-    fig_size: int = 10,
-    marker_size: int = 60,
-    marker_color: str = "yellow",
-    marker_type: str = "*",
-) -> None:
-    points = detect_points_on_correlation_map(
-        points_num, points_density, correlation_map, source_image, template
-    )
-    draw_points_on_image(
-        points,
-        source_image,
-        fig_size,
-        marker_size,
-        marker_color,
-        marker_type,
-    )
-
-
 class DetectorWidget:
     def __init__(
         self,
@@ -52,7 +28,7 @@ class DetectorWidget:
         marker_type: str = "*",
     ) -> ipywidgets.widgets.widget_box:
         widget = ipywidgets.interactive(
-            detect_and_draw,
+            self.detect_and_draw,
             points_num=self.points_num_slider,
             points_density=self.points_density_slider,
             correlation_map=fixed(self.correlation_map),
@@ -109,26 +85,26 @@ class DetectorWidget:
             style={"description_width": "initial"},
         )
 
-    # @staticmethod
-    # def detect_and_draw(
-    #     points_num: float,
-    #     points_density: float,
-    #     correlation_map: np.ndarray,
-    #     source_image: np.ndarray,
-    #     template: np.ndarray,
-    #     fig_size: int = 10,
-    #     marker_size: int = 60,
-    #     marker_color: str = "yellow",
-    #     marker_type: str = "*",
-    # ) -> None:
-    #     points = detect_points_on_correlation_map(
-    #         points_num, points_density, correlation_map, source_image, template
-    #     )
-    #     draw_points_on_image(
-    #         points,
-    #         source_image,
-    #         fig_size,
-    #         marker_size,
-    #         marker_color,
-    #         marker_type,
-    #     )
+    @staticmethod
+    def detect_and_draw(
+        points_num: float,
+        points_density: float,
+        correlation_map: np.ndarray,
+        source_image: np.ndarray,
+        template: np.ndarray,
+        fig_size: int = 10,
+        marker_size: int = 60,
+        marker_color: str = "yellow",
+        marker_type: str = "*",
+    ) -> None:
+        points = detect_points_on_correlation_map(
+            points_num, points_density, correlation_map, source_image, template
+        )
+        draw_points_on_image(
+            points,
+            source_image,
+            fig_size,
+            marker_size,
+            marker_color,
+            marker_type,
+        )
