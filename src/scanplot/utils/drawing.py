@@ -23,21 +23,50 @@ def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
     plt.imshow(cv.cvtColor(clear_canvas, cv.COLOR_BGR2RGB))
 
 
+# def draw_points_on_image(
+#     points: np.ndarray,
+#     image: np.ndarray,
+#     w: int,
+#     h: int,
+#     markersize=20,
+#     alpha=0.5,
+#     color="C0",
+# ) -> None:
+#     x = np.copy(points[:, 0])
+#     y = np.copy(points[:, 1])
+#     x += w // 2 - 1
+#     y += h // 2 - 1
+#     plt.scatter(x, y, alpha=alpha, s=markersize, color=color)
+#     plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
+
+
 def draw_points_on_image(
     points: np.ndarray,
     image: np.ndarray,
-    w: int,
-    h: int,
-    markersize=20,
-    alpha=0.5,
-    color="C0",
+    fig_size: int = 10,
+    marker_size: int = 60,
+    marker_color: str = "yellow",
+    marker_type: str = "*",
 ) -> None:
-    x = np.copy(points[:, 0])
-    y = np.copy(points[:, 1])
-    x += w // 2 - 1
-    y += h // 2 - 1
-    plt.scatter(x, y, alpha=alpha, s=markersize, color=color)
-    plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
+    plt.figure(figsize=(fig_size, fig_size))
+
+    draw_image(image)
+
+    x = points[:, 0]
+    y = points[:, 1]
+    points_number = len(points)
+    plt.scatter(
+        x,
+        y,
+        s=marker_size,
+        c=marker_color,
+        marker=marker_type,
+        edgecolors="black",
+        linewidths=0.2,
+    )
+    plt.xticks([])
+    plt.yticks([])
+    plt.title(f"Number of Points: {points_number}")
 
 
 def draw_bbox(x_min, x_max, y_min, y_max, bbox_center=None) -> None:
