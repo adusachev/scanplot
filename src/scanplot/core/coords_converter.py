@@ -2,7 +2,7 @@ from enum import Enum
 
 import numpy as np
 
-from scanplot.view.coords_mapper import CoordinatesMapper
+from scanplot.view.coords_mapper_widget import CoordinatesMapper
 
 
 class AxisType(Enum):
