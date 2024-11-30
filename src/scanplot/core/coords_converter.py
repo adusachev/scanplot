@@ -89,7 +89,7 @@ class CoordinatesConverter:
         """
         alpha_x = (self.x_max_factual - self.x_min_factual) / (self.x_max_px - self.x_min_px)  # fmt: skip
 
-        if x_pixel >= self.x_min_px:
+        if np.all(x_pixel >= self.x_min_px):
             x_factual = alpha_x * (x_pixel - self.x_min_px) + self.x_min_factual
         else:
             x_factual = self.x_min_factual - alpha_x * (self.x_min_px - x_pixel)
@@ -105,7 +105,7 @@ class CoordinatesConverter:
 
         alpha_y = (self.y_max_factual - self.y_min_factual) / (self.y_min_px - self.y_max_px)  # fmt: skip
 
-        if y_pixel >= self.y_min_px:
+        if np.all(y_pixel >= self.y_min_px):
             y_factual = self.y_min_factual + alpha_y * (self.y_min_px - y_pixel)
         else:
             y_factual = self.y_min_factual - alpha_y * (y_pixel - self.y_min_px)
@@ -118,7 +118,7 @@ class CoordinatesConverter:
 
         alpha_x = (log_x_max_factual - log_x_min_factual) / (self.x_max_px - self.x_min_px)  # fmt: skip
 
-        if x_pixel >= self.x_min_px:
+        if np.all(x_pixel >= self.x_min_px):
             log_x_factual = alpha_x * (x_pixel - self.x_min_px) + log_x_min_factual
         else:
             log_x_factual = log_x_min_factual - alpha_x * (self.x_min_px - x_pixel)
@@ -134,7 +134,7 @@ class CoordinatesConverter:
 
         alpha_y = (log_y_max_factual - log_y_min_factual) / (self.y_min_px - self.y_max_px)  # fmt: skip
 
-        if y_pixel >= self.y_min_px:
+        if np.all(y_pixel >= self.y_min_px):
             log_y_factual = log_y_min_factual + alpha_y * (self.y_min_px - y_pixel)
         else:
             log_y_factual = log_y_min_factual - alpha_y * (y_pixel - self.y_min_px)
