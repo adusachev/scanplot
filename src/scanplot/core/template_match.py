@@ -14,7 +14,7 @@ def template_match(
     image: np.ndarray,
     template: np.ndarray,
     template_mask: np.ndarray,
-    method_name: str,
+    method_name: str = "cv.TM_SQDIFF_NORMED",
     norm_result: bool = False,
 ) -> Tuple[np.ndarray, float]:
     """
