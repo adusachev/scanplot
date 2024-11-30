@@ -22,12 +22,12 @@ def remove_nan_inf(map: np.ndarray) -> np.ndarray:
     return map2
 
 
-def invert_convolution_map(convolution_map: np.ndarray) -> np.ndarray:
+def invert_correlation_map(correlation_map: np.ndarray) -> np.ndarray:
     """
     Invert 2D array with float values
     """
-    inverted_convolution_map = (-convolution_map) + np.nanmax(convolution_map)
-    return inverted_convolution_map
+    inverted_correlation_map = (-correlation_map) + np.nanmax(correlation_map)
+    return inverted_correlation_map
 
 
 def normalize_map(map: np.ndarray) -> np.ndarray:

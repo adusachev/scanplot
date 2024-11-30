@@ -7,28 +7,35 @@ import numpy_indexed as npi
 
 logger = logging.getLogger("base_logger")
 
-from .conv_map_operations import invert_convolution_map
+from .conv_map_operations import invert_correlation_map, normalize_map
 
 
 def template_match(
-    image: np.ndarray, template: np.ndarray, template_mask: np.ndarray, method_name: str
+    image: np.ndarray,
+    template: np.ndarray,
+    template_mask: np.ndarray,
+    method_name: str,
+    norm_result: bool = False,
 ) -> Tuple[np.ndarray, float]:
     """
     Run opencv templateMatch.
-    Return convolution map and maximum value on map.
+    Return correlation map and maximum value on map.
     """
     method = eval(method_name)
-    convolution_map = cv.matchTemplate(image, template, method, mask=template_mask)
+    correlation_map = cv.matchTemplate(image, template, method, mask=template_mask)
 
     if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED]:
         logger.debug(
-            f"Convolution map bounds: {np.nanmin(convolution_map), np.nanmax(convolution_map)}"
+            f"Correlation map bounds: {np.nanmin(correlation_map), np.nanmax(correlation_map)}"
         )
-        logger.debug("Convolution map was inverted")
-        convolution_map = invert_convolution_map(convolution_map)
+        logger.debug("Correlation map was inverted")
+        correlation_map = invert_correlation_map(correlation_map)
 
-    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
-    return convolution_map, max_val
+    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(correlation_map)
+
+    if norm_result:
+        correlation_map = normalize_map(correlation_map)
+    return correlation_map, max_val
 
 
 def detect_points(
