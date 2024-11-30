@@ -111,9 +111,7 @@ def build_hough_model(
     hough_model = defaultdict(list)
     for (i, j), value in np.ndenumerate(edges):
         if value:
-            hough_model[gradient[i, j]].append(
-                (reference_point[0] - i, reference_point[1] - j)
-            )
+            hough_model[gradient[i, j]].append((reference_point[0] - i, reference_point[1] - j))  # fmt: skip
 
     return hough_model
 

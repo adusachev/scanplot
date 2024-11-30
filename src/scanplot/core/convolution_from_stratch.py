@@ -48,10 +48,7 @@ def compute_mask_pixel_ratio_v2(
     """
     Return count of non mask pixels of
     """
-    return (
-        np.sum(image_mask_part_binary * template_mask_binary)
-        / template_non_mask_pixels_count
-    )
+    return np.sum(image_mask_part_binary * template_mask_binary) / template_non_mask_pixels_count  # fmt: skip
 
 
 def sqdiff_normed_modification(

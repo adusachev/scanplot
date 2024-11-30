@@ -141,9 +141,7 @@ def reconstruct_template_mask(mask: np.ndarray) -> np.ndarray:
     if len(mask.shape) == 3:
         mask = mask[:, :, 0]  # convert 3 channel input to 1 channel
 
-    BACKGROUND_COLOR = (
-        1000  # конкретно здесь нужен любой цвет, которого точно нет на изображении
-    )
+    BACKGROUND_COLOR = 1000  # конкретно здесь нужен любой цвет, которого точно нет на изображении    # fmt: skip
     label_map = skimage.measure.label(mask, background=BACKGROUND_COLOR, connectivity=1)
 
     # номер внешней связной компоненты равен номеру в левом верхнем углу

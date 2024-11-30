@@ -32,16 +32,12 @@ def insert_template_into_image(
         image[y_min : y_max + 1, x_min : x_max + 1] = template
         return image
 
-    template_non_mask_indexes = np.where(
-        template_mask != 0
-    )  # TODO: передвать как аргумент
+    template_non_mask_indexes = np.where(template_mask != 0)  # TODO: передвать как аргумент    # fmt: skip
     x_indexes_template, y_indexes_template = template_non_mask_indexes
     x_indexes_image = x_indexes_template + x_min
     y_indexes_image = y_indexes_template + y_min
 
-    image[y_indexes_image, x_indexes_image] = template[
-        y_indexes_template, x_indexes_template
-    ]
+    image[y_indexes_image, x_indexes_image] = template[y_indexes_template, x_indexes_template]  # fmt: skip
 
     # for x, y in zip(x_indexes_template, y_indexes_template):
     # image[y + y_min, x + x_min] = template[y, x]
@@ -59,16 +55,12 @@ def add_template_layer(
     # assert image_part.shape == bbox.shape  # TODO
     # assert channels  # TODO
 
-    template_non_mask_indexes = np.where(
-        binary_template_mask != 0
-    )  # TODO: передвать как аргумент
+    template_non_mask_indexes = np.where(binary_template_mask != 0)  # TODO: передвать как аргумент    # fmt: skip
     x_indexes_template, y_indexes_template = template_non_mask_indexes
     x_indexes_image = x_indexes_template + x_min
     y_indexes_image = y_indexes_template + y_min
 
-    layers_image[y_indexes_image, x_indexes_image] += binary_template_mask[
-        y_indexes_template, x_indexes_template
-    ]
+    layers_image[y_indexes_image, x_indexes_image] += binary_template_mask[y_indexes_template, x_indexes_template]  # fmt: skip
     return layers_image
 
 
@@ -93,7 +85,5 @@ def add_template_layer_light(
     y_indexes_image = y_indexes_template + y_min
 
     ## difference from add_template_layer here (= instead of +=)
-    layers_image[y_indexes_image, x_indexes_image] = binary_template_mask[
-        y_indexes_template, x_indexes_template
-    ]
+    layers_image[y_indexes_image, x_indexes_image] = binary_template_mask[y_indexes_template, x_indexes_template]  # fmt: skip
     return layers_image
