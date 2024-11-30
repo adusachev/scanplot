@@ -51,6 +51,23 @@ class DetectorWidget:
         )
         return box
 
+    def get_detections(
+        self, points_num: float | None = None, points_density: float | None = None
+    ) -> np.ndarray:
+        if points_num is None:
+            points_num = self.points_num_slider.value
+        if points_density is None:
+            points_density = self.points_density_slider.value
+
+        detected_points = detect_points_on_correlation_map(
+            points_num,
+            points_density,
+            self.correlation_map,
+            self.source_image,
+            self.template,
+        )
+        return detected_points
+
     @staticmethod
     def _get_points_num_slider(start_value: int = 20):
         return ipywidgets.FloatSlider(
