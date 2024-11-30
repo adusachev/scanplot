@@ -34,6 +34,21 @@ def normalize_map(map: np.ndarray) -> np.ndarray:
     return map / np.nanmax(map)
 
 
+def get_corr_map_maximums(
+    correlation_map: np.ndarray, treshold: float
+) -> Tuple[np.ndarray, int]:
+    """
+    Return coordinades of points on 2D correlation map,
+     which have value greater than given treshold
+    """
+    maximums = np.where(correlation_map >= treshold)
+    y_points, x_points = maximums
+    points = np.stack((x_points, y_points)).T
+    number_of_maximums = len(points)
+
+    return points, number_of_maximums
+
+
 def get_first_N_maximums(
     corr_map: np.ndarray, N: int
 ) -> List[Tuple[float, Tuple[int, int]]]:

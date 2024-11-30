@@ -1,7 +1,7 @@
 import numpy as np
 
+from .corr_map_operations import get_corr_map_maximums
 from .nms import apply_nms
-from .parameters_search import get_corr_map_maximums, linear_parameter_transform
 
 
 def detect_points_on_correlation_map(
@@ -32,7 +32,18 @@ def detect_points_on_correlation_map(
         bbox_width=template_width,
         bbox_height=template_height,
     )
-    # x_nms = detected_points[:, 0]
-    # y_nms = detected_points[:, 1]
 
     return detected_points
+
+
+def linear_parameter_transform(
+    parameter: float, a: float = -0.01, b: float = 1, round_decimals: int | None = None
+) -> float:
+    """
+    Linear transform y = a * x + b
+    """
+    parameter_transformed = a * parameter + b
+    if round_decimals:
+        parameter_transformed = np.round(parameter_transformed, decimals=round_decimals)
+
+    return parameter_transformed
