@@ -7,7 +7,7 @@ import numpy_indexed as npi
 
 logger = logging.getLogger("base_logger")
 
-from .conv_map_operations import invert_correlation_map, normalize_map
+from .corr_map_operations import invert_correlation_map, normalize_map
 
 
 def template_match(

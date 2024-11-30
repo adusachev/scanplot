@@ -6,7 +6,7 @@ import cv2 as cv
 import numpy as np
 from scipy.ndimage import sobel
 
-from .conv_map_operations import normalize_map
+from .corr_map_operations import normalize_map
 from .process_template import crop_image
 
 logger = logging.getLogger("base_logger")
