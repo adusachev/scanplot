@@ -128,7 +128,7 @@ class CoordinatesMapper:
     @staticmethod
     def _get_x_max_widget():
         return ipywidgets.FloatText(
-            value=0,
+            value=1,
             description="X_max:",
             step=0.01,
             disabled=False,
@@ -138,7 +138,7 @@ class CoordinatesMapper:
     @staticmethod
     def _get_y_max_widget():
         return ipywidgets.FloatText(
-            value=0,
+            value=1,
             description="Y_max:",
             step=0.01,
             disabled=False,
