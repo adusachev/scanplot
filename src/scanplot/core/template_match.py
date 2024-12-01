@@ -20,6 +20,7 @@ def template_match(
     """
     Run opencv templateMatch.
     Return correlation map and maximum value on map.
+    Normalize output map if required.
     """
     method = eval(method_name)
     correlation_map = cv.matchTemplate(image, template, method, mask=template_mask)
