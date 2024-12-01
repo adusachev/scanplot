@@ -9,3 +9,4 @@ tmp_*
 report.log
 poetry.lock
 dev_notebooks/
+.idea/
