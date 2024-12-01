@@ -8,7 +8,7 @@ import skimage.measure
 logger = logging.getLogger(__name__)
 
 
-def template_tresholding(
+def image_tresholding(
     template: np.ndarray,
     treshold: int = 230,
     mask_value: int = 0,
