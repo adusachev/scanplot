@@ -16,5 +16,10 @@ logger_config = {
             "formatter": "base_formatter",
         }
     },
-    "loggers": {"scanplot": {"level": logging.DEBUG, "handlers": ["base_handler"]}},
+    "loggers": {
+        "scanplot": {
+            "level": logging.DEBUG,  # fmt: skip
+            "handlers": ["base_handler"]
+        }
+    },
 }
