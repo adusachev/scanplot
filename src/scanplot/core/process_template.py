@@ -5,7 +5,7 @@ import cv2 as cv
 import numpy as np
 import skimage.measure
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 
 def template_tresholding(

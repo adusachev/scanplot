@@ -5,7 +5,7 @@ import cv2 as cv
 import numpy as np
 import numpy_indexed as npi
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 from .corr_map_operations import invert_correlation_map, normalize_map
 

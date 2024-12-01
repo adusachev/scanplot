@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Rectangle
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 
 def draw_image(image: np.ndarray) -> None:

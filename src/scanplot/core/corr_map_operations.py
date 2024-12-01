@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 
 def remove_nan_inf(map: np.ndarray) -> np.ndarray:

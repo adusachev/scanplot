@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 
 def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:

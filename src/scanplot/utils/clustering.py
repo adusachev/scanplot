@@ -7,7 +7,7 @@ import numpy as np
 from scipy.ndimage import sobel
 from sklearn.cluster import DBSCAN, AgglomerativeClustering, MeanShift
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 
 def agglomerative_clustering(points: np.ndarray, eps: float = 5.5) -> np.ndarray:

@@ -4,7 +4,7 @@ from typing import Tuple
 import cv2 as cv
 import numpy as np
 
-logger = logging.getLogger("base_logger")
+logger = logging.getLogger(__name__)
 
 
 # horizontal -- G_x
