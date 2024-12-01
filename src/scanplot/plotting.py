@@ -23,23 +23,6 @@ def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
     plt.imshow(cv.cvtColor(clear_canvas, cv.COLOR_BGR2RGB))
 
 
-# def draw_points_on_image(
-#     points: np.ndarray,
-#     image: np.ndarray,
-#     w: int,
-#     h: int,
-#     markersize=20,
-#     alpha=0.5,
-#     color="C0",
-# ) -> None:
-#     x = np.copy(points[:, 0])
-#     y = np.copy(points[:, 1])
-#     x += w // 2 - 1
-#     y += h // 2 - 1
-#     plt.scatter(x, y, alpha=alpha, s=markersize, color=color)
-#     plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
-
-
 def draw_points_on_image(
     points: np.ndarray,
     image: np.ndarray,
