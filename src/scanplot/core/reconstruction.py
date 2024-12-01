@@ -3,16 +3,6 @@ from typing import List, Tuple
 import numpy as np
 
 
-def get_bbox_by_center_point(center_point, width, height):
-    x_c, y_c = center_point
-    x_min = x_c - width // 2
-    y_min = y_c - height // 2
-    x_max = x_c + width // 2
-    y_max = y_c + height // 2
-    bbox = x_min, x_max, y_min, y_max
-    return bbox
-
-
 def insert_template_into_image(
     image: np.ndarray,
     template: np.ndarray,

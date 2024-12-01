@@ -12,7 +12,7 @@ def apply_nms(
     bbox_height: int,
 ) -> np.ndarray:
 
-    bboxes, scores = get_bbox_from_point(
+    bboxes, scores = get_bbox_from_corr_map_point(
         points, bbox_width, bbox_height, correlation_map
     )
     keep = nms(bboxes, scores, iou_threshold=iou_treshold)
@@ -38,7 +38,7 @@ def point_to_bbox(y: int, x: int, w: int, h: int, correlation_map: np.ndarray) -
     # return x_min - 0.5, y_min - 0.5, x_max + 0.5, y_max + 0.5  # for drawing
 
 
-def get_bbox_from_point(
+def get_bbox_from_corr_map_point(
     points: np.ndarray, box_width: int, box_height: int, correlation_map: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
@@ -74,3 +74,13 @@ def get_bbox_center(bboxes):
     y_center = y_min + ((y_max - y_min) / 2)
 
     return x_center, y_center
+
+
+def get_bbox_by_center_point(center_point, width, height):
+    x_c, y_c = center_point
+    x_min = x_c - width // 2
+    y_min = y_c - height // 2
+    x_max = x_c + width // 2
+    y_max = y_c + height // 2
+    bbox = x_min, x_max, y_min, y_max
+    return bbox

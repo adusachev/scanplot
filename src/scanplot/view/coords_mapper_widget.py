@@ -2,7 +2,7 @@ import ipywidgets
 import numpy as np
 from ipywidgets import HBox, VBox, fixed
 
-from scanplot.utils.drawing import draw_axes_mapping_lines
+from scanplot.plotting import draw_axes_mapping_lines
 
 
 class CoordinatesMapper:

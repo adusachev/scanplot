@@ -3,7 +3,7 @@ import numpy as np
 from ipywidgets import VBox, fixed
 
 from scanplot.core.detector import detect_points_on_correlation_map
-from scanplot.utils.drawing import draw_points_on_image
+from scanplot.plotting import draw_points_on_image
 
 
 class DetectorWidget:
