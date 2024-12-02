@@ -10,3 +10,5 @@ report.log
 poetry.lock
 dev_notebooks/
 .idea/
+.pytest_cache
+.vscode/
