@@ -9,22 +9,25 @@ logger = logging.getLogger(__name__)
 
 
 def image_tresholding(
-    template: np.ndarray,
-    treshold: int = 230,
+    image: np.ndarray,
+    treshold: int | None = None,
     mask_value: int = 0,
     object_value: int = 255,
 ) -> np.ndarray:
     """
-    Tresholding.
-    Return template mask.
+    Perform Tresholding.
+    Use mean tresholding if treshold value is not specified.
     """
+    if treshold is None:
+        treshold = int(np.mean(image))
+        logger.debug(f"Use Mean tresholding, treshold value = {treshold}")
     try:
-        temaplte_gray = cv.cvtColor(template, cv.COLOR_BGR2GRAY)
+        image_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     except Exception as ex:
-        temaplte_gray = template
-    mask = temaplte_gray.copy()
-    indexes_under_tresh = np.where(temaplte_gray < treshold)
-    indexes_over_tresh = np.where(temaplte_gray >= treshold)
+        image_gray = image
+    mask = image_gray.copy()
+    indexes_under_tresh = np.where(image_gray < treshold)
+    indexes_over_tresh = np.where(image_gray >= treshold)
     mask[indexes_over_tresh] = mask_value
     mask[indexes_under_tresh] = object_value
 
