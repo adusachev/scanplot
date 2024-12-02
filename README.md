@@ -54,7 +54,8 @@ At the moment, the algorithm does not have a graphical interface, it can be test
 
 **Step 1:** Clone repo
 ```sh
-git clone https://github.com/adusachev/scanplot.git <REPO> && cd <REPO>
+git clone https://github.com/adusachev/scanplot.git <REPO>
+cd <REPO>
 ```
 
 **Step 2:** Create virtual environment and install dependencies
@@ -116,9 +117,7 @@ Proposed algorithm was compared with existing tools for plot digitization:
 
 ## Future work
 
-- [ ] **Implementation of the graphical user interface for the algorithm**
-- [ ] Mapping the coordinates obtained by the algorithm to tick values on plot image
 - [ ] Adding opportunity to select region of interest
-- [ ] Improving the accuracy of the algorithm
-
-
+- [ ] Adding opportunity to manually edit detected data points
+- [ ] Improving the accuracy of the algorithm on b/w images
+- [ ] Implementation of the graphical user interface for the algorithm
