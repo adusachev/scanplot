@@ -81,7 +81,7 @@ poetry install
 
 ---
 
-## Algorithm results examples
+## Algorithm results examples (successful cases)
 
 
 ![](./docs/images/algorithm_results_examples_plot_84.png)
@@ -96,6 +96,26 @@ plot image source: [2]
 
 ![](./docs/images/algorithm_results_examples_plot_22.png)
 plot image source: [3]
+
+---
+
+## Algorithm results examples (not successful cases)
+
+
+![](./docs/images/algorithm_results_examples_plot_36.png)
+// can be fixed by adding region of interest
+
+<br/><br/>
+
+
+![](./docs/images/algorithm_results_examples_plot_66.png)
+plot image source: [2]
+
+// too low image quality
+
+
+
+
 
 
 ---
