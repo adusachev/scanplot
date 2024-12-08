@@ -49,7 +49,7 @@ def draw_points_on_image(
     )
     plt.xticks([])
     plt.yticks([])
-    plt.title(f"Number of Points: {points_number}")
+    plt.title(f"Number of detections: {points_number}")
 
 
 def draw_bbox(x_min, x_max, y_min, y_max, bbox_center=None) -> None:
