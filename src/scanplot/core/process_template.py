@@ -97,6 +97,11 @@ def find_bbox(image: np.ndarray, seg_value: int = 255):
 
 
 def crop_image(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> np.ndarray:
+    """
+    Return cropped image
+
+    :param bbox: (x_min, x_max, y_min, y_max)
+    """
     x_min, x_max, y_min, y_max = bbox
 
     if is_grayscale(image):

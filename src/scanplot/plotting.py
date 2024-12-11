@@ -52,7 +52,17 @@ def draw_points_on_image(
     plt.title(f"Number of detections: {points_number}")
 
 
-def draw_bbox(x_min, x_max, y_min, y_max, bbox_center=None) -> None:
+def draw_bbox(
+    x_min: int,
+    x_max: int,
+    y_min: int,
+    y_max: int,
+    bbox_center: Tuple[int, int] | None = None,
+) -> None:
+    """
+    Draws a rectangle.
+    If bbox_center specified, draws rectangle center point
+    """
     height = y_max - y_min
     width = x_max - x_min
     rect = Rectangle((x_min, y_min), width, height, edgecolor="r", facecolor="none")
