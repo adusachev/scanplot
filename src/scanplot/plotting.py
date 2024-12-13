@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 def draw_image(image: np.ndarray) -> None:
     plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
+    plt.xticks([])
+    plt.yticks([])
 
 
 def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
