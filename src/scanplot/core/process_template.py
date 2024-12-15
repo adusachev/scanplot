@@ -179,3 +179,25 @@ def get_binary_mask(mask: np.ndarray) -> np.ndarray:
     else:
         raise Exception("Invalid mask values")
     return mask_binary
+
+
+def extract_markers_from_image(
+    plot_image: np.ndarray, marker_bboxes: list[dict]
+) -> tuple[list[np.ndarray], list[str]]:
+    """
+    :param marker_bboxes: list of bboxes
+      bbox = {'x': 424, 'y': 494, 'width': 52, 'height': 69, 'label': 'marker1'}
+    """
+    marker_images = []
+    marker_labels = []
+    for bbox in marker_bboxes:
+        x_min = bbox["x"]
+        x_max = bbox["x"] + bbox["width"]
+        y_min = bbox["y"]
+        y_max = bbox["y"] + bbox["height"]
+        label = bbox["label"]
+
+        marker_image = crop_image(plot_image, bbox=(x_min, x_max, y_min, y_max))
+        marker_images.append(marker_image)
+        marker_labels.append(label)
+    return marker_images, marker_labels

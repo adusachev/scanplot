@@ -1,2 +1,3 @@
 from .coords_mapper_widget import CoordinatesMapper
 from .detector_widget import DetectorWidget
+from .marker_selector_widget import MarkerSelectorBBoxWidget
