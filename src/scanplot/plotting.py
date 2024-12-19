@@ -4,7 +4,7 @@ from typing import Tuple
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Patch, Rectangle
 
 logger = logging.getLogger(__name__)
 
@@ -121,3 +121,16 @@ def draw_axes_mapping_lines(
     )
     plt.xticks([])
     plt.yticks([])
+
+
+def draw_ROI(roi: np.ndarray) -> None:
+    """
+    Draws a region of intrest.
+
+    :param roi: 2D array with values (0, 1) where 1 refers to ROI, 0 refers to restricted area
+    """
+    plt.imshow(roi, alpha=0.3, cmap="RdYlGn")
+    colors = ["green", "red"]
+    labels = ["Detections allowed", "Detections prohibited"]
+    patches = [Patch(color=c, label=l, alpha=0.3) for c, l in zip(colors, labels)]
+    plt.legend(handles=patches, loc="upper center", bbox_to_anchor=(0.5, 1.17))

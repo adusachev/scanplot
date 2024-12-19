@@ -25,3 +25,39 @@ def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:
 
     logger.debug(f"Number of black pixels on image: {len(zero_indexes[0])}")
     return image
+
+
+def bboxes_to_roi(image: np.ndarray, roi_bboxes: list[dict]) -> np.ndarray:
+    """
+    Creates ROI for image based on the list of bboxes.
+
+    :param roi_bboxes: list of bboxes
+      Example: bbox = {'x': 424, 'y': 494, 'width': 52, 'height': 69, 'label': 'ROI'}
+    :return: 2D array with values (0, 1) where 1 refers to ROI, 0 refers to restricted area
+    """
+    if len(image.shape) == 3:
+        roi = np.zeros_like(image[:, :, 0])
+    elif len(image.shape) == 2:
+        roi = np.zeros_like(image)
+
+    if len(roi_bboxes) == 0:
+        roi += 1
+        return roi
+
+    for bbox in roi_bboxes:
+        x_min = bbox["x"]
+        y_min = bbox["y"]
+        width = bbox["width"]
+        height = bbox["height"]
+        roi[y_min : y_min + height, x_min : x_min + width] = np.ones((height, width))
+
+    return roi
+
+
+def apply_roi(image: np.ndarray, roi: np.ndarray) -> np.ndarray:
+    """ """
+    image_roi_applied = np.copy(image)
+    restricted_area_indexes = np.where(roi == 0)
+    image_roi_applied[restricted_area_indexes] = 255
+
+    return image_roi_applied
