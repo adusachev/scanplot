@@ -9,8 +9,8 @@ from matplotlib.patches import Patch, Rectangle
 logger = logging.getLogger(__name__)
 
 
-def draw_image(image: np.ndarray) -> None:
-    plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB))
+def draw_image(image: np.ndarray, alpha: float = 1) -> None:
+    plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB), alpha=alpha)
     plt.xticks([])
     plt.yticks([])
 
@@ -126,10 +126,21 @@ def draw_axes_mapping_lines(
 def draw_ROI(roi: np.ndarray) -> None:
     """
     Draws a region of intrest.
+    Converts bitmap array with ROI to RGB image where green color refers to ROI.
 
     :param roi: 2D array with values (0, 1) where 1 refers to ROI, 0 refers to restricted area
     """
-    plt.imshow(roi, alpha=0.3, cmap="RdYlGn")
+    allowed_area_indexes = np.where(roi == 1)
+    restricted_area_indexes = np.where(roi == 0)
+
+    roi_rgb = np.zeros((roi.shape[0], roi.shape[1], 3), dtype=np.uint8)
+    roi_G_channel = roi_rgb[:, :, 1]
+    roi_R_channel = roi_rgb[:, :, 2]
+
+    roi_G_channel[allowed_area_indexes] = 120
+    roi_R_channel[restricted_area_indexes] = 220
+
+    draw_image(roi_rgb, alpha=0.3)
     colors = ["green", "red"]
     labels = ["Detections allowed", "Detections prohibited"]
     patches = [Patch(color=c, label=l, alpha=0.3) for c, l in zip(colors, labels)]
