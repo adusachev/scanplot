@@ -8,6 +8,21 @@ import skimage.measure
 logger = logging.getLogger(__name__)
 
 
+def get_template_mask(template_image: np.ndarray):
+    template_mask, treshold_value = image_tresholding(template_image)
+    template_black_pixels_proportion = get_black_pixels_proportion(
+        template_image, template_mask, black_pixel_treshold=20
+    )
+    if template_black_pixels_proportion > 0.45:
+        # recalculate treshold value for black template images
+        new_treshold_value = treshold_value / 2
+        logger.debug(f"Marker is black, treshold value reduced from {treshold_value:.2f} to {new_treshold_value:.2f}")  # fmt: skip
+        template_mask, _ = image_tresholding(
+            template_image, treshold=new_treshold_value
+        )
+    return template_mask
+
+
 def image_tresholding(
     image: np.ndarray,
     treshold: int | None = None,
@@ -32,7 +47,7 @@ def image_tresholding(
     mask[indexes_under_tresh] = object_value
 
     # assert np.all(np.unique(mask) == [0, 255]), "Image is not bitmap"
-    return mask
+    return mask, treshold
 
 
 def extract_largest_component(mask: np.ndarray) -> np.ndarray:
@@ -201,3 +216,25 @@ def extract_markers_from_image(
         marker_images.append(marker_image)
         marker_labels.append(label)
     return marker_images, marker_labels
+
+
+def get_black_pixels_proportion(
+    template_image: np.ndarray,
+    template_mask: np.ndarray,
+    black_pixel_treshold: int = 20,
+) -> float:
+    """
+    Сalculates the proportion of black pixels in an template image.
+    Does not consider template mask pixels.
+
+    :param black_pixel_treshold: the value below which pixels are considered black
+    """
+    template_grayscale = cv.cvtColor(template_image, cv.COLOR_BGR2GRAY)
+
+    assert np.all(np.unique(template_mask) == [0, 255]), "Mask is not valid"
+    marker_pixels_indexes = np.where(template_mask == 255)
+    marker_pixels_list = np.ravel(template_grayscale[marker_pixels_indexes])
+
+    black_pixels_list = np.where(marker_pixels_list < black_pixel_treshold)[0]
+    black_pixels_proportion = len(black_pixels_list) / len(marker_pixels_list)
+    return black_pixels_proportion
