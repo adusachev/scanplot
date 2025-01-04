@@ -97,21 +97,25 @@ plot image source: [2]
 ![](./docs/images/algorithm_results_examples_plot_22.png)
 plot image source: [3]
 
+<br/><br/>
+
+![](./docs/images/algorithm_results_examples_plot_103.png)
+plot image source: [4]
+
 ---
 
 ## Algorithm results examples (not successful cases)
 
 
-![](./docs/images/algorithm_results_examples_plot_36.png)
-// can be fixed by adding region of interest
+![](./docs/images/algorithm_results_examples_plot_62.png)
+
 
 <br/><br/>
 
 
-![](./docs/images/algorithm_results_examples_plot_66.png)
-plot image source: [2]
+![](./docs/images/algorithm_results_examples_plot_96.png)
 
-// too low image quality
+
 
 
 
@@ -143,7 +147,7 @@ Proposed algorithm was compared with existing tools for plot digitization:
 
 ## Future work
 
-- [ ] Adding opportunity to select region of interest
+- [x] Adding opportunity to select region of interest
 - [ ] Adding opportunity to manually edit detected data points
 - [ ] Improving the accuracy of the algorithm on b/w images
 - [ ] Implementation of the graphical user interface for the algorithm
@@ -156,9 +160,11 @@ Proposed algorithm was compared with existing tools for plot digitization:
 Plot image sources:
 
 
-**[1]** &emsp; Meister M, Schall E, Dziak R, Spiesecke S, Thomisch K (2024) A multi-year analysis of acoustic occurrence and habitat use of blue and fin whales in eastern and central Fram Strait. PLoS ONE19(11): e0314369. https://doi.org/10.1371/journal.pone.0314369
+**[1]** &emsp; Meister M, Schall E, Dziak R, Spiesecke S, Thomisch K (2024) A multi-year analysis of acoustic occurrence and habitat use of blue and fin whales in eastern and central Fram Strait. PLoS ONE19(11): e0314369.
 
 **[2]** &emsp; Darcel, C., Davy, P., Le Goc, R., de Dreuzy, J. R., &   Bour, O. (2009). Statistical methodology for discrete fracture model-including fracture size, orientation uncertainty together with intensity uncertainty and variability. 
 
 
 **[3]** &emsp; Bonnet, E., Bour, O., Odling, N. E., Davy, P., Main, I., Cowie, P., & Berkowitz, B. (2001). Scaling of fracture systems in geological media. Reviews of geophysics, 39(3), 347-383.
+
+**[4]** &emsp; Kim J, Woo HK, Vimalajeewa D, Vidakovic B (2023) Analysis and classification of 1H-NMR spectra by multifractal analysis. PLoS ONE 18(6): e0286205.
