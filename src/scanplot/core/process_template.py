@@ -9,17 +9,22 @@ logger = logging.getLogger(__name__)
 
 
 def get_template_mask(template_image: np.ndarray):
+    """
+    Perform tresholding.
+    If object of interest is black, recalculate treshold value and repeat tresholding.
+    """
     template_mask, treshold_value = image_tresholding(template_image)
-    template_black_pixels_proportion = get_black_pixels_proportion(
+
+    template_black_pixels_proportion = _get_black_pixels_proportion(
         template_image, template_mask, black_pixel_treshold=20
     )
-    if template_black_pixels_proportion > 0.45:
-        # recalculate treshold value for black template images
-        new_treshold_value = treshold_value / 2
-        logger.debug(f"Marker is black, treshold value reduced from {treshold_value:.2f} to {new_treshold_value:.2f}")  # fmt: skip
-        template_mask, _ = image_tresholding(
-            template_image, treshold=new_treshold_value
-        )
+
+    if template_black_pixels_proportion > 0.4:
+        # recalculate treshold value for black objects on template image
+        logger.debug(f"Object is black, treshold value reduced from {treshold_value:.2f} to {treshold_value / 2:.2f}")  # fmt: skip
+        treshold_value = treshold_value / 2
+        template_mask, _ = image_tresholding(template_image, treshold=treshold_value)
+
     return template_mask
 
 
@@ -50,10 +55,54 @@ def image_tresholding(
     return mask, treshold
 
 
-def extract_largest_component(mask: np.ndarray) -> np.ndarray:
+def center_object_on_template_image(
+    template_image: np.ndarray, template_mask: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Performs object centering on image.
+
+    :param template_image: image, ArrayNxMx3 or ArrayNxM
+    :param template_mask: bitmap image, ArrayNxM
+    :return: centered_template_image, centered_template_mask
+    """
+    mask = _extract_largest_component(template_mask)
+
+    template_object_bbox, _ = _get_segmented_object_bbox(mask)
+    centered_template_image = crop_image(template_image, template_object_bbox)
+    centered_template_mask = crop_image(template_mask, template_object_bbox)
+
+    result_template_image = _frame_image(
+        centered_template_image, frame_width=3, frame_color=255
+    )
+    result_template_mask = _frame_image(
+        centered_template_mask, frame_width=3, frame_color=0
+    )
+
+    return result_template_image, result_template_mask
+
+
+def crop_image(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> np.ndarray:
+    """
+    Return cropped image
+
+    :param bbox: (x_min, x_max, y_min, y_max)
+    """
+    x_min, x_max, y_min, y_max = bbox
+
+    if _is_grayscale(image):
+        cropped_image = image[y_min : y_max + 1, x_min : x_max + 1]
+    else:
+        cropped_image = image[y_min : y_max + 1, x_min : x_max + 1, :]
+
+    return cropped_image
+
+
+def _extract_largest_component(mask: np.ndarray) -> np.ndarray:
     """
     Remove all connected components from bitmap image except the largest connected component.
     Only 255 pixels are considered as components.
+
+    :param mask: bitmap image, ArrayNxM
     """
     assert np.all(np.unique(mask) == np.array([0, 255])), "Mask image is not bitmap"
 
@@ -62,7 +111,7 @@ def extract_largest_component(mask: np.ndarray) -> np.ndarray:
         mask = mask[:, :, 0]
 
     label_map = skimage.measure.label(mask, background=0, connectivity=1)
-    largest_component_label = get_largest_component_label(label_map)
+    largest_component_label = _get_largest_component_label(label_map)
 
     new_mask = np.copy(label_map)
     unnecessary_labels_indexes = np.where(label_map != largest_component_label)
@@ -73,7 +122,7 @@ def extract_largest_component(mask: np.ndarray) -> np.ndarray:
     return new_mask
 
 
-def get_largest_component_label(label_map: np.ndarray) -> int:
+def _get_largest_component_label(label_map: np.ndarray) -> int:
     """
     Return label with largest count.
     Background 0 label is not considered.
@@ -88,15 +137,19 @@ def get_largest_component_label(label_map: np.ndarray) -> int:
     return max_component_label
 
 
-def find_bbox(image: np.ndarray, seg_value: int = 255):
+def _get_segmented_object_bbox(
+    mask: np.ndarray, seg_value: int = 255
+) -> Tuple[Tuple[int, int, int, int], Tuple[int, int]]:
     """
     Find bbox around segmented object with given color/label.
     Return (x_min, x_max, y_min, y_max), (bbox_c_x, bbox_c_y)
+
+    :param mask: bitmap image, ArrayNxM
+    :return: bbox, bbox_center
     """
-    segmentation = np.where(image == seg_value)
+    segmentation = np.where(mask == seg_value)
 
     # Bounding Box
-    bbox = 0, 0, 0, 0
     x_min = int(np.min(segmentation[1]))
     x_max = int(np.max(segmentation[1]))
     y_min = int(np.min(segmentation[0]))
@@ -111,29 +164,15 @@ def find_bbox(image: np.ndarray, seg_value: int = 255):
     return bbox, bbox_center
 
 
-def crop_image(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> np.ndarray:
-    """
-    Return cropped image
-
-    :param bbox: (x_min, x_max, y_min, y_max)
-    """
-    x_min, x_max, y_min, y_max = bbox
-
-    if is_grayscale(image):
-        cropped_image = image[y_min : y_max + 1, x_min : x_max + 1]
-    else:
-        cropped_image = image[y_min : y_max + 1, x_min : x_max + 1, :]
-
-    return cropped_image
-
-
-def is_grayscale(img: np.ndarray) -> bool:
+def _is_grayscale(img: np.ndarray) -> bool:
     return len(img.shape) == 2
 
 
-def frame_image(image: np.ndarray, frame_width: int = 1) -> np.ndarray:
+def _frame_image(
+    image: np.ndarray, frame_width: int = 1, frame_color: int = 0
+) -> np.ndarray:
     """
-    Add black frame of given pixel width around input image.
+    Add frame of given color and pixel width around input image.
     Return framed image.
     """
     image_width = image.shape[1]
@@ -142,11 +181,13 @@ def frame_image(image: np.ndarray, frame_width: int = 1) -> np.ndarray:
     framed_img_width = image_width + int(frame_width * 2)
     framed_img_height = image_height + int(frame_width * 2)
 
-    if is_grayscale(image):
+    if _is_grayscale(image):
         framed_img = np.zeros((framed_img_height, framed_img_width), dtype=np.uint8)
+        framed_img += frame_color
         framed_img[frame_width:-frame_width, frame_width:-frame_width] = image
     else:
         framed_img = np.zeros((framed_img_height, framed_img_width, 3), dtype=np.uint8)
+        framed_img += frame_color
         framed_img[frame_width:-frame_width, frame_width:-frame_width, :] = image
 
     return framed_img
@@ -218,7 +259,7 @@ def extract_markers_from_image(
     return marker_images, marker_labels
 
 
-def get_black_pixels_proportion(
+def _get_black_pixels_proportion(
     template_image: np.ndarray,
     template_mask: np.ndarray,
     black_pixel_treshold: int = 20,
@@ -236,5 +277,8 @@ def get_black_pixels_proportion(
     marker_pixels_list = np.ravel(template_grayscale[marker_pixels_indexes])
 
     black_pixels_list = np.where(marker_pixels_list < black_pixel_treshold)[0]
+
     black_pixels_proportion = len(black_pixels_list) / len(marker_pixels_list)
+    logger.debug(f"Black pixels proportion on template image: {black_pixels_proportion}")  # fmt: skip
+
     return black_pixels_proportion

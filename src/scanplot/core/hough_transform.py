@@ -85,7 +85,7 @@ def calc_gradients(image: np.ndarray) -> np.ndarray:
 def build_hough_model(
     template_image: np.ndarray,
     min_canny_treshold: int = 10,
-    max_canny_treshold: int = 50,
+    max_canny_treshold: int = 180,
     reference_point: Tuple[int, int] = None,
 ) -> defaultdict:
     """
