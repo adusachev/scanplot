@@ -1,14 +1,16 @@
+import os
 import pathlib
 
 import cv2 as cv
 import numpy as np
 
 
-def read_image_rgb(img_path: pathlib.Path) -> np.ndarray:
-    img = cv.imread(str(img_path))
-    return img
+def load_image(img_path: str | os.PathLike[str], grayscale: bool = False) -> np.ndarray:
+    if grayscale:
+        img = cv.imread(str(img_path), cv.IMREAD_GRAYSCALE)
+    else:
+        img = cv.imread(str(img_path))
 
-
-def read_image_gray(img_path: pathlib.Path) -> np.ndarray:
-    img = cv.imread(str(img_path), cv.IMREAD_GRAYSCALE)
+    if img is None:
+        raise FileNotFoundError(f"No such image: {str(img_path)}")
     return img
