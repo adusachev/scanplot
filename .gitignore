@@ -12,3 +12,4 @@ dev_notebooks/
 .idea/
 .pytest_cache
 .vscode/
+.mypy_cache/
