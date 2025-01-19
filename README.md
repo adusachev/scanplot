@@ -77,7 +77,7 @@ poetry install
 
 **Step 4:** Run notebook `<REPO>/examples/main.ipynb`
 
-
+More detailed information about usage can be found in the [user documentation](https://github.com/adusachev/scanplot/blob/develop/docs/user_manual.md).
 
 ---
 
