@@ -1,5 +1,5 @@
 requirements:
-	poetry export --without-hashes --format requirements.txt | awk '{ print $$1 }' FS=';' > requirements.txt
+	poetry run pip freeze > requirements.txt && sed -i '/scanplot/d' requirements.txt
 
 black:
 	poetry run black src/scanplot
