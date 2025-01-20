@@ -96,15 +96,16 @@ plot image source: [1]
 ![](./docs/images/algorithm_results_examples_plot_67.png)
 plot image source: [2]
 
+
+<br/><br/>
+
+![](./docs/images/algorithm_results_examples_plot_107.png)
+plot image source: [5]
+
 <br/><br/>
 
 ![](./docs/images/algorithm_results_examples_plot_22.png)
 plot image source: [3]
-
-<br/><br/>
-
-![](./docs/images/algorithm_results_examples_plot_103.png)
-plot image source: [4]
 
 ---
 
@@ -172,3 +173,5 @@ Plot image sources:
 **[3]** &emsp; Bonnet, E., Bour, O., Odling, N. E., Davy, P., Main, I., Cowie, P., & Berkowitz, B. (2001). Scaling of fracture systems in geological media. Reviews of geophysics, 39(3), 347-383.
 
 **[4]** &emsp; Kim J, Woo HK, Vimalajeewa D, Vidakovic B (2023) Analysis and classification of 1H-NMR spectra by multifractal analysis. PLoS ONE 18(6): e0286205.
+
+**[5]** &emsp; Diaferio, A. (1999). Mass estimation in the outer regions of galaxy clusters. Monthly Notices of the Royal Astronomical Society, 309(3), 610-622.
