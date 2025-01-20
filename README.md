@@ -27,8 +27,8 @@ The technique of marker detection on image is based on Template Matching algorit
 ## Input data requirements
 
 
-The algorithm supports only 3 channel RGB images.
-Scatter plot may have several markers of any shape and color.
+The algorithm supports both grayscale and RGB images.
+Scatter plot may have several marker types of any shape and color.
 
 
 Input data that is **not supported**:
@@ -45,6 +45,10 @@ Input data that is **not supported**:
 
 scanplot requires:
 - Python (> 3.11, < 3.12)
+
+
+If you don't have the required python version, you can install it using [pyenv](https://github.com/pyenv/pyenv).
+
 
 ---
 
