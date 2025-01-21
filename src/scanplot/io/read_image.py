@@ -1,11 +1,9 @@
-import os
-import pathlib
-
 import cv2 as cv
-import numpy as np
+
+from scanplot.types import ImageLike, PathLike
 
 
-def load_image(img_path: str | os.PathLike[str], grayscale: bool = False) -> np.ndarray:
+def load_image(img_path: PathLike, grayscale: bool = False) -> ImageLike:
     if grayscale:
         img = cv.imread(str(img_path), cv.IMREAD_GRAYSCALE)
     else:
