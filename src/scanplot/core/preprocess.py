@@ -54,7 +54,7 @@ def bboxes_to_roi(image: np.ndarray, roi_bboxes: list[dict]) -> np.ndarray:
     return roi
 
 
-def apply_roi(image: np.ndarray, roi: np.ndarray) -> np.ndarray:
+def _apply_roi(image: np.ndarray, roi: np.ndarray) -> np.ndarray:
     """ """
     image_roi_applied = np.copy(image)
     restricted_area_indexes = np.where(roi == 0)
