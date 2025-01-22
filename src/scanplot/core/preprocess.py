@@ -62,8 +62,9 @@ def _restructure_bboxes(bboxes: list[dict]) -> dict[str, list]:
     bboxes_by_label = dict()
 
     for bbox in bboxes:
-        bbox_label = bbox["label"]
-        del bbox["label"]
+        bbox_label = bbox.get("label")
+        if bbox_label:
+            del bbox["label"]
         if bbox_label not in bboxes_by_label:
             bboxes_by_label[bbox_label] = [bbox]
         else:

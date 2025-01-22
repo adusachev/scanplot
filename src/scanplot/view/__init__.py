@@ -1,4 +1,4 @@
 from .coords_mapper_widget import CoordinatesMapper
-from .detector_widget import DetectorWidget
+from .detector_widget import DetectorWidget, DetectorWidgetCombined
 from .marker_selector_widget import MarkerSelectorBBoxWidget
 from .roi_selector import ROISelectorBBoxWidget

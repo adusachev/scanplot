@@ -3,7 +3,7 @@ import re
 import numpy as np
 
 from scanplot.io import load_image
-from scanplot.plotting import draw_image
+from scanplot.plotting import draw_image, draw_ROI
 from scanplot.types import ArrayNxM, ImageLike, PathLike
 
 from .corr_map_operations import normalize_map
@@ -23,13 +23,16 @@ from .template_match import template_match
 
 
 class Plot:
-    def __init__(self, filepath: PathLike):
-        self.filepath = filepath
-        self.data: ImageLike = load_image(self.filepath)
+    def __init__(self, image: ImageLike):
+        self.data: ImageLike = image
+        
         self.markers_number: int = 1
-
         self.markers: dict[str, ImageLike] = dict()
+        
+        self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
+
+        self.correlation_maps: dict[str, ArrayNxM] = dict()
 
     def set_markers_number(self, n_markers: int) -> None:
         self.markers_number = n_markers
@@ -56,34 +59,43 @@ class Plot:
             res = re.search("marker\d+", roi_label)
             marker_label = res.group(0)
             self._images_algorithm_input[marker_label] = plot_image_roi_applied
+            self._roi[marker_label] = roi_bitmap
 
     def run_matching(self) -> list[ArrayNxM]:
-        correlation_maps = dict()
+        # correlation_maps = dict()
         for marker_label, marker_image in self.markers.items():
+            
+            plot_image_to_process = self._images_algorithm_input[marker_label]
+            
+            plot_image_to_process = self._preprocess_plot_image(plot_image_to_process)
+            template_image, template_mask = self._preprocess_template(marker_image)
+            self.markers[marker_label] = template_image
+
             # pass plot image with applied ROI
             corr_map = self._match_single_marker(
-                marker_template_image=marker_image,
-                plot_image=self._images_algorithm_input[marker_label],
+                plot_image=plot_image_to_process,
+                marker_template_image=template_image,
+                marker_template_mask=template_mask,
             )
-            correlation_maps[marker_label] = corr_map
+            self.correlation_maps[marker_label] = corr_map
 
-        return correlation_maps
+        return self.correlation_maps
 
     def _match_single_marker(
-        self, marker_template_image: ImageLike, plot_image: ImageLike
+        self, 
+        plot_image: ImageLike,
+        marker_template_image: ImageLike,
+        marker_template_mask: ArrayNxM,
     ) -> ArrayNxM:
         """
         Returns a correlation map
         """
-        template_image, template_mask = self._preprocess_template(marker_template_image)
-        plot_image = self._preprocess_plot_image(plot_image)
-
         correlation_map, _ = template_match(
-            plot_image, template_image, template_mask, norm_result=True
+            plot_image, marker_template_image, marker_template_mask, norm_result=True
         )
 
         accumulator = generalized_hough_transform(
-            plot_image, template_image, norm_result=True, crop_result=True
+            plot_image, marker_template_image, norm_result=True, crop_result=True
         )
 
         assert correlation_map.shape == accumulator.shape
@@ -111,3 +123,7 @@ class Plot:
 
     def draw(self):
         draw_image(self.data)
+
+    def draw_region_of_interest(self, marker: str) -> None:
+        draw_image(self.data)
+        draw_ROI(self._roi[marker])
