@@ -42,6 +42,14 @@ class DetectorWidgetCombined:
         return combined_detector_widget
     
 
+    def get_detections(self) -> dict[str, ArrayNx2]:
+        all_detections = dict()
+        for marker_label, widget_object in zip(self._marker_labels, self._detector_widget_objects):
+            points = widget_object.get_detections()
+            all_detections[marker_label] = points
+        
+        return all_detections
+
 
 
 class DetectorWidget:  # TODO: rename to DetectorInteractive

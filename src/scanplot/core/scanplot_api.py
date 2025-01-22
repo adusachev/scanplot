@@ -28,6 +28,7 @@ class Plot:
         
         self.markers_number: int = 1
         self.markers: dict[str, ImageLike] = dict()
+        self._marker_masks: dict[str, ArrayNxM] = dict()
         
         self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
@@ -70,6 +71,7 @@ class Plot:
             plot_image_to_process = self._preprocess_plot_image(plot_image_to_process)
             template_image, template_mask = self._preprocess_template(marker_image)
             self.markers[marker_label] = template_image
+            self._marker_masks[marker_label] = template_mask
 
             # pass plot image with applied ROI
             corr_map = self._match_single_marker(
