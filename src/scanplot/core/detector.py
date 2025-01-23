@@ -15,8 +15,6 @@ class Detector:
         self, 
         plot: Plot,
         marker: str,
-        # template: ImageLike,
-        # correlation_map: ArrayNxM,
     ):
         self.template = plot.markers[marker]
         self.correlation_map = plot.correlation_maps[marker]
@@ -58,38 +56,6 @@ class Detector:
 
         return detected_points
 
-
-
-# def detect_points_on_correlation_map(
-#     points_num: float,
-#     points_density: float,
-#     correlation_map: np.ndarray,
-#     image: np.ndarray,
-#     template: np.ndarray,
-# ) -> np.ndarray | None:
-
-#     ## transform parameters
-#     corr_map_treshold = linear_parameter_transform(points_num, a=-0.01, b=1)
-#     iou_treshold = linear_parameter_transform(points_density, a=-0.01, b=1)
-
-#     ## get max points
-#     max_points, _ = get_corr_map_maximums(
-#         correlation_map=correlation_map, treshold=corr_map_treshold
-#     )
-
-#     ## NMS
-#     template_height = template.shape[0]
-#     template_width = template.shape[1]
-
-#     detected_points = apply_nms(
-#         points=max_points,
-#         correlation_map=correlation_map,
-#         iou_treshold=iou_treshold,
-#         bbox_width=template_width,
-#         bbox_height=template_height,
-#     )
-
-#     return detected_points
 
 
 def linear_parameter_transform(
