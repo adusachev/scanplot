@@ -104,7 +104,7 @@ class DetectorWidget:  # TODO: rename to DetectorInteractive
         return ipywidgets.FloatSlider(
             value=start_value,
             min=0,
-            max=100,
+            max=65,
             step=0.1,
             description="Points Number:",
             disabled=False,

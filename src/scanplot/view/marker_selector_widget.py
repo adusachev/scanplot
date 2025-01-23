@@ -15,6 +15,9 @@ class MarkerSelectorBBoxWidget(BBoxWidget):
             image_bytes=cv.imencode(".png", self.image_data)[1].tobytes(),
         )
 
+    def widget(self):
+        return self
+
     def validate_bboxes(self):
         if len(self.bboxes) < self.markers_number:
             raise Exception(f"Need to select {self.markers_number} BBoxes")

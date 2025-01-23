@@ -15,3 +15,6 @@ class ROISelectorBBoxWidget(BBoxWidget):
             classes=[f"ROI for marker{i+1}" for i in range(self.markers_number)],
             image_bytes=cv.imencode(".png", self.image_data)[1].tobytes(),
         )
+
+    def widget(self):
+        return self
