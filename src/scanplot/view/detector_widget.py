@@ -66,15 +66,19 @@ class DetectorWidget:
 
     def apply_widget_settings(
         self,
-        fig_size: int = 10,
-        marker_size: int = 60,
-        marker_color: str = "yellow",
-        marker_type: str = "*",
+        fig_size: int | None = None,
+        marker_size: int | None = None,
+        marker_color: str | None = None,
+        marker_type: str | None = None,
     ) -> None:
-        self._fig_size = fig_size
-        self._marker_size = marker_size
-        self._marker_color = marker_color
-        self._marker_type = marker_type
+        if fig_size:
+            self._fig_size = fig_size
+        if marker_size:
+            self._marker_size = marker_size
+        if marker_color:
+            self._marker_color = marker_color
+        if marker_type:
+            self._marker_type = marker_type
 
 
     def widget(self) -> ipywidgets.widgets.widget_box:
