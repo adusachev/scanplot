@@ -25,7 +25,7 @@ class CoordinatesMapperWidget:
         self._key_points_marker: str = "x"
         self._key_points_marker_color: str = "green"
 
-    def apply_widgted_settings(
+    def apply_widget_settings(
         self,
         fig_size: int | None = None,
         line_color: str | None = None,
