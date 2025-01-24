@@ -102,7 +102,7 @@ class DetectorWidget:
         return self.detector.detect_points()
 
     @staticmethod
-    def _get_points_num_slider(start_value: int = 20):
+    def _get_points_num_slider(start_value: int = 30):
         return ipywidgets.FloatSlider(
             value=start_value,
             min=0,
@@ -119,7 +119,7 @@ class DetectorWidget:
         )
 
     @staticmethod
-    def _get_points_density_slider(start_value: int = 20):
+    def _get_points_density_slider(start_value: int = 30):
         return ipywidgets.FloatSlider(
             value=start_value,
             min=0,

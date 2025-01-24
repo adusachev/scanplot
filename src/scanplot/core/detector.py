@@ -17,8 +17,8 @@ class Detector:
         self.correlation_map = plot._correlation_maps[marker]
         self.marker_label = marker
 
-        self.points_num: float = 20
-        self.points_density: float = 20
+        self.points_num: float = 30
+        self.points_density: float = 30
 
     @property
     def corr_map_treshold(self) -> float:
