@@ -4,9 +4,8 @@ import logging
 
 import numpy as np
 
-from scanplot.io import load_image
 from scanplot.plotting import draw_image, draw_ROI
-from scanplot.types import ArrayNxM, ImageLike, PathLike
+from scanplot.types import ArrayNxM, ImageLike
 
 from .corr_map_operations import normalize_map
 from .hough_transform import generalized_hough_transform
@@ -29,14 +28,12 @@ logger = logging.getLogger(__name__)
 class Plot:
     def __init__(self, image: ImageLike):
         self.data: ImageLike = image
-        
         self.markers_number: int = 1
         self.markers: dict[str, ImageLike] = dict()
-        self._marker_masks: dict[str, ArrayNxM] = dict()
         
+        self._marker_masks: dict[str, ArrayNxM] = dict()
         self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
-
         self._correlation_maps: dict[str, ArrayNxM] = dict()
 
 
@@ -74,16 +71,18 @@ class Plot:
         for roi_label in roi_bboxes_by_label.keys():
             bboxes_list = roi_bboxes_by_label[roi_label]
             roi_bitmap = bboxes_to_roi(image=self.data, roi_bboxes=bboxes_list)
-            # plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
 
             res = re.search("marker\d+", roi_label)  # TODO: rework this in future
             marker_label = res.group(0)
-            # self._images_algorithm_input[marker_label] = plot_image_roi_applied
+
             self._roi[marker_label] = roi_bitmap
+
 
         for marker_label, roi_bitmap in self._roi.items():
             plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
             self._images_algorithm_input[marker_label] = plot_image_roi_applied
+
+        logger.info(f"ROI successfully applied")
 
 
     def run_matching(self) -> dict[str, ArrayNxM]:

@@ -33,6 +33,12 @@ class CoordinatesMapperWidget:
         key_points_marker: str | None = None,
         key_points_marker_color: str | None = None,
     ) -> None:
+        """
+        :param fig_size: figure size
+        :param line_color: color of horizontal and vertical lines
+        :param key_points_marker_color: color of the marker at lines intersection point
+        :param key_points_marker: type of the marker at lines intersection point
+        """
         if fig_size:
             self._fig_size = fig_size
         if line_color:
@@ -45,11 +51,6 @@ class CoordinatesMapperWidget:
     def widget(self) -> ipywidgets.widgets.widget_box:
         """
         Creates an interactive widget for mapping pixel coords and plot axes coords
-
-        :param fig_size: figure size
-        :param line_color: color of horizontal and vertical lines
-        :param key_points_marker_color: color of the marker at lines intersection point
-        :param key_points_marker: type of the marker at lines intersection point
         """
         widget = ipywidgets.interactive(
             draw_axes_mapping_lines,
