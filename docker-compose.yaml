@@ -1,0 +1,8 @@
+services:
+  jupyter:
+    build: .
+    container_name: jupyter
+    volumes:
+      - ./datasets/:/app/datasets
+    ports:
+      - 8888:8888
