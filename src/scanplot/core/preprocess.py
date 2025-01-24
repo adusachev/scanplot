@@ -54,7 +54,25 @@ def bboxes_to_roi(image: np.ndarray, roi_bboxes: list[dict]) -> np.ndarray:
     return roi
 
 
-def apply_roi(image: np.ndarray, roi: np.ndarray) -> np.ndarray:
+def _restructure_bboxes(bboxes: list[dict]) -> dict[str, list]:
+    """
+    :param bboxes: list of bboxes: [{'x': 424, 'y': 494, 'width': 52, 'height': 69, 'label': 'marker1'}]
+    :return: dict with bboxes: {'marker1': [{'x': 424, 'y': 494, 'width': 52, 'height': 69}]}
+    """
+    bboxes_by_label = dict()
+
+    for bbox in bboxes:
+        bbox_label = bbox.get("label")
+        if bbox_label:
+            del bbox["label"]
+        if bbox_label not in bboxes_by_label:
+            bboxes_by_label[bbox_label] = [bbox]
+        else:
+            bboxes_by_label[bbox_label].append(bbox)
+    return bboxes_by_label
+
+
+def _apply_roi(image: np.ndarray, roi: np.ndarray) -> np.ndarray:
     """ """
     image_roi_applied = np.copy(image)
     restricted_area_indexes = np.where(roi == 0)

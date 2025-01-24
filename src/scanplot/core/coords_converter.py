@@ -2,7 +2,7 @@ from enum import Enum
 
 import numpy as np
 
-from scanplot.view.coords_mapper_widget import CoordinatesMapper
+from scanplot.view.coords_mapper_widget import CoordinatesMapperWidget
 
 
 class AxisType(Enum):
@@ -67,7 +67,7 @@ class CoordinatesConverter:
         self.x_axis_type = AxisType(x_axis_type)
         self.y_axis_type = AxisType(y_axis_type)
 
-    def import_parameters_from_mapper(self, mapper: CoordinatesMapper) -> None:
+    def import_parameters_from_mapper(self, mapper: CoordinatesMapperWidget) -> None:
         if not mapper._is_valid:
             raise ValueError("Mapper is not valid, check X_min, X_max, Y_min, Y_max")
         self.x_min_px = mapper.x_slider.value[0]

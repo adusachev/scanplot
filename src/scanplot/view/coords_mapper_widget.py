@@ -3,11 +3,12 @@ import numpy as np
 from ipywidgets import HBox, VBox, fixed
 
 from scanplot.plotting import draw_axes_mapping_lines
+from scanplot.types import ImageLike
 
 
-class CoordinatesMapper:
-    def __init__(self, source_image: np.ndarray):
-        self.image = source_image
+class CoordinatesMapperWidget:
+    def __init__(self, plot_image: ImageLike):
+        self.image = plot_image
         self.image_height = self.image.shape[0]
         self.image_width = self.image.shape[1]
 
@@ -20,30 +21,46 @@ class CoordinatesMapper:
         self.x_axis_type_dropdown = self._get_x_axis_type_dropdown()
         self.y_axis_type_dropdown = self._get_y_axis_type_dropdown()
 
-    def interactive_widget(
-        self,
-        fig_size: int = 10,
-        line_color: str = "red",
-        key_points_marker: str = "x",
-        key_points_marker_color: str = "green",
-    ) -> ipywidgets.widgets.widget_box:
-        """
-        Creates an interactive widget for mapping pixel coords and plot axes coords
+        self._fig_size: int = 10
+        self._line_color: str = "red"
+        self._key_points_marker: str = "x"
+        self._key_points_marker_color: str = "green"
 
+    def apply_widget_settings(
+        self,
+        fig_size: int | None = None,
+        line_color: str | None = None,
+        key_points_marker: str | None = None,
+        key_points_marker_color: str | None = None,
+    ) -> None:
+        """
         :param fig_size: figure size
         :param line_color: color of horizontal and vertical lines
         :param key_points_marker_color: color of the marker at lines intersection point
         :param key_points_marker: type of the marker at lines intersection point
+        """
+        if fig_size:
+            self._fig_size = fig_size
+        if line_color:
+            self._line_color = line_color
+        if key_points_marker:
+            self._key_points_marker
+        if key_points_marker_color:
+            self._key_points_marker_color
+
+    def widget(self) -> ipywidgets.widgets.widget_box:
+        """
+        Creates an interactive widget for mapping pixel coords and plot axes coords
         """
         widget = ipywidgets.interactive(
             draw_axes_mapping_lines,
             y_pos=self.y_slider,
             x_pos=self.x_slider,
             source_image=fixed(self.image),
-            fig_size=fixed(fig_size),
-            line_color=fixed(line_color),
-            key_points_marker_color=fixed(key_points_marker_color),
-            key_points_marker=fixed(key_points_marker),
+            fig_size=fixed(self._fig_size),
+            line_color=fixed(self._line_color),
+            key_points_marker_color=fixed(self._key_points_marker_color),
+            key_points_marker=fixed(self._key_points_marker),
         )
         image_with_lines_widget = widget.children[-1]
 
