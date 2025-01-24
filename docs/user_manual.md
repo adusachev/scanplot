@@ -2,27 +2,12 @@
 # Notes for users
 
 
-### Plot image files naming
-
-
-
-For convenience, it is highly recommended to name plot image files as `plot{N}.png` and put them to directory `<REPO>/datasets/plot_images/`.
-
-Examples:
-```
-<REPO>/datasets/plot_images/plot1.png
-<REPO>/datasets/plot_images/plot42.png
-```
-
-
----
-
 
 ### Marker selection
 
-Run notebook `<REPO>/examples/select_markers.ipynb` to automatically extract marker images from plot image.
+You can interactively select the markers that you want to detect on the plot image.
 
-Each selected marker will be saved as `<REPO>/datasets/marker_images/plot{N}_marker{M}.png`.
+
 
 ![](./images/markers_selection.gif)
 
@@ -33,7 +18,7 @@ Each selected marker will be saved as `<REPO>/datasets/marker_images/plot{N}_mar
 
 ### ROI selection
 
-In `<REPO>/examples/main.ipynb` you can select region of interest – the area of the image where detections are allowed.
+For each choosen marker you can select its own region of interest – the area of the image where detections are allowed.
 
 ![](./images/roi_selection_merged.gif)
 
