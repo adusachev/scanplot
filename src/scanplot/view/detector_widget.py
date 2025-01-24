@@ -4,7 +4,7 @@ from ipywidgets import VBox, fixed
 
 from scanplot.core.detector import Detector
 from scanplot.plotting import draw_points_on_image
-from scanplot.types import ArrayNx2
+from scanplot.types import ImageLike, ArrayNx2
 
 
 
@@ -54,7 +54,7 @@ class DetectorWidgetCombined:
 class DetectorWidget:
     def __init__(self, plot, marker: str):
         self.detector = Detector(plot, marker)
-        self.image = plot.data
+        self.image: ImageLike = plot.data
         self.points_num_slider = self._get_points_num_slider()
         self.points_density_slider = self._get_points_density_slider()
 
@@ -81,7 +81,7 @@ class DetectorWidget:
             self._marker_type = marker_type
 
 
-    def widget(self) -> ipywidgets.widgets.widget_box:
+    def widget(self):
         widget = ipywidgets.interactive(
             self.detect_and_draw,
             points_num_slider_value=self.points_num_slider,

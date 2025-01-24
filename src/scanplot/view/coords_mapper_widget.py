@@ -4,9 +4,10 @@ from ipywidgets import HBox, VBox, fixed
 
 from scanplot.plotting import draw_axes_mapping_lines
 
+from scanplot.types import ImageLike
 
 class CoordinatesMapperWidget:
-    def __init__(self, plot_image: np.ndarray):
+    def __init__(self, plot_image: ImageLike):
         self.image = plot_image
         self.image_height = self.image.shape[0]
         self.image_width = self.image.shape[1]

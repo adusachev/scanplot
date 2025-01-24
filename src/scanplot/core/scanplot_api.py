@@ -1,5 +1,7 @@
 import re
 
+import logging
+
 import numpy as np
 
 from scanplot.io import load_image
@@ -22,6 +24,8 @@ from .process_template import (
 from .template_match import template_match
 
 
+logger = logging.getLogger(__name__)
+
 class Plot:
     def __init__(self, image: ImageLike):
         self.data: ImageLike = image
@@ -33,7 +37,16 @@ class Plot:
         self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
 
-        self.correlation_maps: dict[str, ArrayNxM] = dict()
+        self._correlation_maps: dict[str, ArrayNxM] = dict()
+
+
+    @property
+    def n_channels(self) -> int:
+        if len(self.data.shape) == 2:
+            return 2
+        elif len(self.data.shape) == 3 and self.data.shape[2] == 3:
+            return 3
+
 
     def set_markers_number(self, n_markers: int) -> None:
         self.markers_number = n_markers
@@ -47,6 +60,10 @@ class Plot:
             plot_image=self.data, marker_bboxes=marker_bboxes
         )
         self.markers = dict(zip(marker_labels, marker_images))
+
+        self._init_roi()
+        
+        logger.info(f"Marker templates successfully extracted from plot image")
 
     def apply_roi(self, roi_bboxes: list[dict]) -> None:
 
@@ -62,7 +79,7 @@ class Plot:
             self._images_algorithm_input[marker_label] = plot_image_roi_applied
             self._roi[marker_label] = roi_bitmap
 
-    def run_matching(self) -> list[ArrayNxM]:
+    def run_matching(self) -> dict[str, ArrayNxM]:
         # correlation_maps = dict()
         for marker_label, marker_image in self.markers.items():
             
@@ -79,12 +96,36 @@ class Plot:
                 marker_template_image=template_image,
                 marker_template_mask=template_mask,
             )
-            self.correlation_maps[marker_label] = corr_map
+            self._correlation_maps[marker_label] = corr_map
 
-        return self.correlation_maps
+        return self._correlation_maps
 
+
+    def draw(self):
+        draw_image(self.data)
+
+
+    def draw_region_of_interest(self, marker: str) -> None:
+        draw_image(self.data)
+        draw_ROI(self._roi[marker])
+
+
+    def _init_roi(self) -> None:
+        roi = dict()
+
+        if self.n_channels == 3:
+            roi_array = np.zeros_like(self.data[:, :, 0]) + 1
+        elif self.n_channels == 2:
+            roi_array = np.zeros_like(self.data) + 1
+
+        for marker_label in self.markers.keys():
+            roi[marker_label] = np.copy(roi_array)
+
+        self._roi = roi
+
+
+    @staticmethod
     def _match_single_marker(
-        self, 
         plot_image: ImageLike,
         marker_template_image: ImageLike,
         marker_template_mask: ArrayNxM,
@@ -122,10 +163,3 @@ class Plot:
     def _preprocess_plot_image(plot_image: ImageLike) -> ImageLike:
         plot_image = replace_black_pixels(plot_image, value=10)
         return plot_image
-
-    def draw(self):
-        draw_image(self.data)
-
-    def draw_region_of_interest(self, marker: str) -> None:
-        draw_image(self.data)
-        draw_ROI(self._roi[marker])

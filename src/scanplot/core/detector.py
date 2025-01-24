@@ -25,11 +25,11 @@ class Detector:
 
     @property
     def corr_map_treshold(self) -> float:
-        return linear_parameter_transform(self.points_num, a=-0.01, b=1)
+        return self.linear_parameter_transform(self.points_num, a=-0.01, b=1)
     
     @property
     def iou_treshold(self) -> float:
-        return linear_parameter_transform(self.points_density, a=-0.01, b=1)
+        return self.linear_parameter_transform(self.points_density, a=-0.01, b=1)
     
     @property
     def template_height(self) -> int:
@@ -56,16 +56,15 @@ class Detector:
 
         return detected_points
 
+    @staticmethod
+    def linear_parameter_transform(
+        parameter: float, a: float = -0.01, b: float = 1, round_decimals: int | None = None
+    ) -> float:
+        """
+        Linear transform y = a * x + b
+        """
+        parameter_transformed = a * parameter + b
+        if round_decimals:
+            parameter_transformed = np.round(parameter_transformed, decimals=round_decimals)
 
-
-def linear_parameter_transform(
-    parameter: float, a: float = -0.01, b: float = 1, round_decimals: int | None = None
-) -> float:
-    """
-    Linear transform y = a * x + b
-    """
-    parameter_transformed = a * parameter + b
-    if round_decimals:
-        parameter_transformed = np.round(parameter_transformed, decimals=round_decimals)
-
-    return parameter_transformed
+        return parameter_transformed
