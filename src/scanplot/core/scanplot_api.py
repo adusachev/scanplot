@@ -60,6 +60,8 @@ class Plot:
             plot_image=self.data, marker_bboxes=marker_bboxes
         )
         self.markers = dict(zip(marker_labels, marker_images))
+        if not self.markers:
+            raise ValueError(f"You have not selected any markers")
 
         self._init_roi()
 
@@ -85,7 +87,9 @@ class Plot:
 
 
     def run_matching(self) -> dict[str, ArrayNxM]:
-        # correlation_maps = dict()
+        if not self.markers:
+            raise ValueError(f"You have not selected any markers")
+
         for marker_label, marker_image in self.markers.items():
             
             plot_image_to_process = self._images_algorithm_input[marker_label]
