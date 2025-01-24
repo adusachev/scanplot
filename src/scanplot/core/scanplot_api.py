@@ -1,6 +1,5 @@
-import re
-
 import logging
+import re
 
 import numpy as np
 
@@ -22,20 +21,19 @@ from .process_template import (
 )
 from .template_match import template_match
 
-
 logger = logging.getLogger(__name__)
+
 
 class Plot:
     def __init__(self, image: ImageLike):
         self.data: ImageLike = image
         self.markers_number: int = 1
         self.markers: dict[str, ImageLike] = dict()
-        
+
         self._marker_masks: dict[str, ArrayNxM] = dict()
         self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
         self._correlation_maps: dict[str, ArrayNxM] = dict()
-
 
     @property
     def n_channels(self) -> int:
@@ -43,7 +41,6 @@ class Plot:
             return 2
         elif len(self.data.shape) == 3 and self.data.shape[2] == 3:
             return 3
-
 
     def set_markers_number(self, n_markers: int) -> None:
         self.markers_number = n_markers
@@ -77,22 +74,20 @@ class Plot:
 
             self._roi[marker_label] = roi_bitmap
 
-
         for marker_label, roi_bitmap in self._roi.items():
             plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
             self._images_algorithm_input[marker_label] = plot_image_roi_applied
 
         logger.info(f"ROI successfully applied")
 
-
     def run_matching(self) -> dict[str, ArrayNxM]:
         if not self.markers:
             raise ValueError(f"You have not selected any markers")
 
         for marker_label, marker_image in self.markers.items():
-            
+
             plot_image_to_process = self._images_algorithm_input[marker_label]
-            
+
             plot_image_to_process = self._preprocess_plot_image(plot_image_to_process)
             template_image, template_mask = self._preprocess_template(marker_image)
             self.markers[marker_label] = template_image
@@ -108,15 +103,12 @@ class Plot:
 
         return self._correlation_maps
 
-
     def draw(self):
         draw_image(self.data)
-
 
     def draw_region_of_interest(self, marker: str) -> None:
         draw_image(self.data)
         draw_ROI(self._roi[marker])
-
 
     def _init_roi(self) -> None:
 
@@ -128,8 +120,6 @@ class Plot:
         for marker_label in self.markers.keys():
             self._roi[marker_label] = np.copy(roi_array)
             self._images_algorithm_input[marker_label] = np.copy(self.data)
-
-
 
     @staticmethod
     def _match_single_marker(

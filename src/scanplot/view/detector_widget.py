@@ -4,8 +4,7 @@ from ipywidgets import VBox, fixed
 
 from scanplot.core.detector import Detector
 from scanplot.plotting import draw_points_on_image
-from scanplot.types import ImageLike, ArrayNx2
-
+from scanplot.types import ArrayNx2, ImageLike
 
 
 class DetectorWidgetCombined:
@@ -13,7 +12,9 @@ class DetectorWidgetCombined:
         self.plot = plot
 
         self._marker_labels = self.plot.markers.keys()
-        self._detector_widget_objects = [DetectorWidget(self.plot, marker=m) for m in self._marker_labels]
+        self._detector_widget_objects = [
+            DetectorWidget(self.plot, marker=m) for m in self._marker_labels
+        ]
 
     def apply_widget_settings(
         self,
@@ -31,24 +32,24 @@ class DetectorWidgetCombined:
             )
 
     def widget(self):
-      
-        detector_widgets = [widget_object.widget() for widget_object in self._detector_widget_objects]
+
+        detector_widgets = [
+            widget_object.widget() for widget_object in self._detector_widget_objects
+        ]
 
         combined_detector_widget = ipywidgets.Tab(detector_widgets)
         for i in range(len(self._marker_labels)):
             combined_detector_widget.set_title(i, f"marker{i+1}")
-        
+
         return combined_detector_widget
-    
 
     def get_detections(self) -> dict[str, ArrayNx2]:
         all_detections = dict()
-        for marker_label, widget_object in zip(self._marker_labels, self._detector_widget_objects):
+        for marker_label, widget_object in zip(self._marker_labels, self._detector_widget_objects):  # fmt: skip
             points = widget_object.get_detections()
             all_detections[marker_label] = points
-        
-        return all_detections
 
+        return all_detections
 
 
 class DetectorWidget:
@@ -62,7 +63,6 @@ class DetectorWidget:
         self._marker_size: int = 60
         self._marker_color: str = "yellow"
         self._marker_type: str = "*"
-
 
     def apply_widget_settings(
         self,
@@ -79,7 +79,6 @@ class DetectorWidget:
             self._marker_color = marker_color
         if marker_type:
             self._marker_type = marker_type
-
 
     def widget(self):
         widget = ipywidgets.interactive(
@@ -141,7 +140,7 @@ class DetectorWidget:
         points_num_slider_value: float,
         points_density_slider_value: float,
     ) -> None:
-        
+
         self.detector.points_num = points_num_slider_value
         self.detector.points_density = points_density_slider_value
         points = self.detector.detect_points()

@@ -3,8 +3,8 @@ import numpy as np
 from ipywidgets import HBox, VBox, fixed
 
 from scanplot.plotting import draw_axes_mapping_lines
-
 from scanplot.types import ImageLike
+
 
 class CoordinatesMapperWidget:
     def __init__(self, plot_image: ImageLike):
