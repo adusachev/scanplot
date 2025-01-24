@@ -17,7 +17,7 @@ class Detector:
         marker: str,
     ):
         self.template = plot.markers[marker]
-        self.correlation_map = plot.correlation_maps[marker]
+        self.correlation_map = plot._correlation_maps[marker]
         self.marker_label = marker
 
         self.points_num: float = 20

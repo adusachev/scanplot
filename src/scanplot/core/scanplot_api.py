@@ -116,7 +116,6 @@ class Plot:
 
 
     def _init_roi(self) -> None:
-        roi = dict()
 
         if self.n_channels == 3:
             roi_array = np.zeros_like(self.data[:, :, 0]) + 1
@@ -124,9 +123,9 @@ class Plot:
             roi_array = np.zeros_like(self.data) + 1
 
         for marker_label in self.markers.keys():
-            roi[marker_label] = np.copy(roi_array)
+            self._roi[marker_label] = np.copy(roi_array)
+            self._images_algorithm_input[marker_label] = np.copy(self.data)
 
-        self._roi = roi
 
 
     @staticmethod
