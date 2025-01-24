@@ -62,7 +62,7 @@ class Plot:
         self.markers = dict(zip(marker_labels, marker_images))
 
         self._init_roi()
-        
+
         logger.info(f"Marker templates successfully extracted from plot image")
 
     def apply_roi(self, roi_bboxes: list[dict]) -> None:
@@ -72,12 +72,17 @@ class Plot:
         for roi_label in roi_bboxes_by_label.keys():
             bboxes_list = roi_bboxes_by_label[roi_label]
             roi_bitmap = bboxes_to_roi(image=self.data, roi_bboxes=bboxes_list)
-            plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
+            # plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
 
-            res = re.search("marker\d+", roi_label)
+            res = re.search("marker\d+", roi_label)  # TODO: rework this in future
             marker_label = res.group(0)
-            self._images_algorithm_input[marker_label] = plot_image_roi_applied
+            # self._images_algorithm_input[marker_label] = plot_image_roi_applied
             self._roi[marker_label] = roi_bitmap
+
+        for marker_label, roi_bitmap in self._roi.items():
+            plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
+            self._images_algorithm_input[marker_label] = plot_image_roi_applied
+
 
     def run_matching(self) -> dict[str, ArrayNxM]:
         # correlation_maps = dict()
