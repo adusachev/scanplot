@@ -112,6 +112,7 @@ plot image source: [3]
 ## Algorithm results examples (not successful cases)
 
 
+
 ![](./docs/images/algorithm_results_examples_plot_62.png)
 
 
