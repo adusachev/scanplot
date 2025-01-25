@@ -48,6 +48,34 @@ Input data that is **not supported**:
 
 Detailed information about installation and usage can be found in the [user documentation](https://github.com/adusachev/scanplot/blob/master/docs/user_manual.md).
 
+
+### Quickstart with Docker
+
+
+1) Clone repository:
+```sh
+git clone https://github.com/adusachev/scanplot.git <REPO>
+cd <REPO>
+```
+
+Add your data (plot images) to `<REPO>/datasets/`, so that images can be accessed from inside the Docker container.
+
+
+3) Start Docker container:
+```sh
+docker compose up -d
+```
+
+4) Go to http://localhost:8888 and run notebook `main.ipynb`
+
+
+Stop Docker container:
+```sh
+docker compose down
+```
+
+
+
 ---
 
 ## Algorithm results examples (successful cases)
