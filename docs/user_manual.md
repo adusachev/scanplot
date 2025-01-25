@@ -22,7 +22,7 @@
 At the moment, the algorithm does not have a graphical interface, it can be tested in Jupyter Notebook.
 
 
-#### Way 1: Running in Docker (recommended for quickstart)
+### Way 1: Running in Docker (recommended for quickstart)
 
 **Step 1:** Clone repository
 ```sh
@@ -47,7 +47,7 @@ docker compose down
 
 ---
 
-#### Way 2: Running locally
+### Way 2: Running locally
 
 
 **Step 0:** Make sure that you have a required python version (> 3.11, < 3.12):
@@ -89,7 +89,7 @@ poetry install
 ## Usage
 
 
-#### Marker selection
+### Marker selection
 
 You can interactively select the markers that you want to detect on the plot image.
 
@@ -102,7 +102,7 @@ You can interactively select the markers that you want to detect on the plot ima
 ---
 
 
-#### ROI selection
+### ROI selection
 
 For each choosen marker you can select its own region of interest – the area of the image where detections are allowed.
 
@@ -111,7 +111,7 @@ For each choosen marker you can select its own region of interest – the area o
 ---
 
 
-#### Detector
+### Detector
 
 
 The detector operates in semi-automatic mode.
@@ -135,7 +135,7 @@ The impact of these parameters on the final result is shown below:
 
 ---
 
-#### Mapping coordinates
+### Mapping coordinates
 
 After applying the detector, you obtain the marker coordinates in **pixels**.
 
