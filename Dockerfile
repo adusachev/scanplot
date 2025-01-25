@@ -2,12 +2,7 @@ FROM python:3.11.2-slim
 
 USER root
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y ffmpeg libsm6 libxext6
+RUN apt-get update && apt-get install -y python3-opencv
 
 RUN mkdir -p /app/examples
 RUN mkdir -p /app/src
