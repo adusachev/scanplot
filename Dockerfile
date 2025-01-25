@@ -7,16 +7,19 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /app/
+RUN apt-get update && apt-get install -y ffmpeg libsm6 libxext6
+
+RUN mkdir -p /app/examples
+RUN mkdir -p /app/src
 WORKDIR /app
 
 COPY requirements.txt /app/
 
 RUN pip install notebook
-# RUN pip install -r requirements.txt 
+RUN pip install -r requirements.txt 
 
 COPY src /app/src
-COPY examples /app/examples
+COPY examples/main.ipynb /app/examples/main.ipynb
 
 EXPOSE 8888
 
