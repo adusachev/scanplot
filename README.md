@@ -32,8 +32,8 @@ Scatter plot may have several marker types of any shape and color.
 
 
 Input data that is **not supported**:
-- markers with gradient color
-- markers with alpha channel
+- markers with color gradient
+- semi-transparent markers
 - markers of the same type but with different sizes
 
 
@@ -61,12 +61,12 @@ cd <REPO>
 Add your data (plot images) to `<REPO>/datasets/`, so that images can be accessed from inside the Docker container.
 
 
-3) Start Docker container:
+2) Start Docker container:
 ```sh
 docker compose up -d
 ```
 
-4) Go to http://localhost:8888 and run notebook `main.ipynb`
+3) Go to http://localhost:8888 and run notebook `main.ipynb`
 
 
 Stop Docker container:
