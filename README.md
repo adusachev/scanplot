@@ -39,49 +39,14 @@ Input data that is **not supported**:
 
 ![](./docs/images/data_requirements.png)
 
----
 
-## Dependencies
-
-scanplot requires:
-- Python (> 3.11, < 3.12)
-
-
-If you don't have the required python version, you can install it using [pyenv](https://github.com/pyenv/pyenv).
 
 
 ---
 
-## Usage
+## Installation & Usage
 
-At the moment, the algorithm does not have a graphical interface, it can be tested in Jupyter Notebook.
-
-**Step 1:** Clone repo
-```sh
-git clone https://github.com/adusachev/scanplot.git <REPO>
-cd <REPO>
-```
-
-**Step 2:** Create virtual environment and install dependencies
-
-with `pip`:
-```sh
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-with `poetry`:
-```sh
-poetry env use python3
-poetry shell
-poetry install
-```
-
-**Step 3:** Open Jupyter Notebook in created virtual environment
-
-**Step 4:** Run notebook `<REPO>/examples/main.ipynb`
-
-More detailed information about usage can be found in the [user documentation](https://github.com/adusachev/scanplot/blob/master/docs/user_manual.md).
+Detailed information about installation and usage can be found in the [user documentation](https://github.com/adusachev/scanplot/blob/master/docs/user_manual.md).
 
 ---
 
@@ -93,14 +58,16 @@ plot image source: [1]
 
 <br/><br/>
 
-![](./docs/images/algorithm_results_examples_plot_67.png)
-plot image source: [2]
+![](./docs/images/algorithm_results_examples_plot_107.png)
+plot image source: [5]
 
 
 <br/><br/>
 
-![](./docs/images/algorithm_results_examples_plot_107.png)
-plot image source: [5]
+
+![](./docs/images/algorithm_results_examples_plot_67.png)
+plot image source: [2]
+
 
 <br/><br/>
 
