@@ -2,7 +2,7 @@ from enum import Enum
 
 import numpy as np
 
-from scanplot.view.coords_mapper_widget import CoordinatesMapperWidget
+from scanplot.types import ArrayN, ConverterParameters
 
 
 class AxisType(Enum):
@@ -11,19 +11,19 @@ class AxisType(Enum):
 
 
 class CoordinatesConverter:
-    def __init__(self):
-        self.x_min_px: int = None
-        self.x_max_px: int = None
-        self.y_min_px: int = None
-        self.y_max_px: int = None
+    def __init__(self, params: ConverterParameters):
+        self.x_min_px: int = params.x_min_px
+        self.x_max_px: int = params.x_max_px
+        self.y_min_px: int = params.y_min_px
+        self.y_max_px: int = params.y_max_px
 
-        self.x_min_factual: float = None
-        self.x_max_factual: float = None
-        self.y_min_factual: float = None
-        self.y_max_factual: float = None
+        self.x_min_factual: float = params.x_min_factual
+        self.x_max_factual: float = params.x_max_factual
+        self.y_min_factual: float = params.y_min_factual
+        self.y_max_factual: float = params.y_max_factual
 
-        self.x_axis_type: AxisType = None
-        self.y_axis_type: AxisType = None
+        self.x_axis_type = AxisType(params.x_axis_type)
+        self.y_axis_type = AxisType(params.y_axis_type)
 
     def from_pixel(
         self, x_pixel: int | np.ndarray, y_pixel: int | np.ndarray
@@ -40,48 +40,6 @@ class CoordinatesConverter:
             y_factual = self._convert_y_axis_logscale(y_pixel)
 
         return x_factual, y_factual
-
-    def set_parameters(
-        self,
-        x_min_px: int,
-        x_max_px: int,
-        y_min_px: int,
-        y_max_px: int,
-        x_min_factual: float,
-        x_max_factual: float,
-        y_min_factual: float,
-        y_max_factual: float,
-        x_axis_type: str,
-        y_axis_type: str,
-    ) -> None:
-        self.x_min_px = x_min_px
-        self.x_max_px = x_max_px
-        self.y_min_px = y_min_px
-        self.y_max_px = y_max_px
-
-        self.x_min_factual = x_min_factual
-        self.x_max_factual = x_max_factual
-        self.y_min_factual = y_min_factual
-        self.y_max_factual = y_max_factual
-
-        self.x_axis_type = AxisType(x_axis_type)
-        self.y_axis_type = AxisType(y_axis_type)
-
-    def import_parameters_from_mapper(self, mapper: CoordinatesMapperWidget) -> None:
-        if not mapper._is_valid:
-            raise ValueError("Mapper is not valid, check X_min, X_max, Y_min, Y_max")
-        self.x_min_px = mapper.x_slider.value[0]
-        self.x_max_px = mapper.x_slider.value[1]
-        self.y_min_px = mapper.image_height - mapper.y_slider.value[0]
-        self.y_max_px = mapper.image_height - mapper.y_slider.value[1]
-
-        self.x_min_factual = mapper.x_min_widget.value
-        self.x_max_factual = mapper.x_max_widget.value
-        self.y_min_factual = mapper.y_min_widget.value
-        self.y_max_factual = mapper.y_max_widget.value
-
-        self.x_axis_type = AxisType(mapper.x_axis_type_dropdown.value)
-        self.y_axis_type = AxisType(mapper.y_axis_type_dropdown.value)
 
     def _convert_x_axis_linear(self, x_pixel: int) -> float:
         """

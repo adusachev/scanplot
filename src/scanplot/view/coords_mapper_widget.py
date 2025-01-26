@@ -3,7 +3,7 @@ import numpy as np
 from ipywidgets import HBox, VBox, fixed
 
 from scanplot.plotting import draw_axes_mapping_lines
-from scanplot.types import ImageLike
+from scanplot.types import ConverterParameters, ImageLike
 
 
 class CoordinatesMapperWidget:
@@ -84,6 +84,21 @@ class CoordinatesMapperWidget:
         box_final = HBox([box2, box3])
 
         return box_final
+
+    def export_parameters(self) -> ConverterParameters:
+        params = ConverterParameters(
+            x_min_px=self.x_slider.value[0],
+            x_max_px=self.x_slider.value[1],
+            y_min_px=self.image_height - self.y_slider.value[0],
+            y_max_px=self.image_height - self.y_slider.value[1],
+            x_min_factual=self.x_min_widget.value,
+            x_max_factual=self.x_max_widget.value,
+            y_min_factual=self.y_min_widget.value,
+            y_max_factual=self.y_max_widget.value,
+            x_axis_type=self.x_axis_type_dropdown.value,
+            y_axis_type=self.y_axis_type_dropdown.value,
+        )
+        return params
 
     def _get_x_slider(self):
         return ipywidgets.IntRangeSlider(
