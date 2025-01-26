@@ -2,18 +2,38 @@ import cv2 as cv
 import numpy as np
 from jupyter_bbox_widget import BBoxWidget
 
+from scanplot.types import ImageLike
 
-class MarkerSelectorBBoxWidget(BBoxWidget):
-    def __init__(self, image_data: np.ndarray, markers_number: int):
+
+class MarkerSelectorWidget(BBoxWidget):
+    def __init__(
+        self,
+        image_data: ImageLike,
+        markers_number: int,
+        fig_size: int = 10,
+    ):
         assert markers_number >= 1, "Number of markers should be >= 1"
         self.image_data = image_data
         self.markers_number = markers_number
 
+        self._marker_labels: list[str] = [
+            f"marker{i+1}" for i in range(self.markers_number)
+        ]
+        self._fig_size = fig_size
+
         super().__init__(
             hide_buttons=True,
-            classes=[f"marker{i+1}" for i in range(self.markers_number)],
+            classes=self._marker_labels,
             image_bytes=cv.imencode(".png", self.image_data)[1].tobytes(),
+            layout={
+                "width": f"{self._fig_size_px}px",
+                "height": f"{self._fig_size_px}px",
+            },
         )
+
+    @property
+    def _fig_size_px(self) -> int:
+        return 50 * self._fig_size
 
     def widget(self):
         return self
