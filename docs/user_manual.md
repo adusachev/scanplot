@@ -104,9 +104,13 @@ You can interactively select the markers that you want to detect on the plot ima
 
 ### ROI selection
 
-For each choosen marker you can select its own region of interest – the area of the image where detections are allowed.
+For each choosen marker you can select its own region of interest (ROI) – the area of the image where detections are allowed.
 
 ![](./images/roi_selection_merged.gif)
+
+When a plot image has multiple markers, the ROI for each marker is selected on a separate tab:
+
+![](./images/roi_selection_multiple_markers.gif)
 
 ---
 
@@ -117,7 +121,7 @@ For each choosen marker you can select its own region of interest – the area o
 The detector operates in semi-automatic mode.
 You need to vary the detector parameters and choose the best result.
 
-![](./images/interacrion_new.gif)
+![](./images/detector_interaction.gif)
 
 
 
