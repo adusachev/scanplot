@@ -40,7 +40,6 @@ function render({model, el}) {
     // Create image object
     const backgroundImage = new Image();
     backgroundImage.src = model.get('_image_data');
-    // backgroundImage.src = 'https://cdnstatic.rg.ru/uploads/images/183/59/35/iStock-476244562.jpg'; // Replace with your image URL
 
 
     // When the image is loaded, start drawing

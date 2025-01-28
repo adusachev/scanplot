@@ -12,9 +12,9 @@ import matplotlib.cm as cm
 import cv2 as cv
 
 
-class CanvasWidget(anywidget.AnyWidget):
+class MapperCanvasWidget(anywidget.AnyWidget):
     # js code
-    _esm = Path(__file__).parent / 'canvas_simple.js'
+    _esm = Path(__file__).parent / 'canvas_image_lines.js'
 
     # lines positions
     vline_left = traitlets.Float().tag(sync=True)
