@@ -2,3 +2,4 @@ from .coords_mapper_widget import CoordinatesMapperWidget
 from .detector_widget import DetectorWidget, DetectorWidgetCombined
 from .marker_selector_widget import MarkerSelectorWidget
 from .roi_selector_widget import ROISelectorBaseWidget, ROISelectorCombinedWidget
+from .canvas_widget import CanvasWidget

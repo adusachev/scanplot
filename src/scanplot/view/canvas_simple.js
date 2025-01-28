@@ -7,10 +7,10 @@ function render({model, el}) {
 
 
     // Initial positions of lines
-    let vertLine1X = 100;
-    let vertLine2X = 300;
-    let horLine1Y = 100;
-    let horLine2Y = 300;
+    let vertLine1X = model.get('vline_left');
+    let vertLine2X = model.get('vline_right');
+    let horLine1Y = model.get('hline_upper');
+    let horLine2Y = model.get('hline_lower');
 
     let isDragging = null; // Which line is being dragged (1 = vertLine1, 2 = vertLine2, 3 = horLine1, 4 = horLine2)
     let lastMouseX = 0; // To store the previous mouse position
@@ -31,7 +31,7 @@ function render({model, el}) {
 
     // Create image object
     const backgroundImage = new Image();
-    backgroundImage.src = model.get('image_data');
+    backgroundImage.src = model.get('_image_data');
     // backgroundImage.src = 'https://cdnstatic.rg.ru/uploads/images/183/59/35/iStock-476244562.jpg'; // Replace with your image URL
 
     // Set the scale factor (default to 1, meaning no scaling)
@@ -147,19 +147,19 @@ function render({model, el}) {
       // Check if the mouse is near any vertical line
       if (Math.abs(mouseX - vertLine1X * scaleFactor) < 5) {
         isDragging = 1; // Dragging vertical line 1
-        canvas.style.cursor = 'grabbing'; // Change cursor when dragging
+        canvas.style.cursor = 'ew-resize'; // Change cursor when dragging
       } else if (Math.abs(mouseX - vertLine2X * scaleFactor) < 5) {
         isDragging = 2; // Dragging vertical line 2
-        canvas.style.cursor = 'grabbing'; // Change cursor when dragging
+        canvas.style.cursor = 'ew-resize'; // Change cursor when dragging
       }
 
       // Check if the mouse is near any horizontal line
       if (Math.abs(mouseY - horLine1Y * scaleFactor) < 5) {
         isDragging = 3; // Dragging horizontal line 1
-        canvas.style.cursor = 'grabbing'; // Change cursor when dragging
+        canvas.style.cursor = 'ns-resize'; // Change cursor when dragging
       } else if (Math.abs(mouseY - horLine2Y * scaleFactor) < 5) {
         isDragging = 4; // Dragging horizontal line 2
-        canvas.style.cursor = 'grabbing'; // Change cursor when dragging
+        canvas.style.cursor = 'ns-resize'; // Change cursor when dragging
       }
     });
 
@@ -189,12 +189,20 @@ function render({model, el}) {
         // Prevent lines from swapping or overlapping
         if (isDragging === 1 && vertLine1X + dx / scaleFactor < vertLine2X) {
           vertLine1X += dx / scaleFactor; // Move vertical line 1
+          model.set("vline_left", vertLine1X);
+          model.save_changes();
         } else if (isDragging === 2 && vertLine2X + dx / scaleFactor > vertLine1X) {
           vertLine2X += dx / scaleFactor; // Move vertical line 2
+          model.set("vline_right", vertLine2X);
+          model.save_changes();
         } else if (isDragging === 3 && horLine1Y + dy / scaleFactor < horLine2Y) {
           horLine1Y += dy / scaleFactor; // Move horizontal line 1
+          model.set("hline_upper", horLine1Y);
+          model.save_changes();
         } else if (isDragging === 4 && horLine2Y + dy / scaleFactor > horLine1Y) {
           horLine2Y += dy / scaleFactor; // Move horizontal line 2
+          model.set("hline_lower", horLine2Y);
+          model.save_changes();
         }
 
         // Update the last mouse position for the next move
