@@ -1,5 +1,5 @@
 from .coords_mapper_widget import CoordinatesMapperWidget
 from .detector_widget import DetectorWidget, DetectorWidgetCombined
+from .mapper_js_widget import MapperCanvasWidget
 from .marker_selector_widget import MarkerSelectorWidget
 from .roi_selector_widget import ROISelectorBaseWidget, ROISelectorCombinedWidget
-from .mapper_js_widget import MapperCanvasWidget

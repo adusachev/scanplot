@@ -1,20 +1,15 @@
-from pathlib import Path
-from io import BytesIO
 import base64
-from PIL import Image
+from pathlib import Path
 
 import anywidget
-import traitlets
-import numpy as np
-
-import matplotlib.cm as cm
-
 import cv2 as cv
+import numpy as np
+import traitlets
 
 
 class MapperCanvasWidget(anywidget.AnyWidget):
     # js code
-    _esm = Path(__file__).parent / 'canvas_image_lines.js'
+    _esm = Path(__file__).parent / "canvas_image_lines.js"
 
     # lines positions
     vline_left = traitlets.Float().tag(sync=True)
@@ -40,13 +35,11 @@ class MapperCanvasWidget(anywidget.AnyWidget):
     # marker_color
     _marker_color = traitlets.Unicode("green").tag(sync=True)
 
-
     def set_image(self, image: np.ndarray) -> None:
         self._image_data = image_to_base64str(image)
 
         self._init_lines_positions(image)
 
-    
     def apply_widget_settings(
         self,
         fig_size: float = 8,
@@ -61,12 +54,11 @@ class MapperCanvasWidget(anywidget.AnyWidget):
         self._marker_size = marker_size
         self._marker_color = marker_color
 
-
     def _init_lines_positions(self, image: np.ndarray) -> None:
         image_height = image.shape[0]
         image_width = image.shape[1]
         gap_size_px = 50
-        
+
         self.vline_left = image_width // 2 - gap_size_px
         self.vline_right = image_width // 2 + gap_size_px
 
@@ -74,14 +66,11 @@ class MapperCanvasWidget(anywidget.AnyWidget):
         self.hline_upper = image_height // 2 - gap_size_px
 
 
-
-
 def image_to_base64str(image: np.ndarray) -> str:
 
-    retval, buffer_img = cv.imencode('.png', image)
+    retval, buffer_img = cv.imencode(".png", image)
     image_base64 = base64.b64encode(buffer_img)
 
     image_base64_str = "data:image/png;base64," + image_base64.decode()
 
     return image_base64_str
-
