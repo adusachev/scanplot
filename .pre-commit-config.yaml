@@ -4,7 +4,7 @@ repos:
       - id: ipynb-cleaner
         name: Notebook Output Cleaner
         description: This hook clears Jupyter Notebook output and metadata
-        entry: ./scripts/ipynb-fmt.sh
+        entry: ./scripts/ipynb-cleaner.sh
         language: script
         types: [file]
 
