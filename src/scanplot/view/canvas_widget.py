@@ -16,34 +16,50 @@ class CanvasWidget(anywidget.AnyWidget):
     # js code
     _esm = Path(__file__).parent / 'canvas_simple.js'
 
+    # lines positions
+    vline_left = traitlets.Float().tag(sync=True)
+    vline_right = traitlets.Float().tag(sync=True)
+    hline_lower = traitlets.Float().tag(sync=True)
+    hline_upper = traitlets.Float().tag(sync=True)
+
     # image
     _image_data = traitlets.Unicode().tag(sync=True)
 
-    # figsize
-    _figsize = traitlets.Float(1).tag(sync=True)
+    # scale_factor is responsible for figsize
+    _scale_factor = traitlets.Float(0.8).tag(sync=True)
 
     # line_width
     _line_width = traitlets.Float(1).tag(sync=True)
 
     # line_color
-    _line_color = traitlets.Unicode().tag(sync=True)
+    _line_color = traitlets.Unicode("red").tag(sync=True)
 
     # marker_size
-    _line_width = traitlets.Float(1).tag(sync=True)
+    _marker_size = traitlets.Float(6).tag(sync=True)
 
     # marker_color
-    _marker_color = traitlets.Unicode().tag(sync=True)
-
-    vline_left = traitlets.Float().tag(sync=True)
-    vline_right = traitlets.Float().tag(sync=True)
-    hline_lower = traitlets.Float().tag(sync=True)
-    hline_upper = traitlets.Float().tag(sync=True)
+    _marker_color = traitlets.Unicode("green").tag(sync=True)
 
 
     def set_image(self, image: np.ndarray) -> None:
         self._image_data = image_to_base64str(image)
 
         self._init_lines_positions(image)
+
+    
+    def apply_widget_settings(
+        self,
+        fig_size: float = 8,
+        line_width: float = 1,
+        line_color: str = "red",
+        marker_size: float = 6,
+        marker_color: str = "green",
+    ) -> None:
+        self._scale_factor = fig_size * 0.1
+        self._line_width = line_width
+        self._line_color = line_color
+        self._marker_size = marker_size
+        self._marker_color = marker_color
 
 
     def _init_lines_positions(self, image: np.ndarray) -> None:
@@ -56,20 +72,10 @@ class CanvasWidget(anywidget.AnyWidget):
 
         self.hline_lower = image_height // 2 + gap_size_px
         self.hline_upper = image_height // 2 - gap_size_px
-        
 
 
-    def apply_widget_settings(self, fig_size: float) -> None:
-        self._figsize = fig_size
 
 
-# def str2array(base64_str: str):
-#     base64_str = base64_str.split(",")[1] if "," in base64_str else base64_str
-#     image_bytes = base64.b64decode(base64_str)
-#     return np.array(Image.open(BytesIO(image_bytes)))
-
-
-# TODO: move to utils    
 def image_to_base64str(image: np.ndarray) -> str:
 
     retval, buffer_img = cv.imencode('.png', image)

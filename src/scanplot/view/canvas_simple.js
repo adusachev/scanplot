@@ -5,6 +5,9 @@ function render({model, el}) {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
+    let isDragging = null; // Which line is being dragged (1 = vertLine1, 2 = vertLine2, 3 = horLine1, 4 = horLine2)
+    let lastMouseX = 0; // To store the previous mouse position
+    let lastMouseY = 0;
 
     // Initial positions of lines
     let vertLine1X = model.get('vline_left');
@@ -12,16 +15,21 @@ function render({model, el}) {
     let horLine1Y = model.get('hline_upper');
     let horLine2Y = model.get('hline_lower');
 
-    let isDragging = null; // Which line is being dragged (1 = vertLine1, 2 = vertLine2, 3 = horLine1, 4 = horLine2)
-    let lastMouseX = 0; // To store the previous mouse position
-    let lastMouseY = 0;
+    // Intersections Marker Settings
+    const markerColor = model.get('_marker_color');
+    const markerSize = model.get('_marker_size');
 
-    const lineThickness = 1;
+    // Lines Style Settings
+    const lineThickness = model.get('_line_width');
+    const lineColor = model.get('_line_color');
+
+    // Set the scale factor (default to 1, meaning no scaling)
+    const scaleFactor = model.get('_scale_factor');
 
     // Configuration for intersection point markers
     const intersectionConfig = {
-      color: 'green',     // Intersection point color
-      size: 6,           // Intersection point size (radius for circle)
+      color: markerColor,     // Intersection point color
+      size: markerSize,           // Intersection point size (radius for circle)
       shape: 'circle'    // Intersection point shape ('circle' or 'cross')
     };
 
@@ -34,8 +42,6 @@ function render({model, el}) {
     backgroundImage.src = model.get('_image_data');
     // backgroundImage.src = 'https://cdnstatic.rg.ru/uploads/images/183/59/35/iStock-476244562.jpg'; // Replace with your image URL
 
-    // Set the scale factor (default to 1, meaning no scaling)
-    let scaleFactor = 1;
 
     // When the image is loaded, start drawing
     backgroundImage.onload = function() {
@@ -63,7 +69,7 @@ function render({model, el}) {
     function drawLines() {
       // Set the dashed style and red color for the lines
       ctx.setLineDash([5, 5]); // Make the lines dashed (5px dash, 5px gap)
-      ctx.strokeStyle = 'red'; // Set the line color to red
+      ctx.strokeStyle = lineColor; // Set the line color to red
       ctx.lineWidth = lineThickness; // Set the thickness of the lines scaled
 
       // Draw vertical lines
@@ -122,7 +128,7 @@ function render({model, el}) {
     function drawCaption() {
       // Draw caption "x1" next to the left vertical line
       ctx.font = "14px Arial"; // Set font style for the caption
-      ctx.fillStyle = "red"; // Set text color
+      ctx.fillStyle = lineColor; // Set text color (it is always same as line color)
       ctx.fillText("X1", vertLine1X * scaleFactor - 20, canvas.height - 10); // Draw "x1" next to the left vertical line
 
       // Draw caption "x2" next to the right vertical line
