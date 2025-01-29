@@ -1,4 +1,4 @@
-from .coords_mapper_widget import CoordinatesMapperWidget
+from .coords_mapper_widget import CartesianCoordsMapperWidget, CoordinatesMapperWidget
 from .detector_widget import DetectorWidget, DetectorWidgetCombined
 from .mapper_js_widget import MapperCanvasWidget
 from .marker_selector_widget import MarkerSelectorWidget
