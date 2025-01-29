@@ -146,10 +146,8 @@ After applying the detector, you obtain the marker coordinates in **pixels**.
 So the last step is to map pixel coordinates to factual chart coordinates.
 
 
-![](./images/mapping_coordinates.gif)
+![](./images/mapper_new_with_anywidget.gif)
 
 
-Key points in the mapper widget:
 
-![](./images/mapping.png)
 
