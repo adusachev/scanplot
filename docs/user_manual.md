@@ -1,5 +1,5 @@
 
-# Notes for users
+# User documentation
 
 
 ## Contents
@@ -91,7 +91,7 @@ poetry install
 
 ### Marker selection
 
-You can interactively select the markers that you want to detect on the plot image.
+You need to interactively select the markers that you want to detect on the plot image.
 
 
 
@@ -105,6 +105,12 @@ You can interactively select the markers that you want to detect on the plot ima
 ### ROI selection
 
 For each choosen marker you can select its own region of interest (ROI) – the area of the image where detections are allowed.
+
+This step is optional, but selecting ROI for each marker can significantly improve the final detection result.
+
+Selecting ROI is also useful to avoid detections in the area of legend.
+
+
 
 ![](./images/roi_selection_merged.gif)
 
