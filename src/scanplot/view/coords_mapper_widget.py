@@ -2,10 +2,10 @@ import ipywidgets
 import numpy as np
 from ipywidgets import HBox, VBox, fixed
 
-from .mapper_js_widget import MapperCanvasWidget
-
 from scanplot.plotting import draw_axes_mapping_lines
 from scanplot.types import ConverterParameters, ImageLike
+
+from .mapper_js_widget import MapperCanvasWidget
 
 
 class CartesianCoordsMapperWidget:
@@ -22,28 +22,26 @@ class CartesianCoordsMapperWidget:
         self._x_axis_type_dropdown = self._get_x_axis_type_dropdown()
         self._y_axis_type_dropdown = self._get_y_axis_type_dropdown()
 
-
     @property
     def _x1_pixel_position(self):
         return round(self._canvas_mapper_widget.vline_left)
-    
+
     @property
     def _x2_pixel_position(self):
         return round(self._canvas_mapper_widget.vline_right)
-    
+
     @property
     def _y1_pixel_position(self):
         return round(self._canvas_mapper_widget.hline_lower)
-    
+
     @property
     def _y2_pixel_position(self):
         return round(self._canvas_mapper_widget.hline_upper)
-    
+
     @property
     def _is_valid(self) -> bool:
         return (self._x1_widget.value != self._x2_widget.value) and \
             (self._y1_widget.value != self._y2_widget.value)  # fmt: skip
-
 
     def apply_widget_settings(
         self,
@@ -80,7 +78,7 @@ class CartesianCoordsMapperWidget:
         return box_final
 
     def export_parameters(self) -> ConverterParameters:
-        
+
         params = ConverterParameters(
             x_min_px=self._x1_pixel_position,
             x_max_px=self._x2_pixel_position,
@@ -95,12 +93,10 @@ class CartesianCoordsMapperWidget:
         )
         return params
 
-    
     def _init_canvas_mapper_widget(self):
         canvas_widget = MapperCanvasWidget()
         canvas_widget.set_image(self._image)
         return canvas_widget
-        
 
     @staticmethod
     def _get_x1_widget():
