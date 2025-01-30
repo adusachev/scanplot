@@ -38,11 +38,15 @@ Add your data (plot images) to `<REPO>/datasets/`, so that images can be accesse
 docker compose up -d
 ```
 
+This container runs a jupyter server with all application dependencies installed.
+A local directory `<REPO>/datasets/` is mounted into a container.
+
+
 **Step 3:** Go to http://localhost:8888 and run notebook `main.ipynb`
 
 <br/><br/>
 
-Other commands
+**Other commands**
 
 Stop Docker container:
 ```sh
