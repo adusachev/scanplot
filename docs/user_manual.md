@@ -40,9 +40,23 @@ docker compose up -d
 
 **Step 3:** Go to http://localhost:8888 and run notebook `main.ipynb`
 
+<br/><br/>
+
+Other commands
+
 Stop Docker container:
 ```sh
 docker compose down
+```
+
+Rebuild Docker image and start container
+```sh
+docker compose up -d --build
+```
+
+Remove Docker image:
+```sh
+docker rmi scanplot-jupyter:latest
 ```
 
 ---
