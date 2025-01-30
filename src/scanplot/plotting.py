@@ -6,16 +6,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Patch, Rectangle
 
+from scanplot.types import ArrayNx2, ArrayNxM, ImageLike
+
 logger = logging.getLogger(__name__)
 
 
-def draw_image(image: np.ndarray, alpha: float = 1) -> None:
+def draw_image(image: ImageLike, alpha: float = 1) -> None:
     plt.imshow(cv.cvtColor(image, cv.COLOR_BGR2RGB), alpha=alpha)
     plt.xticks([])
     plt.yticks([])
 
 
-def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
+def draw_points_on_canvas(points: ArrayNx2, image: ImageLike) -> None:
     x = points[:, 0]
     y = points[:, 1]
 
@@ -26,8 +28,8 @@ def draw_points_on_canvas(points: np.ndarray, image: np.ndarray) -> None:
 
 
 def draw_points_on_image(
-    points: np.ndarray,
-    image: np.ndarray,
+    points: ArrayNx2,
+    image: ImageLike,
     fig_size: int = 10,
     marker_size: int = 60,
     marker_color: str = "yellow",
@@ -79,7 +81,7 @@ def draw_bbox(
 def draw_axes_mapping_lines(
     y_pos: Tuple[int, int],
     x_pos: Tuple[int, int],
-    source_image: np.ndarray,
+    source_image: ImageLike,
     fig_size: int = 10,
     line_color: str = "red",
     key_points_marker_color: str = "green",
@@ -123,7 +125,7 @@ def draw_axes_mapping_lines(
     plt.yticks([])
 
 
-def draw_ROI(roi: np.ndarray) -> None:
+def draw_ROI(roi: ArrayNxM) -> None:
     """
     Draws a region of intrest.
     Converts bitmap array with ROI to RGB image where green color refers to ROI.

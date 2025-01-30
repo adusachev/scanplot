@@ -2,10 +2,12 @@ import logging
 
 import numpy as np
 
+from scanplot.types import ArrayNxM, ImageLike
+
 logger = logging.getLogger(__name__)
 
 
-def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:
+def replace_black_pixels(image_rgb: ImageLike, value: int = 10) -> ImageLike:
     """
     Replace all [0, 0, 0] pixels on RGB image with [value, value, value] pixels
     """
@@ -27,7 +29,7 @@ def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:
     return image
 
 
-def bboxes_to_roi(image: np.ndarray, roi_bboxes: list[dict]) -> np.ndarray:
+def bboxes_to_roi(image: ImageLike, roi_bboxes: list[dict]) -> ArrayNxM:
     """
     Creates ROI for image based on the list of bboxes.
 
@@ -72,7 +74,7 @@ def _restructure_bboxes(bboxes: list[dict]) -> dict[str, list]:
     return bboxes_by_label
 
 
-def _apply_roi(image: np.ndarray, roi: np.ndarray) -> np.ndarray:
+def _apply_roi(image: ImageLike, roi: ArrayNxM) -> ImageLike:
     """ """
     image_roi_applied = np.copy(image)
     restricted_area_indexes = np.where(roi == 0)

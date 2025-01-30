@@ -31,7 +31,7 @@ class Plot:
         self.markers: dict[str, ImageLike] = dict()
 
         self._marker_masks: dict[str, ArrayNxM] = dict()
-        self._roi: dict[str, ImageLike] = dict()
+        self._roi: dict[str, ArrayNxM] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
         self._correlation_maps: dict[str, ArrayNxM] = dict()
 
