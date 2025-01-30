@@ -5,18 +5,20 @@ import cv2 as cv
 import numpy as np
 import numpy_indexed as npi
 
+from scanplot.types import ArrayNx2, ArrayNxM, ImageLike
+
 logger = logging.getLogger(__name__)
 
 from .corr_map_operations import invert_correlation_map, normalize_map
 
 
 def template_match(
-    image: np.ndarray,
-    template: np.ndarray,
-    template_mask: np.ndarray,
+    image: ImageLike,
+    template: ImageLike,
+    template_mask: ArrayNxM,
     method_name: str = "cv.TM_SQDIFF_NORMED",
     norm_result: bool = False,
-) -> Tuple[np.ndarray, float]:
+) -> Tuple[ArrayNxM, float]:
     """
     Run opencv templateMatch.
     Return correlation map and maximum value on map.
@@ -40,8 +42,8 @@ def template_match(
 
 
 def detect_points(
-    convolution_map: np.ndarray, max_value: float, tolerance: float
-) -> np.ndarray:
+    convolution_map: ArrayNxM, max_value: float, tolerance: float
+) -> ArrayNx2:
 
     max_positions = np.where(np.isclose(convolution_map, max_value, atol=tolerance))
     y, x = max_positions
@@ -50,7 +52,7 @@ def detect_points(
     return points
 
 
-def find_tolerance_limit(convolution_map: np.ndarray) -> float:
+def find_tolerance_limit(convolution_map: ArrayNxM) -> float:
     tolerance_range = np.arange(0, 2, 0.001)
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(convolution_map)
 

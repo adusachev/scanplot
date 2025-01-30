@@ -3,10 +3,12 @@ from typing import List, Tuple
 
 import numpy as np
 
+from scanplot.types import ArrayNx2, ArrayNxM, ImageLike
+
 logger = logging.getLogger(__name__)
 
 
-def remove_nan_inf(map: np.ndarray) -> np.ndarray:
+def remove_nan_inf(map: ArrayNxM) -> ArrayNxM:
     """
     Replace all NaN and Inf values with zero values
 
@@ -22,7 +24,7 @@ def remove_nan_inf(map: np.ndarray) -> np.ndarray:
     return map2
 
 
-def invert_correlation_map(correlation_map: np.ndarray) -> np.ndarray:
+def invert_correlation_map(correlation_map: ArrayNxM) -> ArrayNxM:
     """
     Invert 2D array with float values
     """
@@ -30,13 +32,13 @@ def invert_correlation_map(correlation_map: np.ndarray) -> np.ndarray:
     return inverted_correlation_map
 
 
-def normalize_map(map: np.ndarray) -> np.ndarray:
+def normalize_map(map: ArrayNxM) -> ArrayNxM:
     return map / np.nanmax(map)
 
 
 def get_corr_map_maximums(
-    correlation_map: np.ndarray, treshold: float
-) -> Tuple[np.ndarray, int]:
+    correlation_map: ArrayNxM, treshold: float
+) -> Tuple[ArrayNx2, int]:
     """
     Return coordinades of points on 2D correlation map,
      which have value greater than given treshold
@@ -50,7 +52,7 @@ def get_corr_map_maximums(
 
 
 def get_first_N_maximums(
-    corr_map: np.ndarray, N: int
+    corr_map: ArrayNxM, N: int
 ) -> List[Tuple[float, Tuple[int, int]]]:
     """
     Return first N max elements values and indices in 2d map
