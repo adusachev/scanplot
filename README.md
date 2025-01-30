@@ -80,6 +80,7 @@ docker compose down
 ## New features development
 
 The algorithm is ready to use, but some features are still under development.
+
 So keep an eye out for updates.
 
 
