@@ -5,10 +5,12 @@ import cv2 as cv
 import numpy as np
 import skimage.measure
 
+from scanplot.types import ArrayNxM, ImageLike
+
 logger = logging.getLogger(__name__)
 
 
-def get_template_mask(template_image: np.ndarray):
+def get_template_mask(template_image: ImageLike) -> Tuple[ArrayNxM, float]:
     """
     Perform tresholding.
     If object of interest is black, recalculate treshold value and repeat tresholding.
@@ -25,7 +27,7 @@ def get_template_mask(template_image: np.ndarray):
         treshold_value = treshold_value / 2
         template_mask, _ = image_tresholding(template_image, treshold=treshold_value)
 
-    return template_mask
+    return template_mask, treshold_value
 
 
 def image_tresholding(

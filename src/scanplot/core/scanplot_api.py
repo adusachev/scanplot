@@ -31,6 +31,7 @@ class Plot:
         self.markers: dict[str, ImageLike] = dict()
 
         self._marker_masks: dict[str, ArrayNxM] = dict()
+        self._treshold_values: dict[str, float] = dict()
         self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
         self._correlation_maps: dict[str, ArrayNxM] = dict()
@@ -89,9 +90,10 @@ class Plot:
             plot_image_to_process = self._images_algorithm_input[marker_label]
 
             plot_image_to_process = self._preprocess_plot_image(plot_image_to_process)
-            template_image, template_mask = self._preprocess_template(marker_image)
+            template_image, template_mask, treshold_value = self._preprocess_template(marker_image)  # fmt: skip
             self.markers[marker_label] = template_image
             self._marker_masks[marker_label] = template_mask
+            self._treshold_values[marker_label] = treshold_value
 
             # pass plot image with applied ROI
             corr_map = self._match_single_marker(
@@ -145,8 +147,10 @@ class Plot:
         return correlation_map_with_hough
 
     @staticmethod
-    def _preprocess_template(template_image: ImageLike) -> tuple[ImageLike, ArrayNxM]:
-        template_mask_initial = get_template_mask(template_image)
+    def _preprocess_template(
+        template_image: ImageLike,
+    ) -> tuple[ImageLike, ArrayNxM, float]:
+        template_mask_initial, treshold_value = get_template_mask(template_image)
 
         template_image, template_mask = center_object_on_template_image(
             template_image, template_mask_initial
@@ -154,7 +158,7 @@ class Plot:
 
         template_image = replace_black_pixels(template_image, value=10)
 
-        return template_image, template_mask
+        return template_image, template_mask, treshold_value
 
     @staticmethod
     def _preprocess_plot_image(plot_image: ImageLike) -> ImageLike:
