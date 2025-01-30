@@ -18,7 +18,7 @@ def replace_black_pixels(image_rgb: np.ndarray, value: int = 10) -> np.ndarray:
         y, x = zero_indexes
         image[y, x, :] = value
     elif len(image.shape) == 2:
-        logger.warning("Image is 1-channel")
+        # logger.warning("Image is 1-channel")
         zero_indexes = np.where(image == 0)
         y, x = zero_indexes
         image[y, x] = value

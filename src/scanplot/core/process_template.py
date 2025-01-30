@@ -5,6 +5,8 @@ import cv2 as cv
 import numpy as np
 import skimage.measure
 
+from scanplot.types import ArrayNxM, ImageLike
+
 logger = logging.getLogger(__name__)
 
 
@@ -260,8 +262,8 @@ def extract_markers_from_image(
 
 
 def _get_black_pixels_proportion(
-    template_image: np.ndarray,
-    template_mask: np.ndarray,
+    template_image: ImageLike,
+    template_mask: ArrayNxM,
     black_pixel_treshold: int = 20,
 ) -> float:
     """
@@ -270,7 +272,10 @@ def _get_black_pixels_proportion(
 
     :param black_pixel_treshold: the value below which pixels are considered black
     """
-    template_grayscale = cv.cvtColor(template_image, cv.COLOR_BGR2GRAY)
+    if len(template_image.shape) == 3:
+        template_grayscale = cv.cvtColor(template_image, cv.COLOR_BGR2GRAY)
+    else:
+        template_grayscale = template_image
 
     assert np.all(np.unique(template_mask) == [0, 255]), "Mask is not valid"
     marker_pixels_indexes = np.where(template_mask == 255)
