@@ -9,13 +9,15 @@ from scanplot.types import ArrayNx2, ArrayNxM, ImageLike
 
 logger = logging.getLogger(__name__)
 
+from scanplot.types import ArrayNxM, ImageLike
+
 from .corr_map_operations import invert_correlation_map, normalize_map
 
 
 def template_match(
     image: ImageLike,
     template: ImageLike,
-    template_mask: ArrayNxM,
+    template_mask: ArrayNxM | None = None,
     method_name: str = "cv.TM_SQDIFF_NORMED",
     norm_result: bool = False,
 ) -> Tuple[ArrayNxM, float]:
@@ -25,7 +27,10 @@ def template_match(
     Normalize output map if required.
     """
     method = eval(method_name)
-    correlation_map = cv.matchTemplate(image, template, method, mask=template_mask)
+    if template_mask is not None:
+        correlation_map = cv.matchTemplate(image, template, method, mask=template_mask)
+    else:
+        correlation_map = cv.matchTemplate(image, template, method)
 
     if method in [cv.TM_SQDIFF, cv.TM_SQDIFF_NORMED]:
         logger.debug(
@@ -38,6 +43,7 @@ def template_match(
 
     if norm_result:
         correlation_map = normalize_map(correlation_map)
+
     return correlation_map, max_val
 
 
