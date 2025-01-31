@@ -18,6 +18,7 @@ from .process_template import (
     center_object_on_template_image,
     extract_markers_from_image,
     get_template_mask,
+    image_tresholding,
 )
 from .template_match import template_match
 
@@ -35,6 +36,7 @@ class Plot:
         self._roi: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
         self._correlation_maps: dict[str, ArrayNxM] = dict()
+        # self._correlation_maps_adjusted: dict[str, ArrayNxM] = dict()
 
     @property
     def n_channels(self) -> int:
@@ -88,8 +90,9 @@ class Plot:
         for marker_label, marker_image in self.markers.items():
 
             plot_image_to_process = self._images_algorithm_input[marker_label]
-
             plot_image_to_process = self._preprocess_plot_image(plot_image_to_process)
+            self._images_algorithm_input[marker_label] = plot_image_to_process
+
             template_image, template_mask, treshold_value = self._preprocess_template(marker_image)  # fmt: skip
             self.markers[marker_label] = template_image
             self._marker_masks[marker_label] = template_mask
@@ -102,6 +105,18 @@ class Plot:
                 marker_template_mask=template_mask,
             )
             self._correlation_maps[marker_label] = corr_map
+
+        # postprocess correlation maps
+        for marker_label, marker_image in self.markers.items():
+
+            corr_map_adjusted = self._postprocess_correlation_map(
+                correlation_map=self._correlation_maps[marker_label],
+                marker_treshold_value=self._treshold_values[marker_label],
+                plot_image_to_process=self._images_algorithm_input[marker_label],
+                marker_mask=self._marker_masks[marker_label],
+            )
+            # self._correlation_maps_adjusted[marker_label] = corr_map_adjusted
+            self._correlation_maps[marker_label] = corr_map_adjusted
 
         return self._correlation_maps
 
@@ -164,3 +179,45 @@ class Plot:
     def _preprocess_plot_image(plot_image: ImageLike) -> ImageLike:
         plot_image = replace_black_pixels(plot_image, value=10)
         return plot_image
+
+    @staticmethod
+    def _postprocess_correlation_map(
+        correlation_map: ArrayNxM,
+        marker_treshold_value: float | int,
+        plot_image_to_process: ImageLike,
+        marker_mask: ArrayNxM,
+    ) -> ArrayNxM:
+        """
+        Step to prevent detections in the area of the white background of the image.
+        Turns to zero corr map values on image background positions.
+
+        Background area on image is computed using tresholding with the same treshold value
+         that was used in template tresholding.
+
+        :param correlation_map: initial corr map
+        :param marker_treshold_value: treshold value from which template mask was calculated
+        :param plot_image_to_process: plot image after preprocessing steps
+        :param marker_mask: bitmap image with template mask
+        """
+        plot_image_mask, _ = image_tresholding(
+            image=plot_image_to_process, treshold=marker_treshold_value
+        )
+
+        assert np.all(np.unique(marker_mask) == [0, 255]), "Marker Mask is not correct bitmap"  # fmt: skip
+        assert np.all(np.unique(plot_image_mask) == [0, 255]), "Image Mask is not correct bitmap"  # fmt: skip
+
+        marker_mask = marker_mask / 255
+        plot_image_mask = plot_image_mask / 255
+        marker_mask = marker_mask.astype(np.uint8)
+        plot_image_mask = plot_image_mask.astype(np.uint8)
+
+        masks_correlation_map, _ = template_match(
+            image=plot_image_mask,
+            template=marker_mask,
+            method_name="cv.TM_CCORR",
+            norm_result=False,
+        )
+        masks_correlation_map_bitmap = (masks_correlation_map > 0.1).astype(np.float64)
+
+        correlation_map_adjusted = correlation_map * masks_correlation_map_bitmap
+        return correlation_map_adjusted
