@@ -22,7 +22,10 @@ class Detector:
 
     @property
     def corr_map_treshold(self) -> float:
-        return self.linear_parameter_transform(self.points_num, a=-0.01, b=1)
+        min_corr_map_treshold = 0.15  # from 0 to 1
+        a = (min_corr_map_treshold - 1) / 100
+        b = 1
+        return self.linear_parameter_transform(self.points_num, a=a, b=b)
 
     @property
     def iou_treshold(self) -> float:
