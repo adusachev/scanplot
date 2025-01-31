@@ -1,5 +1,6 @@
 import logging
 
+import cv2 as cv
 import numpy as np
 
 from scanplot.types import ArrayNxM, ImageLike
@@ -81,3 +82,10 @@ def _apply_roi(image: ImageLike, roi: ArrayNxM) -> ImageLike:
     image_roi_applied[restricted_area_indexes] = 255
 
     return image_roi_applied
+
+
+def invert_image(image: ImageLike) -> ImageLike:
+    if np.mean(image) > 150:
+        logger.warning("It seems that image has white background")
+
+    return cv.bitwise_not(image)

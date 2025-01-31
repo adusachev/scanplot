@@ -13,6 +13,8 @@
    - [ROI selection](#roi-selection)
    - [Detector](#detector)
    - [Mapping coordinates](#mapping-coordinates)
+ - [Notes](#notes)
+   - [Images with black background](#images-with-black-background)
 
 
 
@@ -175,3 +177,29 @@ So the last step is to map pixel coordinates to factual chart coordinates.
 
 
 
+---
+
+## Notes
+
+
+### Images with black background
+
+Images with a black background must be inverted before running algorithm steps.
+
+
+This can be done using the function `invert_image`:
+```python
+from scanplot.io import load_image
+from scanplot.core import Plot, invert_image
+
+image = load_image(plot_image_filepath)
+
+image_inv = invert_image(image)
+plot = Plot(image_inv)
+```
+
+Example:
+![](./images/invert_image.png)
+
+
+---
