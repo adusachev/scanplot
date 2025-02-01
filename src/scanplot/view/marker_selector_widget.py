@@ -19,21 +19,24 @@ class MarkerSelectorWidget(BBoxWidget):
         self._marker_labels: list[str] = [
             f"marker{i+1}" for i in range(self.markers_number)
         ]
+
+        # control widget size
         self._fig_size = fig_size
+        self._scaling_factor = fig_size / 10
+        h_image, w_image = image_data.shape[0], image_data.shape[1]
+        # add 120 to prevent hiding buttons
+        self._widget_height_px = int(h_image * self._scaling_factor) + 120
+        self._widget_width_px = int(w_image * self._scaling_factor)
 
         super().__init__(
             hide_buttons=True,
             classes=self._marker_labels,
             image_bytes=cv.imencode(".png", self.image_data)[1].tobytes(),
             layout={
-                "width": f"{self._fig_size_px}px",
-                "height": f"{self._fig_size_px}px",
+                "width": f"{self._widget_width_px}px",
+                "height": f"{self._widget_height_px}px",
             },
         )
-
-    @property
-    def _fig_size_px(self) -> int:
-        return 50 * self._fig_size
 
     def widget(self):
         return self
