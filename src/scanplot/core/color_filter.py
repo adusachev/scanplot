@@ -10,6 +10,43 @@ from scanplot.types import ArrayNx3, ArrayNxM, ImageLike
 logger = logging.getLogger(__name__)
 
 
+def get_dominant_marker_colors(marker_image: ImageLike, n_colors: int = 3) -> ArrayNx3:
+    """
+    Compute average values of dominant colors on image.
+
+    :param n_colors: number of colors that you want to extract from image
+    :return: array of pixels, e.g. [[1, 2, 3], [4, 5, 6]]
+    """
+    label_map = k_means(marker_image, n_clusters=n_colors)
+    image_mean_colors = average_image_colors(marker_image, label_map)
+    dominant_marker_colors = unique_image_pixels(image_mean_colors)
+
+    return dominant_marker_colors
+
+
+def filter_by_colors(
+    image: ImageLike,
+    colors: ArrayNx3,
+    color_delta: int,
+) -> ImageLike:
+    """
+    Perform image filrtation by given set of colors and given precision.
+    """
+    lower_bound_pixels, upper_bound_pixels = filtering_bounds(
+        pixels=colors,
+        color_delta=color_delta,
+    )
+    mask = get_filtering_mask(
+        image,
+        lower_bound_pixels,
+        upper_bound_pixels,
+    )
+
+    image_filtered = apply_image_mask(image, mask)
+
+    return image_filtered
+
+
 def k_means(image: ImageLike, n_clusters: int) -> ArrayNxM:
     img = np.copy(image)
 

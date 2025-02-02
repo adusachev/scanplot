@@ -6,6 +6,7 @@ import numpy as np
 from scanplot.plotting import draw_image, draw_ROI
 from scanplot.types import ArrayNxM, ImageLike
 
+from .color_filter import filter_by_colors, get_dominant_marker_colors
 from .corr_map_operations import normalize_map
 from .hough_transform import generalized_hough_transform
 from .preprocess import (
@@ -34,6 +35,7 @@ class Plot:
         self._marker_masks: dict[str, ArrayNxM] = dict()
         self._treshold_values: dict[str, float] = dict()
         self._roi: dict[str, ArrayNxM] = dict()
+        self._images_roi_applied: dict[str, ImageLike] = dict()
         self._images_algorithm_input: dict[str, ImageLike] = dict()
         self._correlation_maps: dict[str, ArrayNxM] = dict()
         # self._correlation_maps_adjusted: dict[str, ArrayNxM] = dict()
@@ -79,17 +81,23 @@ class Plot:
 
         for marker_label, roi_bitmap in self._roi.items():
             plot_image_roi_applied = _apply_roi(image=self.data, roi=roi_bitmap)
-            self._images_algorithm_input[marker_label] = plot_image_roi_applied
+            self._images_roi_applied[marker_label] = plot_image_roi_applied
+            # self._images_algorithm_input[marker_label] = plot_image_roi_applied
 
         logger.info(f"ROI successfully applied")
 
-    def run_matching(self) -> dict[str, ArrayNxM]:
+    def run_matching(
+        self,
+        filter_colors: bool = False,
+        color_delta: int = 60,
+    ) -> dict[str, ArrayNxM]:
         if not self.markers:
             raise ValueError(f"You have not selected any markers")
 
         for marker_label, marker_image in self.markers.items():
 
-            plot_image_to_process = self._images_algorithm_input[marker_label]
+            # plot_image_to_process = self._images_algorithm_input[marker_label]
+            plot_image_to_process = self._images_roi_applied[marker_label]
             plot_image_to_process = self._preprocess_plot_image(plot_image_to_process)
             self._images_algorithm_input[marker_label] = plot_image_to_process
 
@@ -98,9 +106,21 @@ class Plot:
             self._marker_masks[marker_label] = template_mask
             self._treshold_values[marker_label] = treshold_value
 
+            if filter_colors:
+                marker_dominant_colors = get_dominant_marker_colors(
+                    self.markers[marker_label],
+                    n_colors=3,
+                )
+                image_filtered = filter_by_colors(
+                    image=self._images_algorithm_input[marker_label],
+                    colors=marker_dominant_colors,
+                    color_delta=color_delta,
+                )
+                self._images_algorithm_input[marker_label] = image_filtered
+
             # pass plot image with applied ROI
             corr_map = self._match_single_marker(
-                plot_image=plot_image_to_process,
+                plot_image=self._images_algorithm_input[marker_label],
                 marker_template_image=template_image,
                 marker_template_mask=template_mask,
             )
