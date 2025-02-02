@@ -12,6 +12,7 @@ DType = TypeVar("DType", bound=np.generic)
 ArrayNxMx3 = Annotated[npt.NDArray[DType], Literal["N", "M", 3]]
 ArrayNxM = Annotated[npt.NDArray[DType], Literal["N", "M"]]
 ArrayNx2 = Annotated[npt.NDArray[DType], Literal["N", 2]]
+ArrayNx3 = Annotated[npt.NDArray[DType], Literal["N", 3]]
 ArrayN = Annotated[npt.NDArray[DType], Literal["N"]]
 
 ImageLike: TypeAlias = ArrayNxMx3 | ArrayNxM
