@@ -1,5 +1,6 @@
 import logging
 import re
+from typing import Literal
 
 import numpy as np
 
@@ -88,11 +89,24 @@ class Plot:
 
     def run_matching(
         self,
-        filter_colors: bool = False,
-        color_delta: int = 60,
+        mode: Literal["basic", "color", "binary"] = "basic",
+        color_delta: int = 100,
     ) -> dict[str, ArrayNxM]:
+        """
+        Computes correlation map for each marker.
+
+        :param mode: string, one of {'basic', 'color', 'binary'}
+            Matching operation mode.
+             'basic' - basic matching (template matching and hough transform)
+             'color' - perform image filtration by marker colors and then run basic matching
+             'binary' - perform image and marker binarization and then run basic matching
+                (useful for black and white images with dense areas of overlapping markers)
+        :param color_delta: color sensitivity in mode='color'
+        """
         if not self.markers:
             raise ValueError(f"You have not selected any markers")
+        if mode not in {"basic", "color", "binary"}:
+            raise ValueError("`mode` must be either 'basic' or 'color' or 'binary'")
 
         for marker_label, marker_image in self.markers.items():
 
@@ -106,7 +120,7 @@ class Plot:
             self._marker_masks[marker_label] = template_mask
             self._treshold_values[marker_label] = treshold_value
 
-            if filter_colors:
+            if mode == "color":
                 marker_dominant_colors = get_dominant_marker_colors(
                     self.markers[marker_label],
                     n_colors=3,
@@ -117,6 +131,21 @@ class Plot:
                     color_delta=color_delta,
                 )
                 self._images_algorithm_input[marker_label] = image_filtered
+
+            if mode == "binary":
+                template_image, _ = image_tresholding(
+                    image=self.markers[marker_label],
+                    treshold=self._treshold_values[marker_label],
+                    mask_value=255,
+                    object_value=10,
+                )
+                plot_image_binary, _ = image_tresholding(
+                    image=self._images_algorithm_input[marker_label],
+                    treshold=self._treshold_values[marker_label],
+                    mask_value=255,
+                    object_value=10,
+                )
+                self._images_algorithm_input[marker_label] = plot_image_binary
 
             # pass plot image with applied ROI
             corr_map = self._match_single_marker(
