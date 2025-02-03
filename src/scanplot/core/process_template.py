@@ -31,11 +31,11 @@ def get_template_mask(template_image: ImageLike) -> Tuple[ArrayNxM, float]:
 
 
 def image_tresholding(
-    image: np.ndarray,
+    image: ImageLike,
     treshold: int | None = None,
     mask_value: int = 0,
     object_value: int = 255,
-) -> np.ndarray:
+) -> Tuple[ArrayNxM, int]:
     """
     Perform Tresholding.
     Use mean tresholding if treshold value is not specified.
