@@ -91,6 +91,7 @@ class Plot:
         self,
         mode: Literal["basic", "color", "binary"] = "basic",
         color_delta: int = 100,
+        shape_factor: float = 0.6,
     ) -> dict[str, ArrayNxM]:
         """
         Computes correlation map for each marker.
@@ -101,7 +102,8 @@ class Plot:
              'color' - perform image filtration by marker colors and then run basic matching
              'binary' - perform image and marker binarization and then run basic matching
                 (useful for black and white images with dense areas of overlapping markers)
-        :param color_delta: color sensitivity in mode='color'
+        :param color_delta: color sensitivity, used only in in mode='color'
+        :param shape_factor: weight coefficient from 0 to inf, higher values give more preference to the shape of the marker than the color
         """
         if not self.markers:
             raise ValueError(f"You have not selected any markers")
@@ -152,6 +154,7 @@ class Plot:
                 plot_image=self._images_algorithm_input[marker_label],
                 marker_template_image=template_image,
                 marker_template_mask=template_mask,
+                shape_factor=shape_factor,
             )
             self._correlation_maps[marker_label] = corr_map
 
@@ -192,6 +195,7 @@ class Plot:
         plot_image: ImageLike,
         marker_template_image: ImageLike,
         marker_template_mask: ArrayNxM,
+        shape_factor: float,
     ) -> ArrayNxM:
         """
         Returns a correlation map
@@ -206,7 +210,7 @@ class Plot:
 
         assert correlation_map.shape == accumulator.shape
 
-        correlation_map_with_hough = correlation_map + 0.6 * accumulator
+        correlation_map_with_hough = correlation_map + shape_factor * accumulator
         correlation_map_with_hough = normalize_map(correlation_map_with_hough)
         return correlation_map_with_hough
 
