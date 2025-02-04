@@ -89,7 +89,7 @@ class Plot:
 
     def run_matching(
         self,
-        mode: Literal["basic", "color", "binary"] = "basic",
+        mode: Literal["basic", "color", "binary"] = "color",
         color_delta: int = 100,
         shape_factor: float = 0.6,
     ) -> dict[str, ArrayNxM]:
